@@ -18,26 +18,16 @@ const float ORTHO_DIM = 50.0f;
 	}
 
 
-	void GLDisplay::DrawCube(GLfloat x, GLfloat y, GLfloat width) {
 
-		glPushMatrix();
-		glColor3f(1, 0, 0);
-		// Debut de l'affichage
-		glTranslatef(x, y, 0);
 
-		glBegin(GL_QUADS);
-		glVertex2f(0, width);
-		glVertex2f(0, 0);
-		glVertex2f(width, 0);
-		glVertex2f(width, width);
-		glEnd();
-		glPopMatrix();
-
+	void GLDisplay::AddRect3D(Vecteur3D position, float width, float height, float prof) {
+		Shape* cube = new Rect3D(position, width, height, prof);
+		shapes.push_back(cube);
 	}
 
-	void GLDisplay::AddCube(Vecteur3D position, float width) {
-		Shape* cube = new Rect(position, width, width);
-		shapes.push_back(cube);
+	void GLDisplay::AddSphere(Vecteur3D position, float rayon) {
+		Shape* sphere = new Sphere(position, rayon);
+		shapes.push_back(sphere);
 	}
 
 
@@ -49,9 +39,7 @@ const float ORTHO_DIM = 50.0f;
 		// Reset transformations
 		glLoadIdentity();
 
-		gluLookAt(0.0f, 0.0f, 10.0f,
-			0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f);
+		gluLookAt(distance_*sin(phi_)*sin(teta_), distance_*cos(phi_), distance_*sin(phi_)*cos(teta_), 0, 0, 0, 0, 0, 1);
 
 		//iterator
 		std::list<Shape*>::iterator it;
@@ -83,10 +71,10 @@ const float ORTHO_DIM = 50.0f;
 		switch (key)
 		{
 		case 'r':
-			AddCube(Vecteur3D(0, 0, 0), 5);
+			AddRect3D(Vecteur3D(0, 0, 0), 5,5,2);
 			break;
 		case 't':
-			AddCube(Vecteur3D(-10, -20, 0), 2);
+			AddRect3D(Vecteur3D(-10, -20, 0), 2,3,4);
 			break;
 
 			// Cas par defaut
@@ -111,10 +99,12 @@ const float ORTHO_DIM = 50.0f;
 		glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - WIN_WIDTH) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - WIN_HEIGHT) / 2);
 
 		glutCreateWindow("Lighthouse3D- GLUT Tutorial");
-
+		glEnable(GL_DEPTH_TEST);
 		// register callbacks
 		GLDisplay::setupInstance();
-
+		distance_ = 10;
+		phi_ = 1.359;
+		teta_ = -0.979;
 		// enter GLUT event processing cycle
 		glutMainLoop();
 

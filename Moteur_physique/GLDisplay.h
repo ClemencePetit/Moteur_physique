@@ -12,7 +12,8 @@ class GLDisplay
 public:
 
 	int startGlut(int argc, char** argv);
-	void AddCube(Vecteur3D position, float width);
+	void AddRect3D(Vecteur3D position, float width, float height, float prof);
+	void AddSphere(Vecteur3D position, float rayon);
 
 	//part of hotfix
 	void renderScene();
@@ -24,8 +25,10 @@ private:
 	void setupInstance();
 
 	list <Shape*> shapes;
+	float distance_;
+	float phi_;
+	float teta_;
 
-	void DrawCube(GLfloat x, GLfloat y, GLfloat width);
 
 };
 

@@ -17,9 +17,9 @@ int main(int argc, char** argv) {
 	Vecteur3D b(10, 20, 0);
 	Vecteur3D c(15, 40, 0);
 
-	gl.AddCube(a, 6);
-	gl.AddCube(b, 3);
-	gl.AddCube(c, 4);
+	gl.AddRect3D(a, 6,6,6);
+	gl.AddRect3D(b, 3,3,3);
+	gl.AddRect3D(c, 4,4,4);
 
 	gl.startGlut(argc, argv);
 

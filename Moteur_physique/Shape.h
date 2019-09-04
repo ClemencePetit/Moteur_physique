@@ -17,14 +17,25 @@ public:
 	Shape(Vecteur3D pos = Vecteur3D()) : position(pos) { }
 };
 
-class Rect : public Shape {
+class Rect3D : public Shape {
 public:
 	float width;
 	float height;
+	float prof;
 
 	void Draw();
 
 	//Constructors
-	Rect(Vecteur3D pos = Vecteur3D(), float w = 2, float h = 2) : width(w), height(h), Shape(pos) { }
+	Rect3D(Vecteur3D pos = Vecteur3D(), float w = 2, float h = 2, float p=2) : width(w), height(h), prof(p), Shape(pos) { }
+};
+
+class Sphere : public Shape {
+public:
+	float rayon;
+
+	void Draw();
+
+	//Constructors
+	Sphere(Vecteur3D pos = Vecteur3D(), float r = 2) : rayon(r), Shape(pos) { }
 };
 
