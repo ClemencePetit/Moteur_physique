@@ -48,7 +48,7 @@ void Sphere::Draw() {
 
 	glColor3f(1, 0, 0);
 
-	glTranslatef(position.getX(), position.getY(), 0);
+	glTranslatef(position.x, position.y, 0);
 
 	GLUquadric* quadrique = gluNewQuadric();
 	gluQuadricDrawStyle(quadrique, GLU_FILL);
