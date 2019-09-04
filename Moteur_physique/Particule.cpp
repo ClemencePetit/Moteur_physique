@@ -6,8 +6,8 @@ Particule::Particule(float g, Vecteur3D pos, Vecteur3D vit, float m, float d, fl
 
 void Particule::integrer(float t)
 {
-	pos_ = pos_.addition(vit_.multScalaire(t));
-	vit_ = vit_.multScalaire(pow(d_, t)).addition(g_.multScalaire(m_).multScalaire(massInv_).multScalaire(t));
+	pos_ = pos_ + (vit_.multScalaire(t));
+	vit_ = vit_.multScalaire(pow(d_, t)) + (g_.multScalaire(m_).multScalaire(massInv_).multScalaire(t));
 }
 
 
