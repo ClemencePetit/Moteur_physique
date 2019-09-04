@@ -6,7 +6,7 @@ void Rect3D::Draw() {
 
 	glColor3f(1, 0, 0);
 
-	glTranslatef(position.getX(), position.getY(), position.getZ());
+	glTranslatef(position.x, position.y, 0);
 
 	glBegin(GL_QUADS);
 	glVertex3f(-width/2, -height/2, prof/2);
