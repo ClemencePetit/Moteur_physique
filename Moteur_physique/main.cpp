@@ -4,6 +4,7 @@
 
 #include "Vecteur3D.h"
 #include "GLDisplay.h"
+#include "Jeu.h"
 #include <stdlib.h>     
 #include <time.h>
 
@@ -11,6 +12,7 @@
 
 int main(int argc, char** argv) {
 
+	/*
 	GLDisplay gl;
 
 	Vecteur3D a(0, 1, 0);
@@ -33,9 +35,13 @@ int main(int argc, char** argv) {
 	gl.AddRect3D(b, 3,3,3);
 	gl.AddRect3D(c, 4,4,4);
 
-	gl.startGlut(argc, argv); 
+	gl.startGlut(argc, argv);
+	*/
 
-	return 1;
+	Jeu jeu;
+	jeu.execute(argc, argv);
+
+	return 0;
 }
 
 
