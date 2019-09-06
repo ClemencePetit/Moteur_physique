@@ -2,6 +2,7 @@
 
 void Rect3D::Draw() {
 
+	Vecteur3D position = particule_.getPos();
 	glPushMatrix();
 
 	glColor3f(1, 0, 0);
@@ -43,6 +44,8 @@ void Rect3D::Draw() {
 }
 
 void Sphere::Draw() {
+
+	Vecteur3D position = particule_.getPos();
 
 	glPushMatrix();
 

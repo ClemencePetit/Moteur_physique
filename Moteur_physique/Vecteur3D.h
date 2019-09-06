@@ -9,17 +9,23 @@ class Vecteur3D
 {
 public:
 	
+	//position
 	float x;
 	float y;
 	float z;
 
 
+
+	//constructors
 	Vecteur3D();
 	Vecteur3D(float x, float y, float z);
 
 	~Vecteur3D();
 
+	//static functions
+	static Vecteur3D zero();
 
+	//Operations
 	Vecteur3D operator+(const Vecteur3D& b);
 	Vecteur3D operator*(const double& lambda);
 

@@ -5,11 +5,14 @@
 #include <GL/glut.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <list>   
 
 class Jeu
 {
 private:
 
+
+	list <Particule*> particules_;
 	Particule* currentPart_ = NULL;
 	float g_ = 9.8;
 	float t_ = 0.033;
@@ -23,11 +26,19 @@ public:
 	//part of hotfix
 	void setupInstance();
 
+	//glut
 	void handleKeypress(unsigned char key, int x, int y);
 	void initRendering();
 	void handleResize(int w, int h);
 	void drawScene();
+
+	//particles
+	void addParticle(Particule* pa);
+	void deleteParticle(Particule* pa);
+
+	//update logic
 	void update(int value);
+
 
 	void execute(int argc, char** argv);
 	

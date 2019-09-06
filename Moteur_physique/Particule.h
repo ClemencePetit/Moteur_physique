@@ -1,5 +1,8 @@
+
+
 #pragma once
 #include "Vecteur3D.h"
+#include "Shape.h"
 
 class Particule
 {
@@ -18,6 +21,8 @@ private:
 	float v_;
 	float b_;
 
+	Shape* shape_;
+
 public:
 
 	Particule(float g, Vecteur3D pos, Vecteur3D vit, float m, float d, float r, float v, float b);
@@ -33,6 +38,7 @@ public:
 	void setR(float r) { r_ = r; };
 	void setV(float v) { v_ = v; };
 	void setB(float b) { b_ = b; };
+	void setShape(Shape* sh) { shape_ = sh; }
 
 	Vecteur3D getPos() { return pos_; };
 	Vecteur3D getVit() { return vit_; };
@@ -43,7 +49,9 @@ public:
 	float getR() { return r_; };
 	float getV() { return v_; };
 	float getB() { return b_; };
+	Shape* getShape() { return shape_; }
 
 	void integrer(float t);
 };
+
 

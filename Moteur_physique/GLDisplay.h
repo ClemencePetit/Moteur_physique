@@ -24,7 +24,7 @@ private:
 	//part of hotfix
 	void setupInstance();
 
-	list <Shape*> shapes;
+	list <Shape*> shapes_;
 	float distance_;
 	float phi_;
 	float teta_;

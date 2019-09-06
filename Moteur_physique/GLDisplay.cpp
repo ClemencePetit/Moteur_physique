@@ -22,12 +22,12 @@ const float ORTHO_DIM = 50.0f;
 
 	void GLDisplay::AddRect3D(Vecteur3D position, float width, float height, float prof) {
 		Shape* cube = new Rect3D(position, width, height, prof);
-		shapes.push_back(cube);
+		shapes_.push_back(cube);
 	}
 
 	void GLDisplay::AddSphere(Vecteur3D position, float rayon) {
 		Shape* sphere = new Sphere(position, rayon);
-		shapes.push_back(sphere);
+		shapes_.push_back(sphere);
 	}
 
 
@@ -44,7 +44,7 @@ const float ORTHO_DIM = 50.0f;
 		//iterator
 		std::list<Shape*>::iterator it;
 		// Make iterate point to begining and incerement it one by one till it reaches the end of list.
-		for (it = shapes.begin(); it != shapes.end(); it++)
+		for (it = shapes_.begin(); it != shapes_.end(); it++)
 		{
 			(*it)->Draw();
 		}

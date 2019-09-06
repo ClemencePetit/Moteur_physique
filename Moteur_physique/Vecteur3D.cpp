@@ -15,6 +15,13 @@ Vecteur3D::~Vecteur3D()
 
 }
 
+//static
+
+
+Vecteur3D Vecteur3D::zero() {
+	return Vecteur3D();
+}
+
 //Opérateurs
 Vecteur3D Vecteur3D::operator+(const Vecteur3D& b) {
 	Vecteur3D result(x + b.x, y + b.y, z + b.z);
@@ -26,12 +33,6 @@ Vecteur3D Vecteur3D::operator*(const double& lambda) {
 	Vecteur3D result(lambda * x, lambda * y, lambda * z);
 	return result;
 }
-/*
-Vecteur3D Vecteur3D::addition(Vecteur3D v)
-{
-	Vecteur3D result(x + v.x, y + v.y, z + v.z);
-	return result;
-} */
 
 Vecteur3D Vecteur3D::multScalaire(float k)
 {
