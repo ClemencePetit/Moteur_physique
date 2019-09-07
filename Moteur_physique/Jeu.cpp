@@ -96,13 +96,13 @@ void Jeu::update(int value)
 
 	//update physics for each particles
 
-	cout << "phy" << endl;
 	std::list<Particule*>::iterator it;
 	for (it = particules_.begin(); it != particules_.end(); it++)
 	{
 		if (*it != NULL) {
 			Particule* pa = *it;
 			pa->integrer(t_);
+			pa->getPos().afficher();
 
 			if (pa->getPos().z < 0) {
 				deleteParticle(pa);
