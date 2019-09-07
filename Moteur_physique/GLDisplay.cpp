@@ -21,12 +21,12 @@ const float ORTHO_DIM = 50.0f;
 
 
 	void GLDisplay::AddRect3D(Vecteur3D position, float width, float height, float prof) {
-		Shape* cube = new Rect3D(position, width, height, prof);
+		Shape* cube = new Rect3D(&position, width, height, prof);
 		shapes_.push_back(cube);
 	}
 
 	void GLDisplay::AddSphere(Vecteur3D position, float rayon) {
-		Shape* sphere = new Sphere(position, rayon);
+		Shape* sphere = new Sphere(&position, rayon);
 		shapes_.push_back(sphere);
 	}
 

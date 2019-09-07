@@ -5,18 +5,19 @@
 #include <GL/glu.h>
 
 #include "Vecteur3D.h"
-#include "Particule.h"
 
 class Shape
 {
+protected:
+	Vecteur3D* position_;
+
 public:
-	Particule particule_;
 	//float rotation;
 
 	virtual void Draw() = 0; //pure virtual function
 
 	//Constructors
-	Shape(Particule pa) : particule_(pa) { }
+	Shape(Vecteur3D* pos) : position_(pos) { }
 };
 
 class Rect3D : public Shape {
@@ -28,7 +29,7 @@ public:
 	void Draw();
 
 	//Constructors
-	Rect3D(Particule pa, float w = 2, float h = 2, float p=2) : width(w), height(h), prof(p), Shape(pa) { }
+	Rect3D(Vecteur3D* pos, float w = 2, float h = 2, float p=2) : width(w), height(h), prof(p), Shape(pos) { }
 };
 
 class Sphere : public Shape {
@@ -38,6 +39,6 @@ public:
 	void Draw();
 
 	//Constructors
-	Sphere(Particule pa, float r = 2) : rayon(r), Shape(pa) { }
+	Sphere(Vecteur3D* pos, float r = 2) : rayon(r), Shape(pos) { }
 };
 

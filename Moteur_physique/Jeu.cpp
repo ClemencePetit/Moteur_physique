@@ -11,21 +11,21 @@ Jeu::~Jeu()
 
 void Jeu::handleKeypress(unsigned char key, int x, int y)
 {
-
+	Particule* pa;
 	switch (key)
 	{
 	case 'a':
 		//delete(currentPart_);
 		//currentPart_ = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0, 1.0, 0.0)
-		Particule* pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0, 1.0, 0.0);
-		pa->setShape(new Sphere(*pa, 2));
+		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0, 1.0, 0.0);
+		pa->setShape(new Sphere(&pa->getPos(), 2));
 		addParticle(pa);
 		break;
 	case 'r':/*
 		delete(currentPart_);
 		currentPart_ = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0, 1.0, 0.0);*/
-		Particule* pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0, 1.0, 0.0);
-		pa->setShape(new Sphere(*pa, 2));
+		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0, 1.0, 0.0);
+		pa->setShape(new Sphere(&pa->getPos(), 2));
 		addParticle(pa);
 		break;
 	case 'd':
