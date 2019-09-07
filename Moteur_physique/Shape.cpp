@@ -4,8 +4,7 @@ void Rect3D::Draw() {
 
 	glPushMatrix();
 
-	//glColor3f(r_, v_, b_);
-	glColor3f(1, 0, 0);
+	glColor3f(r_, v_, b_);
 
 	glTranslatef(position_->x, position_->y, position_->z);
 
@@ -47,8 +46,7 @@ void Sphere::Draw() {
 
 	glPushMatrix();
 
-	//glColor3f(r_, v_, b_);
-	glColor3f(1, 0, 0);
+	glColor3f(r_, v_, b_);
 
 	glTranslatef(position_->x, position_->y, position_->z);
 

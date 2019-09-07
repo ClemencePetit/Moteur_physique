@@ -18,7 +18,7 @@ void Jeu::handleKeypress(unsigned char key, int x, int y)
 	{
 	case 'a':
 
-		pa = new Particule(g_, new Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0f, 1.0f, 0.0f);
+		pa = new Particule(g_, new Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5000.0, 0.5, 1.0f, 0.0f, 0.0f);
 		pa->setShape(new Sphere(pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
 		addParticle(pa);
 
