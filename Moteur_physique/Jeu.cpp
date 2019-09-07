@@ -17,19 +17,19 @@ void Jeu::handleKeypress(unsigned char key, int x, int y)
 	case 'a':
 		//delete(currentPart_);
 		//currentPart_ = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0, 1.0, 0.0)
-		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0, 1.0, 0.0);
-		pa->setShape(new Sphere(&pa->getPos(), 2));
+		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0f, 1.0f, 0.0f);
+		pa->setShape(new Sphere(&pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
 		addParticle(pa);
 		break;
 	case 'r':/*
 		delete(currentPart_);
 		currentPart_ = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0, 1.0, 0.0);*/
-		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0, 1.0, 0.0);
-		pa->setShape(new Sphere(&pa->getPos(), 2));
+		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0f, 1.0f, 0.0f);
+		pa->setShape(new Sphere(&pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
 		addParticle(pa);
 		break;
 	case 'd':
-		deleteParticle(particules_.front()); //delete first elm
+		deleteParticle(particules_.front()); //delete first elem
 	}
 }
 void Jeu::initRendering()
@@ -50,6 +50,10 @@ void Jeu::handleResize(int w, int h)
 void Jeu::drawScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.7, 0.7, 0.7, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(200, 50, 0, 0, 50, 0, 0, 0, 1);
 
 	std::list<Particule*>::iterator it;
 	//redraw all particules
@@ -60,11 +64,7 @@ void Jeu::drawScene()
 		}
 	}
 
-	/*glClearColor(0.7, 0.7, 0.7, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(200, 50, 0, 0, 50, 0, 0, 0, 1);
-
+	/*
 	if (currentPart_ != NULL) {
 		glPushMatrix();
 		glColor3f(currentPart_->getR(), currentPart_->getV(), currentPart_->getB());
@@ -74,7 +74,8 @@ void Jeu::drawScene()
 		gluSphere(quadrique, 2, 20, 20);
 		gluDeleteQuadric(quadrique);
 		glPopMatrix();
-	}*/
+	}
+	*/
 
 	glutSwapBuffers();
 }
@@ -88,6 +89,7 @@ void Jeu::addParticle(Particule* pa) {
 
 void Jeu::deleteParticle(Particule* pa) {
 	particules_.remove(pa);
+	delete(pa);
 }
 
 void Jeu::update(int value)

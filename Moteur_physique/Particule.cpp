@@ -13,4 +13,5 @@ void Particule::integrer(float t)
 
 Particule::~Particule()
 {
+	delete(shape_);
 }
