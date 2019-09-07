@@ -14,7 +14,6 @@ Vecteur3D::~Vecteur3D()
 {
 
 }
-
 //static
 
 
@@ -29,7 +28,7 @@ Vecteur3D Vecteur3D::operator+(const Vecteur3D& b) {
 }
 
 
-Vecteur3D Vecteur3D::operator*(const double& lambda) {
+Vecteur3D Vecteur3D::operator*(const float& lambda) {
 	Vecteur3D result(lambda * x, lambda * y, lambda * z);
 	return result;
 }

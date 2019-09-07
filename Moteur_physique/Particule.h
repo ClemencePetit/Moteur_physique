@@ -13,9 +13,13 @@ private:
 	Vecteur3D g_;
 
 	float massInv_;
+
+	//damping
 	float d_;
+	//mass
 	float m_;
 
+	//colors
 	float r_;
 	float v_;
 	float b_;
