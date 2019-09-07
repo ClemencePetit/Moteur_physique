@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Particule.h"
-#include <time.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <list>   
+#include <list>
+#include <time.h>
+
+#include "Particule.h"
 
 class Jeu
 {
@@ -13,7 +14,6 @@ private:
 
 
 	list <Particule*> particules_;
-	Particule* currentPart_ = NULL;
 	float g_ = 9.8;
 	float t_ = 0.033;
 	time_t currentTime_ = time(NULL);

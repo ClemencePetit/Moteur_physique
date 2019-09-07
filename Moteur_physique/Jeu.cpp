@@ -4,9 +4,11 @@ Jeu::Jeu()
 {
 }
 
-
 Jeu::~Jeu()
 {
+	while (!particules_.empty()) {
+		deleteParticle(particules_.front());
+	}
 }
 
 void Jeu::handleKeypress(unsigned char key, int x, int y)
@@ -16,16 +18,16 @@ void Jeu::handleKeypress(unsigned char key, int x, int y)
 	{
 	case 'a':
 
-		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0f, 1.0f, 0.0f);
-		pa->setShape(new Sphere(&pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
+		pa = new Particule(g_, new Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0f, 1.0f, 0.0f);
+		pa->setShape(new Sphere(pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
 		addParticle(pa);
 
 		break;
 
 	case 'r':
 
-		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0f, 1.0f, 0.0f);
-		pa->setShape(new Sphere(&pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
+		pa = new Particule(g_, new Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0f, 1.0f, 0.0f);
+		pa->setShape(new Sphere(pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
 		addParticle(pa);
 
 		break;
@@ -96,9 +98,9 @@ void Jeu::update(int value)
 		if (*it != NULL) {
 
 			(*it)->integrer(t_);
-			(*it)->getPos().afficher();
+			(*it)->getPos()->afficher();
 
-			if ((*it)->getPos().z < 0) {
+			if ((*it)->getPos()->z < 0) {
 				deleteParticle(*(it++));
 			}
 			else {

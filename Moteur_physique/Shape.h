@@ -44,4 +44,3 @@ public:
 	//Constructors
 	Sphere(Vecteur3D* pos, float r = 1, float v = 0, float b = 0,  float rayon = 2) : rayon(rayon), Shape(pos, r, v, b) { }
 };
-
