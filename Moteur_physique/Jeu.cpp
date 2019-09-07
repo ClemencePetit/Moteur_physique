@@ -15,21 +15,27 @@ void Jeu::handleKeypress(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'a':
-		//delete(currentPart_);
-		//currentPart_ = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0, 1.0, 0.0)
+
 		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 100.0, 0.5, 0.0f, 1.0f, 0.0f);
 		pa->setShape(new Sphere(&pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
 		addParticle(pa);
+
 		break;
-	case 'r':/*
-		delete(currentPart_);
-		currentPart_ = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0, 1.0, 0.0);*/
+
+	case 'r':
+
 		pa = new Particule(g_, Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5.0, 0.5, 0.0f, 1.0f, 0.0f);
 		pa->setShape(new Sphere(&pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
 		addParticle(pa);
+
 		break;
+
 	case 'd':
-		deleteParticle(particules_.front()); //delete first elem
+
+		if (!particules_.empty()) {
+			deleteParticle(particules_.front()); //delete first elem
+		}
+
 	}
 }
 void Jeu::initRendering()
@@ -54,28 +60,15 @@ void Jeu::drawScene()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(200, 50, 0, 0, 50, 0, 0, 0, 1);
-
-	std::list<Particule*>::iterator it;
+	
 	//redraw all particules
+	std::list<Particule*>::iterator it;
 	for (it = particules_.begin(); it != particules_.end(); it++)
 	{
 		if (*it != NULL && (*it)->getShape() != NULL) {
 			(*it)->getShape()->Draw();
 		}
 	}
-
-	/*
-	if (currentPart_ != NULL) {
-		glPushMatrix();
-		glColor3f(currentPart_->getR(), currentPart_->getV(), currentPart_->getB());
-		glTranslatef(currentPart_->getPos().x, currentPart_->getPos().y, currentPart_->getPos().z);
-		GLUquadric* quadrique = gluNewQuadric();
-		gluQuadricDrawStyle(quadrique, GLU_FILL);
-		gluSphere(quadrique, 2, 20, 20);
-		gluDeleteQuadric(quadrique);
-		glPopMatrix();
-	}
-	*/
 
 	glutSwapBuffers();
 }
@@ -88,6 +81,7 @@ void Jeu::addParticle(Particule* pa) {
 }
 
 void Jeu::deleteParticle(Particule* pa) {
+
 	particules_.remove(pa);
 	delete(pa);
 }
@@ -97,36 +91,22 @@ void Jeu::update(int value)
 	//currentTime_ = time(NULL);
 
 	//update physics for each particles
-
-	std::list<Particule*>::iterator it;
-	for (it = particules_.begin(); it != particules_.end(); it++)
-	{
+	std::list<Particule*>::iterator it = particules_.begin();
+	while (it != particules_.end()) {
 		if (*it != NULL) {
-			/*
-			Particule* pa = *it;
-			pa->integrer(t_);
-			pa->getPos().afficher();
 
-			if (pa->getPos().z < 0) {
-				deleteParticle(pa);
-			}
-			*/
 			(*it)->integrer(t_);
 			(*it)->getPos().afficher();
 
 			if ((*it)->getPos().z < 0) {
-				//deleteParticle((*it));
+				deleteParticle(*(it++));
+			}
+			else {
+				it++;
 			}
 		}
 	}
-
-	/*if (currentPart_ != NULL) {
-		currentPart_->integrer(t_);
-		currentPart_->getPos().afficher();
-		if (currentPart_->getPos().z < 0) {
-			delete(currentPart_);
-		}
-	} */
+	
 	//t_ = time(NULL) - currentTime_;
 
 	glutPostRedisplay();
