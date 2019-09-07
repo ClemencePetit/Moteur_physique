@@ -102,12 +102,20 @@ void Jeu::update(int value)
 	for (it = particules_.begin(); it != particules_.end(); it++)
 	{
 		if (*it != NULL) {
+			/*
 			Particule* pa = *it;
 			pa->integrer(t_);
 			pa->getPos().afficher();
 
 			if (pa->getPos().z < 0) {
 				deleteParticle(pa);
+			}
+			*/
+			(*it)->integrer(t_);
+			(*it)->getPos().afficher();
+
+			if ((*it)->getPos().z < 0) {
+				//deleteParticle((*it));
 			}
 		}
 	}
