@@ -113,13 +113,14 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 		case GLUT_LEFT_BUTTON:
 			cout << "Tirer!" << endl;
 			pa->setPos(*reticule_->getPos());
+			pa->setVit(reticule_->getPos()->normalized() * baseVelocity_);
 			addParticle(pa);
 		break;
 		case GLUT_RIGHT_BUTTON:
 			cout << "Changer de Particule!" << endl;
 
-			indexCurrentParticle++;
-			indexCurrentParticle %= 4; //4 = nb type de projectiles
+			indexCurrentParticle_++;
+			indexCurrentParticle_ %= 4; //4 = nb type de projectiles
 
 			updateReticleWithParticle(getCurrentParticle());
 			drawScene();
@@ -131,7 +132,7 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 Particule* Jeu::getCurrentParticle() {
 
 	Vecteur3D pos = *reticule_->getPos();
-	switch (indexCurrentParticle) {
+	switch (indexCurrentParticle_) {
 		case 0:
 			return getProjectile1(g_);
 		break;
