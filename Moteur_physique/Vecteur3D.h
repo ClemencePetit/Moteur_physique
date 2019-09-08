@@ -14,8 +14,6 @@ public:
 	float y;
 	float z;
 
-
-
 	//constructors
 	Vecteur3D();
 	Vecteur3D(float x, float y, float z);
