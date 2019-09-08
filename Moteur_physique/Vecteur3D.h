@@ -27,7 +27,6 @@ public:
 	Vecteur3D operator+(const Vecteur3D& b);
 	Vecteur3D operator*(const float& lambda);
 
-	Vecteur3D multScalaire(float k);
 	Vecteur3D prodComposantes (Vecteur3D v);
 
 	float prodScalaire(Vecteur3D v);

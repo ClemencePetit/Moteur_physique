@@ -107,15 +107,18 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 
 	if (state == GLUT_UP) return; //we don't care about release button
 
-	Particule* pa = getCurrentParticle();
+	Particule* pa = NULL;
 
 	switch (button) {
+
 		case GLUT_LEFT_BUTTON:
+			pa = getCurrentParticle();
 			cout << "Tirer!" << endl;
 			pa->setPos(*reticule_->getPos());
 			pa->setVit(reticule_->getPos()->normalized() * baseVelocity_);
 			addParticle(pa);
 		break;
+
 		case GLUT_RIGHT_BUTTON:
 			cout << "Changer de Particule!" << endl;
 
@@ -147,7 +150,6 @@ Particule* Jeu::getCurrentParticle() {
 			break;
 	}
 
-
 	cout << "Erreur : Index trop grand. Renvoyé particule par défaut" << endl;
 	return getProjectile1(g_);
 }
@@ -156,6 +158,7 @@ void Jeu::updateReticleWithParticle(Particule* pa) {
 
 	Vecteur3D tempPos = *reticule_->getPos();
 
+	delete(reticule_);
 	reticule_ = pa;
 
 	//no movement
@@ -208,8 +211,7 @@ void Jeu::update(int value)
 
 void Jeu::execute(int argc, char** argv)
 {
-	reticule_ = new Particule(0.f, &Vecteur3D(), Vecteur3D(), 
-		0.f, 0.f);
+	reticule_ = new Particule(0.f, &Vecteur3D(), Vecteur3D(), 0.f, 0.f);
 	reticule_->setShape(new Sphere(reticule_->getPos(), 0.f, 1.f, 0.f, 2));
 
 	updateReticleWithParticle(getProjectile1(0.f));
