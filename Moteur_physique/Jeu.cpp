@@ -13,6 +13,7 @@ Jeu::~Jeu()
 
 void Jeu::handleKeypress(unsigned char key, int x, int y)
 {
+	Vecteur3D pos = *reticule_->getPos();
 	switch (key)
 	{
 	case 'a':
@@ -106,16 +107,62 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 
 	if (state == GLUT_UP) return; //we don't care about release button
 
+	Particule* pa = getCurrentParticle();
+
 	switch (button) {
 		case GLUT_LEFT_BUTTON:
 			cout << "Tirer!" << endl;
+			pa->setPos(*reticule_->getPos());
+			addParticle(pa);
 		break;
 		case GLUT_RIGHT_BUTTON:
 			cout << "Changer de Particule!" << endl;
+
+			indexCurrentParticle++;
+			indexCurrentParticle %= 4; //4 = nb type de projectiles
+
+			updateReticleWithParticle(getCurrentParticle());
+			drawScene();
+
 		break;
 	}
 }
 
+Particule* Jeu::getCurrentParticle() {
+
+	Vecteur3D pos = *reticule_->getPos();
+	switch (indexCurrentParticle) {
+		case 0:
+			return getProjectile1(g_);
+		break;
+		case 1:
+			return getProjectile2(g_);
+			break;
+		case 2:
+			return getProjectile3(g_);
+			break;
+		case 3:
+			return getProjectile4(g_);
+			break;
+	}
+
+
+	cout << "Erreur : Index trop grand. Renvoyé particule par défaut" << endl;
+	return getProjectile1(g_);
+}
+
+void Jeu::updateReticleWithParticle(Particule* pa) {
+
+	Vecteur3D tempPos = *reticule_->getPos();
+
+	reticule_ = pa;
+
+	//no movement
+	pa->setG(Vecteur3D());
+	pa->setVit(Vecteur3D());
+	pa->setPos(tempPos);
+
+}
 
 void Jeu::addParticle(Particule* pa) {
 
@@ -163,6 +210,8 @@ void Jeu::execute(int argc, char** argv)
 	reticule_ = new Particule(0.f, &Vecteur3D(), Vecteur3D(), 
 		0.f, 0.f);
 	reticule_->setShape(new Sphere(reticule_->getPos(), 0.f, 1.f, 0.f, 2));
+
+	updateReticleWithParticle(getProjectile1(0.f));
 
 	//launch Glut
 	glutInit(&argc, argv);

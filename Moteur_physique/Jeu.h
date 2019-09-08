@@ -13,6 +13,9 @@ class Jeu
 private:
 
 	Particule* reticule_;
+	int indexCurrentParticle;
+
+
 	list <Particule*> particules_;
 	float g_ = 9.8;
 	float t_ = 0.033;
@@ -38,6 +41,8 @@ public:
 	void handleMouseClick(int button, int state, int x, int y);
 
 	//particles
+	void updateReticleWithParticle(Particule* pa);
+	Particule* getCurrentParticle();
 	void addParticle(Particule* pa);
 	void deleteParticle(Particule* pa);
 

@@ -22,8 +22,14 @@ public:
 
 	virtual void Draw() = 0; //pure virtual function
 
+	Vecteur3D getColor() {
+		return Vecteur3D(r_, v_, b_);
+	}
+
 	//Constructors
 	Shape(Vecteur3D* pos, float r, float v, float b) : position_(pos), r_(r), v_(v), b_(b) { }
+
+
 };
 
 class Rect3D : public Shape {

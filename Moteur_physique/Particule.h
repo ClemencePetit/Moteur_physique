@@ -28,7 +28,7 @@ public:
 
 	~Particule();
 
-	void setPos(Vecteur3D* pos) { pos_ = pos; };
+	void setPos(Vecteur3D pos) { *pos_ = pos; };
 	void setVit(Vecteur3D vit) { vit_ = vit; };
 	void setG(Vecteur3D g) { g_ = g; };
 	void setD(float d) { d_ = d; };
