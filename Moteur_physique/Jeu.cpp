@@ -161,8 +161,7 @@ void Jeu::update(int value)
 void Jeu::execute(int argc, char** argv)
 {
 	reticule_ = new Particule(0.f, &Vecteur3D(), Vecteur3D(), 
-		0.f, 0.f, 
-		0.f, 1.f, 0.f);
+		0.f, 0.f);
 	reticule_->setShape(new Sphere(reticule_->getPos(), 0.f, 1.f, 0.f, 2));
 
 	//launch Glut
