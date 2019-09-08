@@ -12,11 +12,14 @@ class Jeu
 {
 private:
 
-
+	Particule* reticule_;
 	list <Particule*> particules_;
 	float g_ = 9.8;
 	float t_ = 0.033;
 	time_t currentTime_ = time(NULL);
+
+	int screenWidth = 600;
+	int screenHeight = 600;
 
 public:
 
@@ -31,6 +34,8 @@ public:
 	void initRendering();
 	void handleResize(int w, int h);
 	void drawScene();
+	void handlePassiveMouseMotion(int x, int y);
+	void handleMouseClick(int button, int state, int x, int y);
 
 	//particles
 	void addParticle(Particule* pa);
@@ -56,6 +61,14 @@ static void handleResizeCallback(int w, int h) {
 }
 static void handleKeypressCallback(unsigned char key, int x, int y) {
 	j_CurrentInstance->handleKeypress(key, x, y);
+}
+
+static void handlePassiveMouseMotionCallback(int x, int y) {
+	j_CurrentInstance->handlePassiveMouseMotion(x, y);
+}
+
+static void handleMouseClickCallback(int button, int state, int x, int y) {
+	j_CurrentInstance->handleMouseClick(button, state, x, y);
 }
 
 static void updateCallback(int value) {

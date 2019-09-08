@@ -53,6 +53,9 @@ void Jeu::handleResize(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0, (double)w / (double)h, 1.0, 200.0);
+
+	screenWidth = w;
+	screenHeight = h;
 }
 
 void Jeu::drawScene()
@@ -72,7 +75,38 @@ void Jeu::drawScene()
 		}
 	}
 
+	reticule_->getShape()->Draw();
+
 	glutSwapBuffers();
+}
+
+void Jeu::handlePassiveMouseMotion(int x, int y) {
+
+	//move reticle toward mouse
+
+	Vecteur3D mouseDirection2D = Vecteur3D(0, x, screenHeight - y);
+	mouseDirection2D.afficher();
+
+	Vecteur3D normalizedDirection = mouseDirection2D.normalized();
+
+	Vecteur3D* pos = reticule_->getPos();
+	*pos = normalizedDirection * 5.f;
+
+	drawScene();
+}
+
+void Jeu::handleMouseClick(int button, int state, int x, int y) {
+
+	if (state == GLUT_UP) return; //we don't care about release button
+
+	switch (button) {
+		case GLUT_LEFT_BUTTON:
+			cout << "Tirer!" << endl;
+		break;
+		case GLUT_RIGHT_BUTTON:
+			cout << "Changer de Particule!" << endl;
+		break;
+	}
 }
 
 
@@ -119,9 +153,15 @@ void Jeu::update(int value)
 
 void Jeu::execute(int argc, char** argv)
 {
+	reticule_ = new Particule(0.f, &Vecteur3D(), Vecteur3D(), 
+		0.f, 0.f, 
+		0.f, 1.f, 0.f);
+	reticule_->setShape(new Sphere(reticule_->getPos(), 0.f, 1.f, 0.f, 2));
+
+	//launch Glut
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(600, 600);
+	glutInitWindowSize(screenWidth, screenHeight);
 
 	glutCreateWindow("Moteur Physique");
 	initRendering();
@@ -136,4 +176,6 @@ void Jeu::setupInstance() {
 	::glutDisplayFunc(::drawSceneCallback);
 	::glutReshapeFunc(::handleResizeCallback);
 	::glutKeyboardFunc(::handleKeypressCallback);
+	::glutPassiveMotionFunc(::handlePassiveMouseMotionCallback);
+	::glutMouseFunc(::handleMouseClickCallback);
 }
