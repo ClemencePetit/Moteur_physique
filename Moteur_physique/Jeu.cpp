@@ -13,22 +13,29 @@ Jeu::~Jeu()
 
 void Jeu::handleKeypress(unsigned char key, int x, int y)
 {
-	Particule* pa;
 	switch (key)
 	{
 	case 'a':
 
-		pa = new Particule(g_, new Vecteur3D(0, 0, 0), Vecteur3D(0, 50, 50), 5000.0, 0.5, 1.0f, 0.0f, 0.0f);
-		pa->setShape(new Sphere(pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
-		addParticle(pa);
+		addParticle(getProjectile1(g_));
+
+		break;
+
+	case 'z':
+
+		addParticle(getProjectile2(g_));
+
+		break;
+
+	case 'e':
+
+		addParticle(getProjectile3(g_));
 
 		break;
 
 	case 'r':
 
-		pa = new Particule(g_, new Vecteur3D(0, 0, 0), Vecteur3D(0, 20, 20), 5.0, 0.95, 0.0f, 1.0f, 0.0f);
-		pa->setShape(new Sphere(pa->getPos(), pa->getR(), pa->getV(), pa->getB(), 2));
-		addParticle(pa);
+		addParticle(getProjectile4(g_));
 
 		break;
 
