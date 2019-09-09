@@ -157,13 +157,16 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 
 		case GLUT_RIGHT_BUTTON:
 
-			cout << "Changer de Particule!" << endl;
+			if (state == GLUT_DOWN) {
 
-			indexCurrentParticle_++;
-			indexCurrentParticle_ %= 4; //4 = nb type de projectiles
+				cout << "Changer de Particule!" << endl;
 
-			updateReticleWithParticle(getCurrentParticle());
-			drawScene();
+				indexCurrentParticle_++;
+				indexCurrentParticle_ %= 4; //4 = nb type de projectiles
+
+				updateReticleWithParticle(getCurrentParticle());
+				drawScene();
+			}
 
 		break;
 	}
@@ -187,7 +190,7 @@ Particule* Jeu::getCurrentParticle() {
 			break;
 	}
 
-	cout << "Erreur : Index trop grand. Renvoyé particule par défaut" << endl;
+	cout << "Erreur : Index trop grand. Renvoyï¿½ particule par dï¿½faut" << endl;
 	return getProjectile1(g_);
 }
 
