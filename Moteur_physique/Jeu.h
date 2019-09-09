@@ -17,6 +17,13 @@ private:
 	float distanceReticleFromOrigin_ = 10.f;
 	float baseVelocity_ = 50.f;
 
+	//load shot
+	float minShotPower = 0.5f;
+	float maxShotPower = 2.f;
+	float currentShotPower = 0.f;
+	float timeLoadMaxShot = 1.f;
+	float currentLoadTime = 0.f;
+	bool isLeftMouseButtonDown = false;
 
 	list <Particule*> particules_;
 	float g_ = 9.8;
@@ -42,11 +49,15 @@ public:
 	void handlePassiveMouseMotion(int x, int y);
 	void handleMouseClick(int button, int state, int x, int y);
 
+	void drawLine(Vecteur3D a, Vecteur3D b);
+
 	//particles
 	void updateReticleWithParticle(Particule* pa);
 	Particule* getCurrentParticle();
 	void addParticle(Particule* pa);
 	void deleteParticle(Particule* pa);
+
+	float lerp01(float a, float b, float t);
 
 	//update logic
 	void update(int value);

@@ -72,7 +72,9 @@ void Jeu::drawScene()
 	glClearColor(0.7, 0.7, 0.7, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(200, 50, 0, 0, 50, 0, 0, 0, 1);
+	gluLookAt(200, 50, 0, 
+				0, 50, 0, 
+				0, 0, 1);
 	
 	//redraw all particules
 	std::list<Particule*>::iterator it;
@@ -85,7 +87,26 @@ void Jeu::drawScene()
 
 	reticule_->getShape()->Draw();
 
+	//Draw power line
+	float lineLenght = lerp01(1.f, 3.f, currentShotPower / maxShotPower);
+	drawLine((*reticule_->getPos()), (*reticule_->getPos()) * lineLenght);
+
 	glutSwapBuffers();
+}
+
+
+void Jeu::drawLine(Vecteur3D a, Vecteur3D b) {
+
+	glPushMatrix();
+
+	glColor3f(1, 0, 0);
+
+	glBegin(GL_LINES);
+	glVertex3f(2.f, a.y, a.z);
+	glVertex3f(2.f, b.y, b.z);
+	glEnd();
+
+	glPopMatrix();
 }
 
 void Jeu::handlePassiveMouseMotion(int x, int y) {
@@ -93,33 +114,49 @@ void Jeu::handlePassiveMouseMotion(int x, int y) {
 	//move reticle toward mouse
 
 	Vecteur3D mouseDirection2D = Vecteur3D(0, x, screenHeight - y);
-	mouseDirection2D.afficher();
+	//mouseDirection2D.afficher();
 
 	Vecteur3D normalizedDirection = mouseDirection2D.normalized();
 
 	Vecteur3D* pos = reticule_->getPos();
 	*pos = normalizedDirection * 5.f;
 
-	drawScene();
+	//drawScene();
 }
 
 void Jeu::handleMouseClick(int button, int state, int x, int y) {
-
-	if (state == GLUT_UP) return; //we don't care about release button
 
 	Particule* pa = NULL;
 
 	switch (button) {
 
 		case GLUT_LEFT_BUTTON:
-			pa = getCurrentParticle();
-			cout << "Tirer!" << endl;
-			pa->setPos(*reticule_->getPos());
-			pa->setVit(reticule_->getPos()->normalized() * baseVelocity_);
-			addParticle(pa);
+
+
+			if (state == GLUT_UP) {
+
+				pa = getCurrentParticle();
+				cout << "Tirer! (Power =" << currentShotPower << ")" <<endl;
+				pa->setPos(*reticule_->getPos());
+				pa->setVit(reticule_->getPos()->normalized() * baseVelocity_ * currentShotPower);
+				addParticle(pa);
+
+				//reset charge values
+				currentShotPower = minShotPower;
+				currentLoadTime = 0.f;
+
+				isLeftMouseButtonDown = false;
+			}
+			else if (state == GLUT_DOWN) {
+
+				cout << "Charger" << endl;
+				isLeftMouseButtonDown = true;
+				//load shot
+			}
 		break;
 
 		case GLUT_RIGHT_BUTTON:
+
 			cout << "Changer de Particule!" << endl;
 
 			indexCurrentParticle_++;
@@ -180,6 +217,10 @@ void Jeu::deleteParticle(Particule* pa) {
 	delete(pa);
 }
 
+float Jeu::lerp01(float a, float b, float t) {
+
+	return a + t * (b - a);
+}
 void Jeu::update(int value)
 {
 	//currentTime_ = time(NULL);
@@ -190,7 +231,7 @@ void Jeu::update(int value)
 		if (*it != NULL) {
 
 			(*it)->integrer(t_);
-			(*it)->getPos()->afficher();
+			//(*it)->getPos()->afficher();
 
 			if ((*it)->getPos()->z < 0) {
 				deleteParticle(*(it++));
@@ -198,6 +239,19 @@ void Jeu::update(int value)
 			else {
 				it++;
 			}
+		}
+	}
+
+	//load shot
+	if (isLeftMouseButtonDown) {
+
+		//current power
+		currentShotPower = lerp01(minShotPower, maxShotPower, currentLoadTime / timeLoadMaxShot);
+
+		currentLoadTime += t_;
+
+		if (currentLoadTime >= timeLoadMaxShot) {
+			currentLoadTime = 0.f;
 		}
 	}
 	
