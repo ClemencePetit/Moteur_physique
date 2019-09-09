@@ -30,7 +30,7 @@ private:
 	float t_ = 0.033;
 	time_t currentTime_ = time(NULL);
 
-	int screenWidth = 600;
+	int screenWidth = 900;
 	int screenHeight = 600;
 
 public:

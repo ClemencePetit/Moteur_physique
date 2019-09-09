@@ -72,8 +72,8 @@ void Jeu::drawScene()
 	glClearColor(0.7, 0.7, 0.7, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(200, 50, 0, 
-				0, 50, 0, 
+	gluLookAt(200, 100, 60, 
+				0, 100, 60,
 				0, 0, 1);
 	
 	//redraw all particules
@@ -131,12 +131,10 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 	switch (button) {
 
 		case GLUT_LEFT_BUTTON:
-
-
 			if (state == GLUT_UP) {
 
 				pa = getCurrentParticle();
-				cout << "Tirer! (Power =" << currentShotPower << ")" <<endl;
+				cout << "Tir! (Power =" << currentShotPower << ")" <<endl;
 				pa->setPos(*reticule_->getPos());
 				pa->setVit(reticule_->getPos()->normalized() * baseVelocity_ * currentShotPower);
 				addParticle(pa);
@@ -149,7 +147,6 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 			}
 			else if (state == GLUT_DOWN) {
 
-				cout << "Charger" << endl;
 				isLeftMouseButtonDown = true;
 				//load shot
 			}
@@ -159,7 +156,7 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 
 			if (state == GLUT_DOWN) {
 
-				cout << "Changer de Particule!" << endl;
+				cout << "Changement de Particule!" << endl;
 
 				indexCurrentParticle_++;
 				indexCurrentParticle_ %= 4; //4 = nb type de projectiles
@@ -190,7 +187,7 @@ Particule* Jeu::getCurrentParticle() {
 			break;
 	}
 
-	cout << "Erreur : Index trop grand. Renvoyï¿½ particule par dï¿½faut" << endl;
+	cout << "Erreur : Index trop grand. Renvoyé particule par défaut" << endl;
 	return getProjectile1(g_);
 }
 
