@@ -10,16 +10,16 @@ class Particle
 
 private:
 
-	Vector3D* pos_;//position
-	Vector3D vel_;//velocité
-	Vector3D g_;//loi de la gravitation universelle
+	Vector3D* pos_; //position
+	Vector3D vel_; //velocité
+	Vector3D g_; //loi de la gravitation universelle
 
-	float d_;//damping
+	float d_; //damping
 		
-	float m_;//mass
+	float m_; //mass
 	float massInv_;
 
-	Shape* shape_;//forme associée à la particule pour la dessiner
+	Shape* shape_; //forme associée à la particule pour la dessiner
 
 public:
 

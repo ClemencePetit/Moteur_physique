@@ -12,11 +12,8 @@ Game::~Game()
 	}
 }
 
-void Game::initRendering()//initialisation de l'affichage
-{
-	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.5, 0.5, 0.5, 1);
-}
+#pragma region Public Methods : Glut Callbacks
+
 
 void Game::handleResize(int w, int h)
 {
@@ -28,60 +25,6 @@ void Game::handleResize(int w, int h)
 
 	screenWidth = w;
 	screenHeight = h;
-}
-
-void Game::drawScene()
-{
-	//mise a zéro de l'affichage
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.5, 0.5, 0.5, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(50, -50, 5, 0, 100, 15, 0, 0, 1);
-
-	//dessin du sol
-	glColor3f(1, 1, 1);
-
-	glBegin(GL_QUADS);
-	glVertex3f(-200, -100, 0);
-	glVertex3f(200, -100, 0);
-	glColor3f(0.5,0.5,0.5);
-	glVertex3f(200, 400, 0);
-	glVertex3f(-200, 400, 0);
-
-	glEnd();
-	
-	//redraw all particules
-	std::list<Particle*>::iterator it;
-	for (it = particules_.begin(); it != particules_.end(); it++)
-	{
-		if (*it != NULL && (*it)->getShape() != NULL) {
-			(*it)->getShape()->Draw();
-		}
-	}
-
-	crosshair_->getShape()->Draw();
-
-	//Draw power line
-	float lineLenght = lerp01(1.f, 3.f, currentShotPower / maxShotPower);
-	drawLine((*crosshair_->getPos()), (*crosshair_->getPos()) * lineLenght);
-
-	glutSwapBuffers();
-}
-
-
-void Game::drawLine(Vector3D a, Vector3D b) {
-
-	glPushMatrix();
-
-	glColor3f(1, 0, 0);
-
-	glBegin(GL_LINES);
-	glVertex3f(2.f, a.y, a.z);
-	glVertex3f(2.f, b.y, b.z);
-	glEnd();
-
-	glPopMatrix();
 }
 
 void Game::handlePassiveMouseMotion(int x, int y) {
@@ -138,6 +81,118 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 	}
 }
 
+void Game::drawScene()
+{
+	//mise a zéro de l'affichage
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.5, 0.5, 0.5, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(50, -50, 5, 0, 100, 15, 0, 0, 1);
+
+	//dessin du sol
+	glColor3f(1, 1, 1);
+
+	glBegin(GL_QUADS);
+	glVertex3f(-200, -100, 0);
+	glVertex3f(200, -100, 0);
+	glColor3f(0.5, 0.5, 0.5);
+	glVertex3f(200, 400, 0);
+	glVertex3f(-200, 400, 0);
+
+	glEnd();
+
+	//redraw all particules
+	std::list<Particle*>::iterator it;
+	for (it = particules_.begin(); it != particules_.end(); it++)
+	{
+		if (*it != NULL && (*it)->getShape() != NULL) {
+			(*it)->getShape()->Draw();
+		}
+	}
+
+	crosshair_->getShape()->Draw();
+
+	//Draw power line
+	float lineLenght = lerp01(1.f, 3.f, currentShotPower / maxShotPower);
+	drawLine((*crosshair_->getPos()), (*crosshair_->getPos()) * lineLenght);
+
+	glutSwapBuffers();
+}
+
+// Boucle d'update maintenant à jour les particules. 
+void Game::update(int value)
+{
+	//update physics for each particles
+	std::list<Particle*>::iterator it = particules_.begin();
+	while (it != particules_.end()) {
+		if (*it != NULL) {
+
+			(*it)->integrer(t_);
+			if ((*it)->getPos()->z < 0) {
+				deleteParticle(*(it++));
+			}
+			else {
+				it++;
+			}
+		}
+	}
+
+	//Charge le tir
+	if (isLeftMouseButtonDown) {
+
+		//Puissance actuelle en fonction du temps de charge
+		currentShotPower = lerp01(minShotPower, maxShotPower, currentLoadTime / timeLoadMaxShot);
+
+		currentLoadTime += t_;
+
+		//Si puissance max atteinte, retour à 0.
+		if (currentLoadTime >= timeLoadMaxShot) {
+			currentLoadTime = 0.f;
+		}
+	}
+
+
+	glutPostRedisplay();
+	glutTimerFunc(1000 * t_, updateCallback, 0);
+}
+
+#pragma endregion
+
+
+//Trace une ligne entre a et b.
+void Game::drawLine(Vector3D a, Vector3D b) {
+
+	glPushMatrix();
+
+	glColor3f(1, 0, 0);
+
+	glBegin(GL_LINES);
+	glVertex3f(2.f, a.y, a.z);
+	glVertex3f(2.f, b.y, b.z);
+	glEnd();
+
+	glPopMatrix();
+}
+//part of hotfix
+void Game::setupInstance() {
+	::j_CurrentInstance = this;
+	::glutDisplayFunc(::drawSceneCallback);
+	::glutReshapeFunc(::handleResizeCallback);
+	::glutPassiveMotionFunc(::handlePassiveMouseMotionCallback);
+	::glutMouseFunc(::handleMouseClickCallback);
+}
+
+
+void Game::initRendering()//initialisation de l'affichage
+{
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(0.5, 0.5, 0.5, 1);
+}
+
+#pragma region Gestion Particules
+
+//Retourne un exemplaire du type de projectile actuellement sélectionné.
 Particle* Game::getCurrentParticle() {
 
 	Vector3D pos = *crosshair_->getPos();
@@ -158,7 +213,7 @@ Particle* Game::getCurrentParticle() {
 	return getProjectile1(g_);
 }
 
-//changement de la particule servant à la visée
+//Change le type de particule utilisé par le réticule de visée
 void Game::updateReticleWithParticle(Particle* pa) {
 
 	Vector3D tempPos = *crosshair_->getPos();
@@ -173,51 +228,23 @@ void Game::updateReticleWithParticle(Particle* pa) {
 
 }
 
+//Ajoute la particule à la simulation
 void Game::addParticle(Particle* pa) {
 	particules_.push_back(pa);
 }
 
+//Supprime la particule de la simulation
 void Game::deleteParticle(Particle* pa) {
 
 	particules_.remove(pa);
 	delete(pa);
 }
+#pragma endregion
 
+//Interpolation linéaire entre entre A et B avec t dans [0,1]
 float Game::lerp01(float a, float b, float t) {
 
 	return a + t * (b - a);
-}
-void Game::update(int value)
-{
-	//update physics for each particles
-	std::list<Particle*>::iterator it = particules_.begin();
-	while (it != particules_.end()) {
-		if (*it != NULL) {
-
-			(*it)->integrer(t_);
-			if ((*it)->getPos()->z < 0) {
-				deleteParticle(*(it++));
-			}
-			else {
-				it++;
-			}
-		}
-	}
-
-	//load shot
-	if (isLeftMouseButtonDown) {
-
-		//current power
-		currentShotPower = lerp01(minShotPower, maxShotPower, currentLoadTime / timeLoadMaxShot);
-
-		currentLoadTime += t_;
-
-		if (currentLoadTime >= timeLoadMaxShot) {
-			currentLoadTime = 0.f;
-		}
-	}
-	glutPostRedisplay();
-	glutTimerFunc(1000 * t_, updateCallback, 0);
 }
 
 //démarrage du jeu
@@ -238,13 +265,4 @@ void Game::execute(int argc, char** argv)
 	Game::setupInstance();
 	glutTimerFunc(1000 * t_, updateCallback, 0);
 	glutMainLoop();
-}
-
-//part of hotfix
-void Game::setupInstance() {
-	::j_CurrentInstance = this;
-	::glutDisplayFunc(::drawSceneCallback);
-	::glutReshapeFunc(::handleResizeCallback);
-	::glutPassiveMotionFunc(::handlePassiveMouseMotionCallback);
-	::glutMouseFunc(::handleMouseClickCallback);
 }

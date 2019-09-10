@@ -14,43 +14,34 @@ class Game
 {
 private:
 
-		Particle* crosshair_;//particule servant à la visée (réticule)
-		float distanceReticleFromOrigin_ = 10.f;
-		float baseVelocity_ = 50.f;
+	Particle* crosshair_;//particule servant à la visée (réticule)
+	float distanceReticleFromOrigin_ = 10.f;
+	float baseVelocity_ = 50.f;
 
-		//load shot
-		float minShotPower = 0.5f;
-		float maxShotPower = 2.f;
-		float currentShotPower = 0.f;
-		float timeLoadMaxShot = 1.f;
-		float currentLoadTime = 0.f;
-		bool isLeftMouseButtonDown = false;
+	//load shot
+	float minShotPower = 0.5f;
+	float maxShotPower = 2.f;
+	float currentShotPower = 0.f;
 
-		list <Particle*> particules_;//liste des particules créées
-		int indexCurrentParticle_;//indice de la particule actuellement pointée
-		float g_ = 9.8;
-		float t_ = 0.033;//intervalle entre deux frames (fixé ici)
+	float timeLoadMaxShot = 1.f;
+	float currentLoadTime = 0.f;
+	bool isLeftMouseButtonDown = false;
 
-		//dimensions de l'écran
-		int screenWidth = 900;
-		int screenHeight = 600;
+	list <Particle*> particules_; //liste des particules créées
+	int indexCurrentParticle_; //indice du type de projectile actuellement choisi
+	float g_ = 9.8;
+	float t_ = 0.033; //intervalle entre deux frames (fixé ici)
 
-	public:
+	//dimensions de l'écran
+	int screenWidth = 900;
+	int screenHeight = 600;
 
-	Game();
-	~Game();
 
 	//part of hotfix
 	void setupInstance();
 
-	//fonctions reliées aux callback de glut
-	void handleKeypress(unsigned char key, int x, int y);
+	//Glut
 	void initRendering();
-	void handleResize(int w, int h);
-	void drawScene();
-	void handlePassiveMouseMotion(int x, int y);
-	void handleMouseClick(int button, int state, int x, int y);
-
 	void drawLine(Vector3D a, Vector3D b);
 
 	//particles
@@ -62,6 +53,19 @@ private:
 	float lerp01(float a, float b, float t);
 
 	//update logic
+
+public:
+
+	//constructor/deconstructor
+	Game();
+	~Game();
+
+	// fonctions reliées à Glut et ses callbacks
+	void handleKeypress(unsigned char key, int x, int y);
+	void handleResize(int w, int h);
+	void handlePassiveMouseMotion(int x, int y);
+	void handleMouseClick(int button, int state, int x, int y);
+	void drawScene();
 	void update(int value);
 
 	//start the game

@@ -21,22 +21,19 @@ public:
 
 	~Vector3D();
 
-	//static functions
-	static Vector3D zero();
-
-	//Operations
+	//Surcharges Opérateurs
 	Vector3D operator+(const Vector3D& b);
 	Vector3D operator*(const float& lambda);
 
+	//Opérations
 	Vector3D componentMult (Vector3D v);//produit des composantes
-
 	float dotProd(Vector3D v);//produit scalaire
 	Vector3D crossProd(Vector3D v);//produit vectoriel
 	float tripleProd(Vector3D u, Vector3D v);//produit mixte : this.(u^v)
-
 	float norm();
 	Vector3D normalized();
 
+	//autre
 	void display();
 };
 

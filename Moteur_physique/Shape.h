@@ -7,7 +7,7 @@
 
 #include "Vector3D.h"
 
-// Classe g�rant le dessin des particules, d�riv�e sous deux formes : sph�re et rectangle 3D
+// Classe abstraite gérant l'affichage des particules, deux dérivées pour l'instant : sphère et rectangle 3D
 class Shape
 {
 

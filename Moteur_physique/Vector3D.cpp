@@ -15,12 +15,8 @@ Vector3D::~Vector3D()
 
 }
 
-//static
-Vector3D Vector3D::zero() {
-	return Vector3D();
-}
 
-//Opérateurs
+#pragma region Surcharge Opérateurs
 Vector3D Vector3D::operator+(const Vector3D& b) {
 	Vector3D result(x + b.x, y + b.y, z + b.z);
 	return result;
@@ -30,7 +26,9 @@ Vector3D Vector3D::operator*(const float& lambda) {
 	Vector3D result(lambda * x, lambda * y, lambda * z);
 	return result;
 }
+#pragma endregion
 
+#pragma region Opérations
 Vector3D Vector3D::componentMult(Vector3D v)
 {
 	Vector3D result(x * v.x, y * v.y, z * v.z);
@@ -61,6 +59,7 @@ float Vector3D::norm() {
 Vector3D Vector3D::normalized() {
 	return *this * (1. / this->norm());
 }
+#pragma endregion
 
 void Vector3D::display()
 {
