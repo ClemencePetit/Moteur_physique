@@ -12,7 +12,7 @@ class Jeu
 {
 private:
 
-	Particule* reticule_;
+	Particule* crosshair_;
 	int indexCurrentParticle_;
 	float distanceReticleFromOrigin_ = 10.f;
 	float baseVelocity_ = 50.f;

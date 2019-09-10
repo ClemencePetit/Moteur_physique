@@ -13,7 +13,7 @@ Jeu::~Jeu()
 
 void Jeu::handleKeypress(unsigned char key, int x, int y)
 {
-	Vecteur3D pos = *reticule_->getPos();
+	Vecteur3D pos = *crosshair_->getPos();
 	switch (key)
 	{
 	case 'a':
@@ -85,11 +85,11 @@ void Jeu::drawScene()
 		}
 	}
 
-	reticule_->getShape()->Draw();
+	crosshair_->getShape()->Draw();
 
 	//Draw power line
 	float lineLenght = lerp01(1.f, 3.f, currentShotPower / maxShotPower);
-	drawLine((*reticule_->getPos()), (*reticule_->getPos()) * lineLenght);
+	drawLine((*crosshair_->getPos()), (*crosshair_->getPos()) * lineLenght);
 
 	glutSwapBuffers();
 }
@@ -118,7 +118,7 @@ void Jeu::handlePassiveMouseMotion(int x, int y) {
 
 	Vecteur3D normalizedDirection = mouseDirection2D.normalized();
 
-	Vecteur3D* pos = reticule_->getPos();
+	Vecteur3D* pos = crosshair_->getPos();
 	*pos = normalizedDirection * 5.f;
 
 	//drawScene();
@@ -135,8 +135,8 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 
 				pa = getCurrentParticle();
 				cout << "Tir! (Power =" << currentShotPower << ")" <<endl;
-				pa->setPos(*reticule_->getPos());
-				pa->setVit(reticule_->getPos()->normalized() * baseVelocity_ * currentShotPower);
+				pa->setPos(*crosshair_->getPos());
+				pa->setVit(crosshair_->getPos()->normalized() * baseVelocity_ * currentShotPower);
 				addParticle(pa);
 
 				//reset charge values
@@ -159,7 +159,7 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 				cout << "Changement de Particule!" << endl;
 
 				indexCurrentParticle_++;
-				indexCurrentParticle_ %= 4; //4 = nb type de projectiles
+				indexCurrentParticle_ %= 4; //4 = projectile type
 
 				updateReticleWithParticle(getCurrentParticle());
 				drawScene();
@@ -171,7 +171,7 @@ void Jeu::handleMouseClick(int button, int state, int x, int y) {
 
 Particule* Jeu::getCurrentParticle() {
 
-	Vecteur3D pos = *reticule_->getPos();
+	Vecteur3D pos = *crosshair_->getPos();
 	switch (indexCurrentParticle_) {
 		case 0:
 			return getProjectile1(g_);
@@ -187,16 +187,16 @@ Particule* Jeu::getCurrentParticle() {
 			break;
 	}
 
-	cout << "Erreur : Index trop grand. Renvoyé particule par défaut" << endl;
+	cout << "Error : Index out of range. Default particle selected." << endl;
 	return getProjectile1(g_);
 }
 
 void Jeu::updateReticleWithParticle(Particule* pa) {
 
-	Vecteur3D tempPos = *reticule_->getPos();
+	Vecteur3D tempPos = *crosshair_->getPos();
 
-	delete(reticule_);
-	reticule_ = pa;
+	delete(crosshair_);
+	crosshair_ = pa;
 
 	//no movement
 	pa->setG(Vecteur3D());
@@ -231,7 +231,7 @@ void Jeu::update(int value)
 		if (*it != NULL) {
 
 			(*it)->integrer(t_);
-			//(*it)->getPos()->afficher();
+			//(*it)->getPos()->display();
 
 			if ((*it)->getPos()->z < 0) {
 				deleteParticle(*(it++));
@@ -265,8 +265,8 @@ void Jeu::update(int value)
 
 void Jeu::execute(int argc, char** argv)
 {
-	reticule_ = new Particule(0.f, &Vecteur3D(), Vecteur3D(), 0.f, 0.f);
-	reticule_->setShape(new Sphere(reticule_->getPos(), 0.f, 1.f, 0.f, 2));
+	crosshair_ = new Particule(0.f, &Vecteur3D(), Vecteur3D(), 0.f, 0.f);
+	crosshair_->setShape(new Sphere(crosshair_->getPos(), 0.f, 1.f, 0.f, 2));
 
 	updateReticleWithParticle(getProjectile1(0.f));
 
@@ -275,7 +275,7 @@ void Jeu::execute(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(screenWidth, screenHeight);
 
-	glutCreateWindow("Moteur Physique");
+	glutCreateWindow("Physics Engine");
 	initRendering();
 	Jeu::setupInstance();
 	glutTimerFunc(1000 * t_, updateCallback, 0);

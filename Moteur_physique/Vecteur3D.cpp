@@ -31,38 +31,38 @@ Vecteur3D Vecteur3D::operator*(const float& lambda) {
 	return result;
 }
 
-Vecteur3D Vecteur3D::prodComposantes(Vecteur3D v)
+Vecteur3D Vecteur3D::componentMult(Vecteur3D v)
 {
 	Vecteur3D result(x * v.x, y * v.y, z * v.z);
 	return result;
 }
 
-float Vecteur3D::prodScalaire(Vecteur3D v)
+float Vecteur3D::dotProd(Vecteur3D v)
 {
 	float result = x * v.x + y * v.y + z * v.z;
 	return result;
 }
 
-Vecteur3D Vecteur3D::prodVectoriel(Vecteur3D v)
+Vecteur3D Vecteur3D::crossProd(Vecteur3D v)
 {
 	Vecteur3D result(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 	return result;
 }
 
-float Vecteur3D::prodMixte(Vecteur3D u, Vecteur3D v)
+float Vecteur3D::tripleProd(Vecteur3D u, Vecteur3D v)
 {
-	return this->prodScalaire(u.prodVectoriel(v));
+	return this->dotProd(u.crossProd(v));
 }
 
-float Vecteur3D::magnitude() {
+float Vecteur3D::norm() {
 	return sqrt(x * x + y * y + z * z);
 }
 
 Vecteur3D Vecteur3D::normalized() {
-	return *this * (1. / this->magnitude());
+	return *this * (1. / this->norm());
 }
 
-void Vecteur3D::afficher()
+void Vecteur3D::display()
 {
 	cout << "(" << x << ", " << y << ", " << z << ")" << endl;
 }

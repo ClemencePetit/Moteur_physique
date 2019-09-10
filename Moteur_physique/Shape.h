@@ -38,14 +38,14 @@ private:
 
 	float width;
 	float height;
-	float prof;
+	float depth;
 
 public:
 
 	void Draw();
 
 	//Constructors
-	Rect3D(Vecteur3D* pos, float r = 0, float v = 0, float b = 0, float w = 2, float h = 2, float p = 2) : width(w), height(h), prof(p), Shape(pos, r, v, b) { }
+	Rect3D(Vecteur3D* pos, float r = 0, float v = 0, float b = 0, float w = 2, float h = 2, float p = 2) : width(w), height(h), depth(p), Shape(pos, r, v, b) { }
 };
 
 class Sphere : public Shape {

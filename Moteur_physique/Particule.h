@@ -9,7 +9,7 @@ class Particule
 private:
 
 	Vecteur3D* pos_;
-	Vecteur3D vit_;
+	Vecteur3D vel_;
 	Vecteur3D g_;
 
 	float massInv_;
@@ -29,7 +29,7 @@ public:
 	~Particule();
 
 	void setPos(Vecteur3D pos) { *pos_ = pos; };
-	void setVit(Vecteur3D vit) { vit_ = vit; };
+	void setVit(Vecteur3D vit) { vel_ = vit; };
 	void setG(Vecteur3D g) { g_ = g; };
 	void setD(float d) { d_ = d; };
 	void setM(float m) { m_ = m; };
@@ -37,7 +37,7 @@ public:
 	void setShape(Shape* sh) { shape_ = sh; }
 
 	Vecteur3D* getPos() { return pos_; };
-	Vecteur3D getVit() { return vit_; };
+	Vecteur3D getVit() { return vel_; };
 	Vecteur3D getG() { return g_; };
 	float getD() { return d_; };
 	float getM() { return m_; };

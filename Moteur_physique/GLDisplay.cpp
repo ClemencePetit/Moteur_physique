@@ -20,13 +20,13 @@ const float ORTHO_DIM = 50.0f;
 
 
 
-	void GLDisplay::AddRect3D(Vecteur3D position, float width, float height, float prof) {
-		Shape* cube = new Rect3D(&position, width, height, prof);
+	void GLDisplay::AddRect3D(Vecteur3D position, float width, float height, float depth) {
+		Shape* cube = new Rect3D(&position, width, height, depth);
 		shapes_.push_back(cube);
 	}
 
-	void GLDisplay::AddSphere(Vecteur3D position, float rayon) {
-		Shape* sphere = new Sphere(&position, rayon);
+	void GLDisplay::AddSphere(Vecteur3D position, float radius) {
+		Shape* sphere = new Sphere(&position, radius);
 		shapes_.push_back(sphere);
 	}
 
@@ -55,12 +55,12 @@ const float ORTHO_DIM = 50.0f;
 	void GLDisplay::changeSize(int width, int height) {
 		glViewport(0, 0, width, height);
 
-		// Definition de la matrice de projection
+		// Projection Matrix
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(-ORTHO_DIM * ASPECT_RATIO, ORTHO_DIM * ASPECT_RATIO, -ORTHO_DIM, ORTHO_DIM, -2.0f * ORTHO_DIM, 2.0f * ORTHO_DIM);
 
-		// Definition de la matrice de modele
+		// Model Matrix
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 	}
@@ -77,7 +77,7 @@ const float ORTHO_DIM = 50.0f;
 			AddRect3D(Vecteur3D(-10, -20, 0), 2,3,4);
 			break;
 
-			// Cas par defaut
+			// Default case
 		default:
 		{
 
