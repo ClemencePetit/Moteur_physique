@@ -32,6 +32,15 @@ private:
 	float g_ = 9.8;
 	float t_ = 0.033; //intervalle entre deux frames (fixé ici)
 
+		//reglages camera
+		int posx_=50;
+		int posy_=-50;
+		int posz_=5;
+		int lookx_=0;
+		int looky_=100;
+		int lookz_=15;
+
+	public:
 	//dimensions de l'écran
 	int screenWidth = 900;
 	int screenHeight = 600;
@@ -90,6 +99,10 @@ static void handlePassiveMouseMotionCallback(int x, int y) {
 
 static void handleMouseClickCallback(int button, int state, int x, int y) {
 	j_CurrentInstance->handleMouseClick(button, state, x, y);
+}
+
+static void handleKeypressCallback(unsigned char key, int x, int y) {
+	j_CurrentInstance->handleKeypress(key, x, y);
 }
 
 static void updateCallback(int value) {
