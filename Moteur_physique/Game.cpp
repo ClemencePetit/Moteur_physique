@@ -12,8 +12,42 @@ Game::~Game()
 	}
 }
 
-#pragma region Public Methods : Glut Callbacks
+#pragma region Public Methods 
 
+#pragma region Glut Callbacks
+
+void Game::handleKeypress(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case 's':
+
+		if (posx_ == 50)
+		{
+			posx_ = 200;
+			posy_ = 100;
+			posz_ = 10;
+			lookx_ = -200;
+			looky_ = 100;
+			lookz_ = 10;
+		}
+		else
+		{
+			posx_ = 50;
+			posy_ = -50;
+			posz_ = 5;
+			lookx_ = 0;
+			looky_ = 100;
+			lookz_ = 15;
+		}
+
+		break;
+
+	default:
+		break;
+
+	}
+}
 
 void Game::handleResize(int w, int h)
 {
@@ -73,7 +107,7 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 				indexCurrentParticle_++;
 				indexCurrentParticle_ %= 4; //4 = nb projectile types
 
-				updateReticleWithParticle(getCurrentParticle());
+				changeCrosshairWithParticle(getCurrentParticle());
 				drawScene();
 			}
 
@@ -120,7 +154,9 @@ void Game::drawScene()
 	glutSwapBuffers();
 }
 
-// Boucle d'update maintenant à jour les particules. 
+#pragma endregion
+
+// Boucle d'update maintenant à jour les particules et d'autres valeurs. 
 void Game::update(int value)
 {
 	//update physics for each particles
@@ -157,8 +193,39 @@ void Game::update(int value)
 	glutTimerFunc(1000 * t_, updateCallback, 0);
 }
 
+//démarrage du jeu
+void Game::execute(int argc, char** argv)
+{
+	crosshair_ = new Particle(0.f, &Vector3D(), Vector3D(), 0.f, 0.f);
+	crosshair_->setShape(new Sphere(crosshair_->getPos(), 0.f, 1.f, 0.f, 2));
+
+	changeCrosshairWithParticle(getProjectile1(0.f));
+
+	//launch Glut
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitWindowSize(screenWidth, screenHeight);
+
+	glutCreateWindow("Physics Engine");
+	initRendering();
+	Game::setupInstance();
+	glutTimerFunc(1000 * t_, updateCallback, 0);
+	glutMainLoop();
+}
+
 #pragma endregion
 
+
+#pragma region Private  Methods 
+
+
+#pragma region Glut
+
+void Game::initRendering()//initialisation de l'affichage
+{
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(0.5, 0.5, 0.5, 1);
+}
 
 //Trace une ligne entre a et b.
 void Game::drawLine(Vector3D a, Vector3D b) {
@@ -174,21 +241,8 @@ void Game::drawLine(Vector3D a, Vector3D b) {
 
 	glPopMatrix();
 }
-//part of hotfix
-void Game::setupInstance() {
-	::j_CurrentInstance = this;
-	::glutDisplayFunc(::drawSceneCallback);
-	::glutReshapeFunc(::handleResizeCallback);
-	::glutPassiveMotionFunc(::handlePassiveMouseMotionCallback);
-	::glutMouseFunc(::handleMouseClickCallback);
-}
 
-
-void Game::initRendering()//initialisation de l'affichage
-{
-	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.5, 0.5, 0.5, 1);
-}
+#pragma endregion
 
 #pragma region Gestion Particules
 
@@ -214,7 +268,7 @@ Particle* Game::getCurrentParticle() {
 }
 
 //Change le type de particule utilisé par le réticule de visée
-void Game::updateReticleWithParticle(Particle* pa) {
+void Game::changeCrosshairWithParticle(Particle* pa) {
 
 	Vector3D tempPos = *crosshair_->getPos();
 
@@ -247,59 +301,6 @@ float Game::lerp01(float a, float b, float t) {
 	return a + t * (b - a);
 }
 
-void Game::handleKeypress(unsigned char key, int x, int y)
-{
-	switch (key)
-	{
-	case 's':
-
-		if (posx_ == 50)
-		{
-			posx_ = 200;
-			posy_ = 100;
-			posz_ = 10;
-			lookx_ = -200;
-			looky_ = 100;
-			lookz_ = 10;
-		}
-		else
-		{
-			posx_ = 50;
-			posy_ = -50;
-			posz_ = 5;
-			lookx_ = 0;
-			looky_ = 100;
-			lookz_ = 15;
-		}
-
-		break;
-
-	default:
-		break;
-
-	}
-}
-
-//démarrage du jeu
-void Game::execute(int argc, char** argv)
-{
-	crosshair_ = new Particle(0.f, &Vector3D(), Vector3D(), 0.f, 0.f);
-	crosshair_->setShape(new Sphere(crosshair_->getPos(), 0.f, 1.f, 0.f, 2));
-
-	updateReticleWithParticle(getProjectile1(0.f));
-
-	//launch Glut
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(screenWidth, screenHeight);
-
-	glutCreateWindow("Physics Engine");
-	initRendering();
-	Game::setupInstance();
-	glutTimerFunc(1000 * t_, updateCallback, 0);
-	glutMainLoop();
-}
-
 //part of hotfix
 void Game::setupInstance() {
 	::j_CurrentInstance = this;
@@ -309,3 +310,6 @@ void Game::setupInstance() {
 	::glutMouseFunc(::handleMouseClickCallback);
 	::glutKeyboardFunc(::handleKeypressCallback);
 }
+
+
+#pragma endregion

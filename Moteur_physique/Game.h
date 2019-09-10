@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "Particle.h"
+#include "Vector3D.h"
 
 // Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Game
@@ -32,36 +33,35 @@ private:
 	float g_ = 9.8;
 	float t_ = 0.033; //intervalle entre deux frames (fixé ici)
 
-		//reglages camera
-		int posx_=50;
-		int posy_=-50;
-		int posz_=5;
-		int lookx_=0;
-		int looky_=100;
-		int lookz_=15;
-
-	public:
 	//dimensions de l'écran
 	int screenWidth = 900;
 	int screenHeight = 600;
 
+	//reglages camera
+	int posx_=50;
+	int posy_=-50;
+	int posz_=5;
+	int lookx_=0;
+	int looky_=100;
+	int lookz_=15;
 
-	//part of hotfix
-	void setupInstance();
+public:
+
 
 	//Glut
 	void initRendering();
 	void drawLine(Vector3D a, Vector3D b);
 
 	//particles
-	void updateReticleWithParticle(Particle* pa);
+	void changeCrosshairWithParticle(Particle* pa);
 	Particle* getCurrentParticle();
 	void addParticle(Particle* pa);
 	void deleteParticle(Particle* pa);
 
-	float lerp01(float a, float b, float t);
+	//part of hotfix
+	void setupInstance();
 
-	//update logic
+	float lerp01(float a, float b, float t);
 
 public:
 
