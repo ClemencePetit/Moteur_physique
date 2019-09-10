@@ -50,27 +50,27 @@ public:
 
 // Fonctions static retournant des projectiles paramétrés
 
-static Particle* getProjectile1(float g) {
-	Particle* pa = new Particle(g, new Vector3D(0, 0, 5), Vector3D(0, 50, 50), 500.0, 0.5);
+static Particle* getBasicBall(float g) {
+	Particle* pa = new Particle(g * 4, new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 500.0, 0.98);
 	pa->setShape(new Sphere(pa->getPos(), 0, 1.0, 0.0, 2));
 	return pa;
 }
 
-static Particle* getProjectile2(float g) {
-	Particle* pa = new Particle(g, new Vector3D(0, 0, 5), Vector3D(0, 100, 100), 5000.0, 0.95);
-	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 0.0, 2));
+static Particle* getCannonBall(float g) {
+	Particle* pa = new Particle(g * 7, new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 5000.0, 0.9);
+	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 0.0, 2)); //Noir
 	return pa;
 }
 
-static Particle* getProjectile3(float g) {
-	Particle* pa = new Particle(g, new Vector3D(0, 0, 5), Vector3D(0, 3000, 0), 1.0, 1);
-	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 1, 1, 1));
+static Particle* getLaser(float g) {
+	Particle* pa = new Particle(0, new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 1.0, 1);
+	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 1, 1, 1)); //Rouge
 	return pa;
 }//laser
 
-static Particle* getProjectile4(float g) {
-	Particle* pa = new Particle(g, new Vector3D(0, 0, 5), Vector3D(0, 100, 50), 55.0, 0.7);
-	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 1.0, 2));
+static Particle* getSnowflake(float g) {
+	Particle* pa = new Particle(g * 0.5, new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 55.0, 0.4);
+	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 1.0, 2)); //Bleu
 	return pa;
 }
 
