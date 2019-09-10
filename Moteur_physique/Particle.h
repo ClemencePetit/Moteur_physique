@@ -1,26 +1,25 @@
-#pragma once
+#ifndef PARTICLE_H
+#define PARTICLE_H
 
 #include "Vector3D.h"
 #include "Shape.h"
 
+// Classe contenant les données concernant la particule d'un point de vue physique, plus la forme qui est associée à la particule
 class Particle
 {
 
 private:
 
-	Vector3D* pos_;
-	Vector3D vel_;
-	Vector3D g_;
+	Vector3D* pos_;//position
+	Vector3D vel_;//velocité
+	Vector3D g_;//loi de la gravitation universelle
 
+	float d_;//damping
+		
+	float m_;//mass
 	float massInv_;
 
-	//damping
-	float d_;
-
-	//mass
-	float m_;
-
-	Shape* shape_;
+	Shape* shape_;//forme associée à la particule pour la dessiner
 
 public:
 
@@ -28,6 +27,7 @@ public:
 
 	~Particle();
 
+	//get/set
 	void setPos(Vector3D pos) { *pos_ = pos; };
 	void setVit(Vector3D vit) { vel_ = vit; };
 	void setG(Vector3D g) { g_ = g; };
@@ -44,7 +44,7 @@ public:
 	float getMassInv() { return massInv_; };
 	Shape* getShape() { return shape_; }
 
-	void integrer(float t);
+	void integrer(float t);//integrator
 };
 
 
@@ -63,13 +63,15 @@ static Particle* getProjectile2(float g) {
 }
 
 static Particle* getProjectile3(float g) {
-	Particle* pa = new Particle(g, new Vector3D(0, 0, 5), Vector3D(0, 300, 0), 1.0, 0.3);
-	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 200, 2, 2));
+	Particle* pa = new Particle(g, new Vector3D(0, 0, 5), Vector3D(0, 3000, 0), 1.0, 1);
+	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 1, 1, 1));
 	return pa;
-}
+}//laser
 
 static Particle* getProjectile4(float g) {
 	Particle* pa = new Particle(g, new Vector3D(0, 0, 5), Vector3D(0, 100, 50), 55.0, 0.7);
 	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 1.0, 2));
 	return pa;
 }
+
+#endif

@@ -6,61 +6,25 @@ Game::Game()
 
 Game::~Game()
 {
+	//suppression de toutes les particules
 	while (!particules_.empty()) {
 		deleteParticle(particules_.front());
 	}
 }
 
-void Game::handleKeypress(unsigned char key, int x, int y)
-{
-	Vector3D pos = *crosshair_->getPos();
-	switch (key)
-	{
-	case 'a':
-
-		addParticle(getProjectile1(g_));
-
-		break;
-
-	case 'z':
-
-		addParticle(getProjectile2(g_));
-
-		break;
-
-	case 'e':
-
-		addParticle(getProjectile3(g_));
-
-		break;
-
-	case 'r':
-
-		addParticle(getProjectile4(g_));
-
-		break;
-
-	case 'd':
-
-		if (!particules_.empty()) {
-			deleteParticle(particules_.front()); //delete first elem
-		}
-
-	}
-}
-void Game::initRendering()
+void Game::initRendering()//initialisation de l'affichage
 {
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.7, 0.7, 0.7, 1);
+	glClearColor(0.5, 0.5, 0.5, 1);
 }
 
 void Game::handleResize(int w, int h)
 {
 	glViewport(0, 0, w, h);
-	glClearColor(0.7, 0.7, 0.7, 1);
+	glClearColor(0.5, 0.5, 0.5, 1);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0, (double)w / (double)h, 1.0, 200.0);
+	gluPerspective(45.0, (double)w / (double)h, 1.0, 2000.0);
 
 	screenWidth = w;
 	screenHeight = h;
@@ -68,13 +32,24 @@ void Game::handleResize(int w, int h)
 
 void Game::drawScene()
 {
+	//mise a zéro de l'affichage
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.7, 0.7, 0.7, 1);
+	glClearColor(0.5, 0.5, 0.5, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(200, 100, 60, 
-				0, 100, 60,
-				0, 0, 1);
+	gluLookAt(50, -50, 5, 0, 100, 15, 0, 0, 1);
+
+	//dessin du sol
+	glColor3f(1, 1, 1);
+
+	glBegin(GL_QUADS);
+	glVertex3f(-200, -100, 0);
+	glVertex3f(200, -100, 0);
+	glColor3f(0.5,0.5,0.5);
+	glVertex3f(200, 400, 0);
+	glVertex3f(-200, 400, 0);
+
+	glEnd();
 	
 	//redraw all particules
 	std::list<Particle*>::iterator it;
@@ -114,14 +89,11 @@ void Game::handlePassiveMouseMotion(int x, int y) {
 	//move reticle toward mouse
 
 	Vector3D mouseDirection2D = Vector3D(0, x, screenHeight - y);
-	//mouseDirection2D.afficher();
 
 	Vector3D normalizedDirection = mouseDirection2D.normalized();
 
 	Vector3D* pos = crosshair_->getPos();
 	*pos = normalizedDirection * 5.f;
-
-	//drawScene();
 }
 
 void Game::handleMouseClick(int button, int state, int x, int y) {
@@ -129,12 +101,11 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 	Particle* pa = NULL;
 
 	switch (button) {
-
+		//gestion du tir/chargement du tir
 		case GLUT_LEFT_BUTTON:
 			if (state == GLUT_UP) {
 
 				pa = getCurrentParticle();
-				cout << "Tir! (Power =" << currentShotPower << ")" <<endl;
 				pa->setPos(*crosshair_->getPos());
 				pa->setVit(crosshair_->getPos()->normalized() * baseVelocity_ * currentShotPower);
 				addParticle(pa);
@@ -151,15 +122,13 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 				//load shot
 			}
 		break;
-
+		//gestion du changement de la particule
 		case GLUT_RIGHT_BUTTON:
 
 			if (state == GLUT_DOWN) {
 
-				cout << "Changement de Particule!" << endl;
-
 				indexCurrentParticle_++;
-				indexCurrentParticle_ %= 4; //4 = projectile type
+				indexCurrentParticle_ %= 4; //4 = nb projectile types
 
 				updateReticleWithParticle(getCurrentParticle());
 				drawScene();
@@ -186,11 +155,10 @@ Particle* Game::getCurrentParticle() {
 			return getProjectile4(g_);
 			break;
 	}
-
-	cout << "Error : Index out of range. Default particle selected." << endl;
 	return getProjectile1(g_);
 }
 
+//changement de la particule servant à la visée
 void Game::updateReticleWithParticle(Particle* pa) {
 
 	Vector3D tempPos = *crosshair_->getPos();
@@ -206,8 +174,6 @@ void Game::updateReticleWithParticle(Particle* pa) {
 }
 
 void Game::addParticle(Particle* pa) {
-
-	cout << "new particle" << endl;
 	particules_.push_back(pa);
 }
 
@@ -223,16 +189,12 @@ float Game::lerp01(float a, float b, float t) {
 }
 void Game::update(int value)
 {
-	//currentTime_ = time(NULL);
-
 	//update physics for each particles
 	std::list<Particle*>::iterator it = particules_.begin();
 	while (it != particules_.end()) {
 		if (*it != NULL) {
 
 			(*it)->integrer(t_);
-			//(*it)->getPos()->display();
-
 			if ((*it)->getPos()->z < 0) {
 				deleteParticle(*(it++));
 			}
@@ -254,15 +216,11 @@ void Game::update(int value)
 			currentLoadTime = 0.f;
 		}
 	}
-	
-	//t_ = time(NULL) - currentTime_;
-
 	glutPostRedisplay();
 	glutTimerFunc(1000 * t_, updateCallback, 0);
 }
 
-
-
+//démarrage du jeu
 void Game::execute(int argc, char** argv)
 {
 	crosshair_ = new Particle(0.f, &Vector3D(), Vector3D(), 0.f, 0.f);
@@ -287,7 +245,6 @@ void Game::setupInstance() {
 	::j_CurrentInstance = this;
 	::glutDisplayFunc(::drawSceneCallback);
 	::glutReshapeFunc(::handleResizeCallback);
-	::glutKeyboardFunc(::handleKeypressCallback);
 	::glutPassiveMotionFunc(::handlePassiveMouseMotionCallback);
 	::glutMouseFunc(::handleMouseClickCallback);
 }

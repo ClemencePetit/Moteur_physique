@@ -1,10 +1,11 @@
-#ifndef DEF_VECTEUR3D
-#define DEF_VECTEUR3D
+#ifndef VECTOR3D_H
+#define VECTOR3D_H
 
 #include <iostream>
 
 using namespace std;
 
+// Classe permettant de manipuler les vecteurs 3D
 class Vector3D
 {
 public:
@@ -27,11 +28,11 @@ public:
 	Vector3D operator+(const Vector3D& b);
 	Vector3D operator*(const float& lambda);
 
-	Vector3D componentMult (Vector3D v);
+	Vector3D componentMult (Vector3D v);//produit des composantes
 
-	float dotProd(Vector3D v);
-	Vector3D crossProd(Vector3D v);
-	float tripleProd(Vector3D u, Vector3D v);
+	float dotProd(Vector3D v);//produit scalaire
+	Vector3D crossProd(Vector3D v);//produit vectoriel
+	float tripleProd(Vector3D u, Vector3D v);//produit mixte : this.(u^v)
 
 	float norm();
 	Vector3D normalized();
