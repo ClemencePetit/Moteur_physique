@@ -6,13 +6,13 @@
 #include <list>
 #include <time.h>
 
-#include "Particle.h"
+#include "Particule.h"
 
 class Game
 {
 private:
 
-	Particule* crosshair_;
+	Particle* crosshair_;
 	int indexCurrentParticle_;
 	float distanceReticleFromOrigin_ = 10.f;
 	float baseVelocity_ = 50.f;
@@ -25,7 +25,7 @@ private:
 	float currentLoadTime = 0.f;
 	bool isLeftMouseButtonDown = false;
 
-	list <Particule*> particules_;
+	list <Particle*> particules_;
 	float g_ = 9.8;
 	float t_ = 0.033;
 	time_t currentTime_ = time(NULL);
@@ -49,13 +49,13 @@ public:
 	void handlePassiveMouseMotion(int x, int y);
 	void handleMouseClick(int button, int state, int x, int y);
 
-	void drawLine(Vecteur3D a, Vecteur3D b);
+	void drawLine(Vector3D a, Vector3D b);
 
 	//particles
-	void updateReticleWithParticle(Particule* pa);
-	Particule* getCurrentParticle();
-	void addParticle(Particule* pa);
-	void deleteParticle(Particule* pa);
+	void updateReticleWithParticle(Particle* pa);
+	Particle* getCurrentParticle();
+	void addParticle(Particle* pa);
+	void deleteParticle(Particle* pa);
 
 	float lerp01(float a, float b, float t);
 

@@ -4,11 +4,11 @@
 #include <stdlib.h>     
 #include <time.h>
 
-#include "Jeu.h"
+#include "Game.h"
 
 int main(int argc, char** argv) {
 
-	Jeu jeu;
+	Game jeu;
 	jeu.execute(argc, argv);
 
 	return 0;
