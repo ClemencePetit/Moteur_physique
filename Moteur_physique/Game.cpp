@@ -37,7 +37,7 @@ void Game::drawScene()
 	glClearColor(0.5, 0.5, 0.5, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(50, -50, 5, 0, 100, 15, 0, 0, 1);
+	gluLookAt(posx_, posy_, posz_, lookx_, looky_, lookz_, 0, 0, 1);
 
 	//dessin du sol
 	glColor3f(1, 1, 1);
@@ -220,6 +220,40 @@ void Game::update(int value)
 	glutTimerFunc(1000 * t_, updateCallback, 0);
 }
 
+void Game::handleKeypress(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case 's':
+
+		if (posx_ == 50)
+		{
+			posx_ = 200;
+			posy_ = 100;
+			posz_ = 10;
+			lookx_ = -200;
+			looky_ = 100;
+			lookz_ = 10;
+		}
+		else
+		{
+			posx_ = 50;
+			posy_ = -50;
+			posz_ = 5;
+			lookx_ = 0;
+			looky_ = 100;
+			lookz_ = 15;
+		}
+
+		break;
+
+	default:
+		break;
+
+	}
+}
+
+
 //démarrage du jeu
 void Game::execute(int argc, char** argv)
 {
@@ -247,4 +281,5 @@ void Game::setupInstance() {
 	::glutReshapeFunc(::handleResizeCallback);
 	::glutPassiveMotionFunc(::handlePassiveMouseMotionCallback);
 	::glutMouseFunc(::handleMouseClickCallback);
+	::glutKeyboardFunc(::handleKeypressCallback);
 }

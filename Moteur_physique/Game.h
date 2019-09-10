@@ -35,6 +35,14 @@ private:
 		int screenWidth = 900;
 		int screenHeight = 600;
 
+		//reglages camera
+		int posx_=50;
+		int posy_=-50;
+		int posz_=5;
+		int lookx_=0;
+		int looky_=100;
+		int lookz_=15;
+
 	public:
 
 	Game();
@@ -86,6 +94,10 @@ static void handlePassiveMouseMotionCallback(int x, int y) {
 
 static void handleMouseClickCallback(int button, int state, int x, int y) {
 	j_CurrentInstance->handleMouseClick(button, state, x, y);
+}
+
+static void handleKeypressCallback(unsigned char key, int x, int y) {
+	j_CurrentInstance->handleKeypress(key, x, y);
 }
 
 static void updateCallback(int value) {
