@@ -1,5 +1,6 @@
 #include "Shape.h"
 
+//Dessine les 6 faces du parallélépipède rectangle, centré sur la position de la particule
 void Rect3D::Draw() {
 
 	glPushMatrix();
@@ -38,10 +39,13 @@ void Rect3D::Draw() {
 	glVertex3f(width / 2, -height / 2, depth / 2);
 	glVertex3f(width / 2, -height / 2, -depth / 2);
 	glVertex3f(width / 2, height / 2, -depth / 2);
+	
 	glEnd();
+
 	glPopMatrix();
 }
 
+//dessine la sphère centrée sur la position de la particule
 void Sphere::Draw() {
 
 	glPushMatrix();

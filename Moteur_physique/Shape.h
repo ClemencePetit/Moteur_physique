@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SHAPE_H
+#define SHAPE_H
 
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -6,6 +7,7 @@
 
 #include "Vecteur3D.h"
 
+// Classe gérant le dessin des particules, dérivée sous deux formes : sphère et rectangle 3D
 class Shape
 {
 
@@ -60,3 +62,5 @@ public:
 	//Constructors
 	Sphere(Vecteur3D* pos, float r = 0, float v = 0, float b = 0,  float rayon = 2) : rayon(rayon), Shape(pos, r, v, b) { }
 };
+
+#endif

@@ -1,50 +1,50 @@
-#pragma once
+#ifndef PARTICLE_H
+#define PARTICLE_H
 
 #include "Vecteur3D.h"
 #include "Shape.h"
 
+// Classe contenant les données concernant la particule d'un point de vue physique, plus la forme qui est associée à la particule
 class Particule
 {
 
-private:
+	private:
 
-	Vecteur3D* pos_;
-	Vecteur3D vel_;
-	Vecteur3D g_;
+		Vecteur3D* pos_;//position
+		Vecteur3D vel_;//velocité
+		Vecteur3D g_;//loi de la gravitation universelle
 
-	float massInv_;
+		float d_;//damping
+		
+		float m_;//mass
+		float massInv_;
 
-	//damping
-	float d_;
+		Shape* shape_;//forme associée à la particule pour la dessiner
 
-	//mass
-	float m_;
+	public:
 
-	Shape* shape_;
+		Particule(float g, Vecteur3D* pos, Vecteur3D vit, float m, float d);
 
-public:
+		~Particule();
 
-	Particule(float g, Vecteur3D* pos, Vecteur3D vit, float m, float d);
+		//getteurt/setteurt
+		void setPos(Vecteur3D pos) { *pos_ = pos; };
+		void setVit(Vecteur3D vit) { vel_ = vit; };
+		void setG(Vecteur3D g) { g_ = g; };
+		void setD(float d) { d_ = d; };
+		void setM(float m) { m_ = m; };
+		void setMassInv(float massInv) { massInv_ = massInv; };	
+		void setShape(Shape* sh) { shape_ = sh; }
 
-	~Particule();
+		Vecteur3D* getPos() { return pos_; };
+		Vecteur3D getVit() { return vel_; };
+		Vecteur3D getG() { return g_; };
+		float getD() { return d_; };
+		float getM() { return m_; };
+		float getMassInv() { return massInv_; };
+		Shape* getShape() { return shape_; }
 
-	void setPos(Vecteur3D pos) { *pos_ = pos; };
-	void setVit(Vecteur3D vit) { vel_ = vit; };
-	void setG(Vecteur3D g) { g_ = g; };
-	void setD(float d) { d_ = d; };
-	void setM(float m) { m_ = m; };
-	void setMassInv(float massInv) { massInv_ = massInv; };	
-	void setShape(Shape* sh) { shape_ = sh; }
-
-	Vecteur3D* getPos() { return pos_; };
-	Vecteur3D getVit() { return vel_; };
-	Vecteur3D getG() { return g_; };
-	float getD() { return d_; };
-	float getM() { return m_; };
-	float getMassInv() { return massInv_; };
-	Shape* getShape() { return shape_; }
-
-	void integrer(float t);
+		void integrer(float t);//intégrateur
 };
 
 
@@ -63,13 +63,15 @@ static Particule* getProjectile2(float g) {
 }
 
 static Particule* getProjectile3(float g) {
-	Particule* pa = new Particule(g, new Vecteur3D(0, 0, 5), Vecteur3D(0, 300, 0), 1.0, 0.3);
-	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 200, 2, 2));
+	Particule* pa = new Particule(g, new Vecteur3D(0, 0, 5), Vecteur3D(0, 3000, 0), 1.0, 1);
+	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 1, 1, 1));
 	return pa;
-}
+}//laser
 
 static Particule* getProjectile4(float g) {
 	Particule* pa = new Particule(g, new Vecteur3D(0, 0, 5), Vecteur3D(0, 100, 50), 55.0, 0.7);
 	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 1.0, 2));
 	return pa;
 }
+
+#endif

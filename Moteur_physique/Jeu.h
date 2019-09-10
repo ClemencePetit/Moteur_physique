@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JEU_H
+#define JEU_H
 
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -8,62 +9,62 @@
 
 #include "Particule.h"
 
+// Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Jeu
 {
-private:
+	private:
 
-	Particule* crosshair_;
-	int indexCurrentParticle_;
-	float distanceReticleFromOrigin_ = 10.f;
-	float baseVelocity_ = 50.f;
+		Particule* crosshair_;//particule servant à la visée (réticule)
+		float distanceReticleFromOrigin_ = 10.f;
+		float baseVelocity_ = 50.f;
 
-	//load shot
-	float minShotPower = 0.5f;
-	float maxShotPower = 2.f;
-	float currentShotPower = 0.f;
-	float timeLoadMaxShot = 1.f;
-	float currentLoadTime = 0.f;
-	bool isLeftMouseButtonDown = false;
+		//load shot
+		float minShotPower = 0.5f;
+		float maxShotPower = 2.f;
+		float currentShotPower = 0.f;
+		float timeLoadMaxShot = 1.f;
+		float currentLoadTime = 0.f;
+		bool isLeftMouseButtonDown = false;
 
-	list <Particule*> particules_;
-	float g_ = 9.8;
-	float t_ = 0.033;
-	time_t currentTime_ = time(NULL);
+		list <Particule*> particules_;//liste des particules créées
+		int indexCurrentParticle_;//indice de la particule actuellement pointée
+		float g_ = 9.8;
+		float t_ = 0.033;//intervalle entre deux frames (fixé ici)
 
-	int screenWidth = 900;
-	int screenHeight = 600;
+		//dimensions de l'écran
+		int screenWidth = 900;
+		int screenHeight = 600;
 
-public:
+	public:
 
-	Jeu();
-	~Jeu();
+		Jeu();
+		~Jeu();
 
-	//part of hotfix
-	void setupInstance();
+		//part of hotfix
+		void setupInstance();
 
-	//glut
-	void handleKeypress(unsigned char key, int x, int y);
-	void initRendering();
-	void handleResize(int w, int h);
-	void drawScene();
-	void handlePassiveMouseMotion(int x, int y);
-	void handleMouseClick(int button, int state, int x, int y);
+		//fonctions reliées aux callback de glut
+		void initRendering();
+		void handleResize(int w, int h);
+		void drawScene();
+		void handlePassiveMouseMotion(int x, int y);
+		void handleMouseClick(int button, int state, int x, int y);
 
-	void drawLine(Vecteur3D a, Vecteur3D b);
+		void drawLine(Vecteur3D a, Vecteur3D b);
 
-	//particles
-	void updateReticleWithParticle(Particule* pa);
-	Particule* getCurrentParticle();
-	void addParticle(Particule* pa);
-	void deleteParticle(Particule* pa);
+		//particles
+		void updateReticleWithParticle(Particule* pa);
+		Particule* getCurrentParticle();
+		void addParticle(Particule* pa);
+		void deleteParticle(Particule* pa);
 
-	float lerp01(float a, float b, float t);
+		float lerp01(float a, float b, float t);
 
-	//update logic
-	void update(int value);
+		//update logic
+		void update(int value);
 
-
-	void execute(int argc, char** argv);
+		//start the game
+		void execute(int argc, char** argv);
 	
 };
 
@@ -77,9 +78,6 @@ static void drawSceneCallback() {
 static void handleResizeCallback(int w, int h) {
 	j_CurrentInstance->handleResize(w, h);
 }
-static void handleKeypressCallback(unsigned char key, int x, int y) {
-	j_CurrentInstance->handleKeypress(key, x, y);
-}
 
 static void handlePassiveMouseMotionCallback(int x, int y) {
 	j_CurrentInstance->handlePassiveMouseMotion(x, y);
@@ -92,3 +90,5 @@ static void handleMouseClickCallback(int button, int state, int x, int y) {
 static void updateCallback(int value) {
 	j_CurrentInstance->update(value);
 }
+
+#endif

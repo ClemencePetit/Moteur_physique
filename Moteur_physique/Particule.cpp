@@ -6,8 +6,8 @@ Particule::Particule(float g, Vecteur3D* pos, Vecteur3D vit, float m, float d) :
 
 void Particule::integrer(float t)
 {
-	*pos_ = *pos_ + vel_ * t;
-	vel_ = vel_ * pow(d_, t) + g_ * m_ * massInv_ * t;
+	*pos_ = *pos_ + vel_ * t;//calcul de la nouvelle position
+	vel_ = vel_ * pow(d_, t) + g_ * m_ * massInv_ * t;//calcul de la nouvelle velocite
 }
 
 Particule::~Particule()
