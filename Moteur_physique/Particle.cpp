@@ -1,4 +1,4 @@
-#include "Particule.h"
+#include "Particle.h"
 
 Particle::Particle(float g, Vector3D* pos, Vector3D vit, float m, float d) : g_(0, 0, -g), pos_(pos), vel_(vit), m_(m), massInv_(1/m), d_(d)
 {
