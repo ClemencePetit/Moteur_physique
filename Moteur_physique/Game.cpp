@@ -22,23 +22,16 @@ void Game::handleKeypress(unsigned char key, int x, int y)
 	{
 	case 's':
 
-		if (posx_ == 50)
+		if (posCamera_.x == 50.f)
 		{
-			posx_ = 200;
-			posy_ = 100;
-			posz_ = 10;
-			lookx_ = -200;
-			looky_ = 100;
-			lookz_ = 10;
+			posCamera_ = Vector3D(200.0f, 100.f, 40.f);
+			lookCamera_ = Vector3D(-200.f, 100.f, 40.f);
 		}
 		else
 		{
-			posx_ = 50;
-			posy_ = -50;
-			posz_ = 5;
-			lookx_ = 0;
-			looky_ = 100;
-			lookz_ = 15;
+
+			posCamera_ = Vector3D(50.0f, -50.f, 5.f);
+			lookCamera_ = Vector3D(0.f, 100.f, 15.f);
 		}
 
 		break;
@@ -122,7 +115,9 @@ void Game::drawScene()
 	glClearColor(0.5, 0.5, 0.5, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(posx_, posy_, posz_, lookx_, looky_, lookz_, 0, 0, 1);
+	gluLookAt(posCamera_.x, posCamera_.y, posCamera_.z, 
+		lookCamera_.x, lookCamera_.y, lookCamera_.z, 
+		0, 0, 1);
 
 	//dessin du sol
 	glColor3f(1, 1, 1);

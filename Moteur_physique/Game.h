@@ -38,12 +38,8 @@ private:
 	int screenHeight = 600;
 
 	//reglages camera
-	int posx_=50;
-	int posy_=-50;
-	int posz_=5;
-	int lookx_=0;
-	int looky_=100;
-	int lookz_=15;
+	Vector3D posCamera_ = Vector3D(50.0f, -50.f, 5.f);
+	Vector3D lookCamera_ = Vector3D(0.f, 100.f, 15.f);
 
 public:
 
