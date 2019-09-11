@@ -1,30 +1,30 @@
-#### Téléchargement
+#### TÃ©lÃ©chargement
 
-* **Glew** : http://glew.sourceforge.net/
-<br/> Dl fichiers binaires, dézipper, placer le dossier à un endroit pratique.
+* **Glew (2.1.0)** : http://glew.sourceforge.net/
+<br/> Dl fichiers binaires, dÃ©zipper, placer le dossier Ã  un endroit pratique.
 
-* **FreeGlut** : https://www.transmissionzero.co.uk/files/software/development/GLUT/freeglut-MSVC.zip
-<br/>Dézipper, placer à un endroit pratique.
+* **FreeGlut (3.0.0)** : https://www.transmissionzero.co.uk/software/freeglut-devel/
+<br/>DÃ©zipper, placer Ã  un endroit pratique.
 
 
 #### Dans Visual Studio
-**1.** Ouvrir le projet cloné
+**1.** Ouvrir le projet clonÃ©
 
-**2.** Projet -> Propriétés de Moteur_physiqueC/C++ -> Général -> Autres répertoires Include -> \<Modifier> -> Ajouter les répertoires include pour freeglut et glew 
+**2.** Projet -> PropriÃ©tÃ©s de Moteur_physiqueC/C++ -> GÃ©nÃ©ral -> Autres rÃ©pertoires Include -> \<Modifier> -> Ajouter les rÃ©pertoires include pour freeglut et glew 
 * Exemple :
 	* D:\Programmes\freeglut\include
 	* D:\Programmes\GLEW-2.1.0\glew-2.1.0\include
 
-**3.** Editeur de liens -> Général -> Répertoires de bibliothèques supplémentaires -> \<Modifier> -> Ajouter les répertoires qui contiennent les .lib pour freeglut et glew
+**3.** Editeur de liens -> GÃ©nÃ©ral -> RÃ©pertoires de bibliothÃ¨ques supplÃ©mentaires -> \<Modifier> -> Ajouter les rÃ©pertoires qui contiennent les .lib pour freeglut et glew
 * Exemple : 
 	* D:\Programmes\freeglut\lib\x64
 	* D:\Programmes\GLEW-2.1.0\glew-2.1.0\lib\Release\x64
 
-**4.** Editeur de liens -> entrée -> Dépendances supplémentaires -> \<Modifier> -> Ajouter glew32.lib freeglut.lib opengl32.lib
+**4.** Editeur de liens -> entrÃ©e -> DÃ©pendances supplÃ©mentaires -> \<Modifier> -> Ajouter glew32.lib freeglut.lib opengl32.lib
 
 ***
 
-Si ça indique quand vous éxecutez (Ctrl+F5) qu'il manque des dll, copiez freeglut.dll et glew.dll à côté de l'exécutable dans le dossier Debug.
-Les .dll sont dans le dossier bin ou lib des dossiers dézippés.
+Si Ã§a indique quand vous Ã©xecutez (Ctrl+F5) qu'il manque des dll, copiez freeglut.dll et glew.dll Ã  cÃ´tÃ© de l'exÃ©cutable dans le dossier Debug.
+Les .dll sont dans le dossier bin ou lib des dossiers dÃ©zippÃ©s.
 
 Enjoy :)
