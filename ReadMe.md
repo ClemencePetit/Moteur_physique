@@ -1,11 +1,8 @@
 #### Téléchargement
 
 * **Glew (2.1.0)** : http://glew.sourceforge.net/
-<br/> Dl fichiers binaires, dézipper, placer le dossier à un endroit pratique.
 
 * **FreeGlut (3.0.0)** : https://www.transmissionzero.co.uk/software/freeglut-devel/
-<br/>Dézipper, placer à un endroit pratique.
-
 
 #### Dans Visual Studio
 **1.** Ouvrir le projet cloné
@@ -24,7 +21,5 @@
 
 ***
 
-Si ça indique quand vous éxecutez (Ctrl+F5) qu'il manque des dll, copiez freeglut.dll et glew.dll à côté de l'exécutable dans le dossier Debug.
+Si ça indique quand vous éxecutez qu'il manque des dll, copiez freeglut.dll et glew.dll à côté de l'exécutable dans le dossier Debug.
 Les .dll sont dans le dossier bin ou lib des dossiers dézippés.
-
-Enjoy :)
