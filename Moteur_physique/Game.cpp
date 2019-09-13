@@ -154,12 +154,17 @@ void Game::drawScene()
 // Boucle d'update maintenant à jour les particules et d'autres valeurs. 
 void Game::update(int value)
 {
+	startTime = stopTime;
+	stopTime = clock();
+	elapsedTime= (stopTime - startTime) / (CLOCKS_PER_SEC / (double) 1000.0);
+	elapsedTime = elapsedTime / 1000;
 	//update physics for each particles
 	std::list<Particle*>::iterator it = particules_.begin();
 	while (it != particules_.end()) {
 		if (*it != NULL) {
-
-			(*it)->integrer(t_);
+			(*it)->integrer(elapsedTime);
+			cout <<elapsedTime << endl;
+			//(*it)->integrer(t_);
 			if ((*it)->getPos()->z < 0) {
 				deleteParticle(*(it++));
 			}
@@ -175,7 +180,7 @@ void Game::update(int value)
 		//Puissance actuelle en fonction du temps de charge
 		currentShotPower = lerp01(minShotPower, maxShotPower, currentLoadTime / timeLoadMaxShot);
 
-		currentLoadTime += t_;
+		currentLoadTime += elapsedTime;
 
 		//Si puissance max atteinte, retour à 0.
 		if (currentLoadTime >= timeLoadMaxShot) {
@@ -185,7 +190,7 @@ void Game::update(int value)
 
 
 	glutPostRedisplay();
-	glutTimerFunc(1000 * t_, updateCallback, 0);
+	glutTimerFunc(1000 * elapsedTime, updateCallback, 0);
 }
 
 //démarrage du jeu
@@ -204,7 +209,7 @@ void Game::execute(int argc, char** argv)
 	glutCreateWindow("Physics Engine");
 	initRendering();
 	Game::setupInstance();
-	glutTimerFunc(1000 * t_, updateCallback, 0);
+	glutTimerFunc(1000 * elapsedTime, updateCallback, 0);
 	glutMainLoop();
 }
 
