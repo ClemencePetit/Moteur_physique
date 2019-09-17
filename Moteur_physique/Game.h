@@ -31,10 +31,11 @@ private:
 	list <Particle*> particules_; //liste des particules créées
 	int indexCurrentParticle_; //indice du type de projectile actuellement choisi
 	float g_ = 9.8;
+
+	//time
 	double elapsedTime;
-	clock_t stopTime=0;
+	clock_t stopTime = 0;
 	clock_t startTime;
-	float t_ = 0.033; //intervalle entre deux frames (fixé ici)
 
 	//dimensions de l'écran
 	int screenWidth = 900;
