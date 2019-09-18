@@ -30,7 +30,6 @@ private:
 
 	list <Particle*> particules_; //liste des particules créées
 	int indexCurrentParticle_; //indice du type de projectile actuellement choisi
-	float g_ = 9.8;
 
 	//time
 	double elapsedTime;

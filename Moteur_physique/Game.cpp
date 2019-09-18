@@ -197,10 +197,10 @@ void Game::update(int value)
 //démarrage du jeu
 void Game::execute(int argc, char** argv)
 {
-	crosshair_ = new Particle(0.f, &Vector3D(), Vector3D(), 0.f, 0.f);
+	crosshair_ = new Particle(&Vector3D(), Vector3D(), 0.f);
 	crosshair_->setShape(new Sphere(crosshair_->getPos(), 0.f, 1.f, 0.f, 2));
 
-	changeCrosshairWithParticle(getBasicBall(0.f));
+	changeCrosshairWithParticle(getBasicBall());
 
 	//launch Glut
 	glutInit(&argc, argv);
@@ -253,19 +253,19 @@ Particle* Game::getCurrentParticle() {
 	Vector3D pos = *crosshair_->getPos();
 	switch (indexCurrentParticle_) {
 		case 0:
-			return getBasicBall(g_);
-		break;
+			return getBasicBall();
+			break;
 		case 1:
-			return getCannonBall(g_);
+			return getCannonBall();
 			break;
 		case 2:
-			return getLaser(g_);
+			return getLaser();
 			break;
 		case 3:
-			return getSnowflake(g_);
+			return getSnowflake();
 			break;
 	}
-	return getBasicBall(g_);
+	return getBasicBall();
 }
 
 //Change le type de particule utilisé par le réticule de visée
@@ -277,7 +277,6 @@ void Game::changeCrosshairWithParticle(Particle* pa) {
 	crosshair_ = pa;
 
 	//no movement
-	pa->setG(Vector3D());
 	pa->setVit(Vector3D());
 	pa->setPos(tempPos);
 
