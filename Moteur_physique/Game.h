@@ -9,11 +9,17 @@
 
 #include "Particle.h"
 #include "Vector3D.h"
+#include "ParticleForceRegister.h"
+#include "DragForceGenerator.h"
+#include "GravityForceGenerator.h"
 
 // Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Game
 {
 private:
+
+	//Registre
+	ParticleForceRegister register_;
 
 	Particle* crosshair_;//particule servant à la visée (réticule)
 	float distanceReticleFromOrigin_ = 10.f;
@@ -30,6 +36,11 @@ private:
 
 	list <Particle*> particules_; //liste des particules créées
 	int indexCurrentParticle_; //indice du type de projectile actuellement choisi
+
+	//Constantes
+	Vector3D g_ = Vector3D(0, 0, -9.8);
+	float k1 = 0.5;
+	float k2 = 1.2;
 
 	//time
 	double elapsedTime;

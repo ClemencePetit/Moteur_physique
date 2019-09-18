@@ -160,8 +160,19 @@ void Game::update(int value)
 	elapsedTime= (stopTime - startTime) / (CLOCKS_PER_SEC / (double) 1000.0);
 	elapsedTime = elapsedTime / 1000;
 
-	//update physics for each particles
+	//Register
 	std::list<Particle*>::iterator it = particules_.begin();
+	for (it = particules_.begin(); it != particules_.end(); it++)
+	{
+		register_.add(*it, new GravityForceGenerator(g_));
+		register_.add(*it, new DragForceGenerator(k1, k2));
+	}
+
+	register_.updateForces(elapsedTime);
+	register_.clear();
+
+	//update physics for each particles
+	it = particules_.begin();
 	while (it != particules_.end()) {
 		if (*it != NULL) {
 			(*it)->integrer(elapsedTime);

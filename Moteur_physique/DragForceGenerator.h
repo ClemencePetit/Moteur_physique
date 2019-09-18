@@ -13,7 +13,7 @@ public:
 
 	}
 
-	virtual void updateForce(Particle* p, float t);
+	void updateForce(Particle* p, float t);
 
 	//get
 	float getK1() { return k1_; }

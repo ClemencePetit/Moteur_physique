@@ -8,7 +8,7 @@ void Particle::integrer(float t)
 {
 	if (massInv_ >= 0 && t > 0) {
 		*pos_ = *pos_ + vel_ * t;//calcul de la nouvelle position
-		vel_ = vel_ + forceAccum_ * massInv_;//calcul de la nouvelle velocite
+		vel_ = vel_ + forceAccum_ * massInv_ * t;//calcul de la nouvelle velocite
 		clearAccum();
 	}
 }

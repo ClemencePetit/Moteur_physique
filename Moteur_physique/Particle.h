@@ -58,7 +58,7 @@ static Particle* getCannonBall() {
 }
 
 static Particle* getLaser() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 1.0);
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), -1.0);
 	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 1, 1, 1)); //Rouge
 	return pa;
 }//laser
