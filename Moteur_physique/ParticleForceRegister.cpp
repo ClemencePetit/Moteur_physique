@@ -24,8 +24,10 @@ void ParticleForceRegister::clear() {
 	register_.clear();
 }
 
-void ParticleForceRegister::updateForces() {
-	for (auto it = register_.begin(); it != register_.end(); it++)
+void ParticleForceRegister::updateForces(float t) {
+	std::vector<ForceRecord>::iterator it;
+	for (it = register_.begin(); it != register_.end(); it++)
 	{
+		it->fg->updateForce(it->p, t);
 	}
 }

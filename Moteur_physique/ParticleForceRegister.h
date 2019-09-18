@@ -20,7 +20,7 @@ public:
 	void add(Particle* p, ParticleForceGenerator* fg);
 	void remove();
 	void clear();
-	void updateForces();
+	void updateForces(float t);
 
 	ParticleForceRegister();
 	~ParticleForceRegister();
