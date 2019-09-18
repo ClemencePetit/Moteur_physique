@@ -47,7 +47,7 @@ public:
 
 static Particle* getBasicBall() {
 	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 500.0);
-	pa->setShape(new Sphere(pa->getPos(), 0, 1.0, 0.0, 2));
+	pa->setShape(new Sphere(pa->getPos(), 0, 1.0, 0.0, 2)); //Vert
 	return pa;
 }
 
@@ -61,7 +61,7 @@ static Particle* getLaser() {
 	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), -1.0);
 	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 1, 1, 1)); //Rouge
 	return pa;
-}//laser
+}
 
 static Particle* getSnowflake() {
 	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 55.0);
