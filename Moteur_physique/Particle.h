@@ -12,37 +12,32 @@ private:
 
 	Vector3D* pos_; //position
 	Vector3D vel_; //velocité
-	Vector3D g_; //loi de la gravitation universelle
 
-	float d_; //damping
-		
-	float m_; //mass
+	Vector3D forceAccum_;
 	float massInv_;
 
 	Shape* shape_; //forme associée à la particule pour la dessiner
 
 public:
 
-	Particle(float g, Vector3D* pos, Vector3D vit, float m, float d);
+	Particle(Vector3D* pos, Vector3D vit, float m);
 
 	~Particle();
 
 	//get/set
 	void setPos(Vector3D pos) { *pos_ = pos; };
 	void setVit(Vector3D vit) { vel_ = vit; };
-	void setG(Vector3D g) { g_ = g; };
-	void setD(float d) { d_ = d; };
-	void setM(float m) { m_ = m; };
 	void setMassInv(float massInv) { massInv_ = massInv; };	
 	void setShape(Shape* sh) { shape_ = sh; }
 
 	Vector3D* getPos() { return pos_; };
 	Vector3D getVit() { return vel_; };
-	Vector3D getG() { return g_; };
-	float getD() { return d_; };
-	float getM() { return m_; };
 	float getMassInv() { return massInv_; };
 	Shape* getShape() { return shape_; }
+
+	//methods for forceAccum
+	void addForce(const Vector3D &force);
+	void clearAccum();
 
 	void integrer(float t);//integrator
 };
@@ -50,26 +45,26 @@ public:
 
 // Fonctions static retournant des projectiles paramétrés
 
-static Particle* getBasicBall(float g) {
-	Particle* pa = new Particle(g * 4, new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 500.0, 0.98);
+static Particle* getBasicBall() {
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 500.0);
 	pa->setShape(new Sphere(pa->getPos(), 0, 1.0, 0.0, 2));
 	return pa;
 }
 
-static Particle* getCannonBall(float g) {
-	Particle* pa = new Particle(g * 7, new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 5000.0, 0.9);
+static Particle* getCannonBall() {
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 5000.0);
 	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 0.0, 2)); //Noir
 	return pa;
 }
 
-static Particle* getLaser(float g) {
-	Particle* pa = new Particle(0, new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 1.0, 1);
+static Particle* getLaser() {
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 1.0);
 	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 1, 1, 1)); //Rouge
 	return pa;
 }//laser
 
-static Particle* getSnowflake(float g) {
-	Particle* pa = new Particle(g * 0.5, new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 55.0, 0.4);
+static Particle* getSnowflake() {
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 55.0);
 	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 1.0, 2)); //Bleu
 	return pa;
 }

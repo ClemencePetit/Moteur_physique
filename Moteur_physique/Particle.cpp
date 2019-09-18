@@ -1,16 +1,27 @@
 #include "Particle.h"
 
-Particle::Particle(float g, Vector3D* pos, Vector3D vit, float m, float d) : g_(0, 0, -g), pos_(pos), vel_(vit), m_(m), massInv_(1/m), d_(d)
+Particle::Particle(Vector3D* pos, Vector3D vit, float m) : pos_(pos), vel_(vit), massInv_(1/m), forceAccum_(0, 0, 0)
 {
 }
 
 void Particle::integrer(float t)
 {
-	*pos_ = *pos_ + vel_ * t;//calcul de la nouvelle position
-	vel_ = vel_ * pow(d_, t) + g_ * m_ * massInv_ * t;//calcul de la nouvelle velocite
+	if (massInv_ >= 0 && t > 0) {
+		*pos_ = *pos_ + vel_ * t;//calcul de la nouvelle position
+		vel_ = vel_ + forceAccum_ * massInv_;//calcul de la nouvelle velocite
+		clearAccum();
+	}
 }
 
 Particle::~Particle()
 {
 	delete(shape_);
+}
+
+void Particle::addForce(const Vector3D &force) {
+	forceAccum_ = forceAccum_ + force;
+}
+
+void Particle::clearAccum() {
+	forceAccum_ = Vector3D(0, 0, 0);
 }
