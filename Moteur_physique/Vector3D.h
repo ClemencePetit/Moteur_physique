@@ -23,6 +23,7 @@ public:
 
 	//Surcharges Opérateurs
 	Vector3D operator+(const Vector3D& b);
+	Vector3D operator-(const Vector3D& b);
 	Vector3D operator*(const float& lambda);
 
 	//Opérations
@@ -32,6 +33,8 @@ public:
 	float tripleProd(Vector3D u, Vector3D v);//produit mixte : this.(u^v)
 	float norm();
 	Vector3D normalized();
+
+	float distanceWith(Vector3D other);
 
 	//autre
 	void display();

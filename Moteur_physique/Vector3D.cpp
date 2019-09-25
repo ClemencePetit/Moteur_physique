@@ -1,5 +1,7 @@
 #include "Vector3D.h"
 
+#include <cmath>
+
 Vector3D::Vector3D() : x(0), y(0), z(0)
 {
 
@@ -19,6 +21,11 @@ Vector3D::~Vector3D()
 #pragma region Surcharge Opérateurs
 Vector3D Vector3D::operator+(const Vector3D& b) {
 	Vector3D result(x + b.x, y + b.y, z + b.z);
+	return result;
+}
+
+Vector3D Vector3D::operator-(const Vector3D& b) {
+	Vector3D result(x - b.x, y - b.y, z - b.z);
 	return result;
 }
 
@@ -58,6 +65,16 @@ float Vector3D::norm() {
 
 Vector3D Vector3D::normalized() {
 	return *this * (float)(1. / this->norm());
+}
+
+
+float Vector3D::distanceWith(Vector3D other) {
+	
+	return sqrt(
+		pow(this->x - other.x, 2.f) +
+		pow(this->y - other.y, 2.f) +
+		pow(this->z - other.z, 2.f)
+		);
 }
 #pragma endregion
 
