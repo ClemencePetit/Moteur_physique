@@ -58,7 +58,7 @@ void Game::handlePassiveMouseMotion(int x, int y) {
 
 	//move reticle toward mouse
 
-	Vector3D mouseDirection2D = Vector3D(0, x, screenHeight - y);
+	Vector3D mouseDirection2D = Vector3D(0.0f, (float)x, (float)(screenHeight - y));
 
 	Vector3D normalizedDirection = mouseDirection2D.normalized();
 
@@ -168,14 +168,14 @@ void Game::update(int value)
 		register_.add(*it, new DragForceGenerator(k1, k2));
 	}
 
-	register_.updateForces(elapsedTime);
+	register_.updateForces((float)elapsedTime);
 	register_.clear();
 
 	//update physics for each particles
 	it = particules_.begin();
 	while (it != particules_.end()) {
 		if (*it != NULL) {
-			(*it)->integrer(elapsedTime);
+			(*it)->integrer((float)elapsedTime);
 			cout << 1.0 / elapsedTime << " fps" << endl;
 			if ((*it)->getPos()->z < 0) {
 				deleteParticle(*(it++));
@@ -192,7 +192,7 @@ void Game::update(int value)
 		//Puissance actuelle en fonction du temps de charge
 		currentShotPower = lerp01(minShotPower, maxShotPower, currentLoadTime / timeLoadMaxShot);
 
-		currentLoadTime += elapsedTime;
+		currentLoadTime += (float)elapsedTime;
 
 		//Si puissance max atteinte, retour à 0.
 		if (currentLoadTime >= timeLoadMaxShot) {
@@ -202,7 +202,7 @@ void Game::update(int value)
 
 
 	glutPostRedisplay();
-	glutTimerFunc(elapsedTime, updateCallback, 0);
+	glutTimerFunc((unsigned int)elapsedTime, updateCallback, 0);
 }
 
 //démarrage du jeu
@@ -221,7 +221,7 @@ void Game::execute(int argc, char** argv)
 	glutCreateWindow("Physics Engine");
 	initRendering();
 	Game::setupInstance();
-	glutTimerFunc(elapsedTime, updateCallback, 0);
+	glutTimerFunc((unsigned int)elapsedTime, updateCallback, 0);
 	glutMainLoop();
 }
 

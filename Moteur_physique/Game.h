@@ -38,9 +38,9 @@ private:
 	int indexCurrentParticle_; //indice du type de projectile actuellement choisi
 
 	//Constantes
-	Vector3D g_ = Vector3D(0, 0, -9.8);
-	float k1 = 0.5;
-	float k2 = 1.2;
+	Vector3D g_ = Vector3D(0, 0, -9.8f);
+	float k1 = 0.5f;
+	float k2 = 1.2f;
 
 	//time
 	double elapsedTime;

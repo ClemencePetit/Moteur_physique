@@ -57,7 +57,7 @@ float Vector3D::norm() {
 }
 
 Vector3D Vector3D::normalized() {
-	return *this * (1. / this->norm());
+	return *this * (float)(1. / this->norm());
 }
 #pragma endregion
 
