@@ -29,7 +29,6 @@ void Game::handleKeypress(unsigned char key, int x, int y)
 		}
 		else
 		{
-
 			posCamera_ = Vector3D(50.0f, -50.f, 5.f);
 			lookCamera_ = Vector3D(0.f, 100.f, 15.f);
 		}
@@ -120,7 +119,7 @@ void Game::drawScene()
 		0, 0, 1);
 
 	//dessin du sol
-	glColor3f(1, 1, 1);
+	/*glColor3f(1, 1, 1);
 
 	glBegin(GL_QUADS);
 	glVertex3f(-200, -100, 0);
@@ -130,7 +129,7 @@ void Game::drawScene()
 	glVertex3f(-200, 400, 0);
 
 	glEnd();
-
+	*/
 	//redraw all particules
 	std::list<Particle*>::iterator it;
 	for (it = particules_.begin(); it != particules_.end(); it++)
@@ -166,6 +165,7 @@ void Game::update(int value)
 	{
 		register_.add(*it, new GravityForceGenerator(g_));
 		register_.add(*it, new DragForceGenerator(k1, k2));
+		register_.add(*it, new BuoyancyForceGenerator(g_));
 	}
 
 	register_.updateForces((float)elapsedTime);
@@ -176,9 +176,10 @@ void Game::update(int value)
 	while (it != particules_.end()) {
 		if (*it != NULL) {
 			(*it)->integrer((float)elapsedTime);
-			cout << 1.0 / elapsedTime << " fps" << endl;
+			//cout << 1.0 / elapsedTime << " fps" << endl;
 			if ((*it)->getPos()->z < 0) {
-				deleteParticle(*(it++));
+				//deleteParticle(*(it++))
+				it++;
 			}
 			else {
 				it++;
