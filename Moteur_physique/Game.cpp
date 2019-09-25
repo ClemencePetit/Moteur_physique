@@ -58,6 +58,8 @@ void Game::handlePassiveMouseMotion(int x, int y) {
 	//move reticle toward mouse
 
 	Vector3D mouseDirection2D = Vector3D(0.0f, (float)x, (float)(screenHeight - y));
+	
+	mousePos = mouseDirection2D; //he he he
 
 	Vector3D normalizedDirection = mouseDirection2D.normalized();
 
@@ -161,11 +163,27 @@ void Game::update(int value)
 
 	//Register
 	std::list<Particle*>::iterator it = particules_.begin();
+	Particle* previousP = NULL;
 	for (it = particules_.begin(); it != particules_.end(); it++)
 	{
 		register_.add(*it, new GravityFG(g_));
 		register_.add(*it, new DragFG(k1, k2));
 		register_.add(*it, new BuoyancyFG());
+
+
+		//register_.add(*it, new AnchoredSpringFG(mousePos, 10., 5.));
+
+		//register_.add(*it, new AnchoredSpringFG(*new Vector3D(), 209., 2.));
+
+		/*
+		if (previousP == NULL) {
+			previousP = *it;
+			continue;
+		}
+		else {
+			register_.add(*it, new SpringFG(previousP, 100., 5.));
+			previousP = *it;
+		} */
 	}
 
 	register_.updateForces((float)elapsedTime);

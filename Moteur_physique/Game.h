@@ -14,6 +14,8 @@
 #include "GravityFG.h"
 #include "SpringFG.h"
 #include "BuoyancyFG.h"
+#include "AnchoredSpringFG.h"
+#include "BungeeSpringFG.h"
 
 // Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Game
@@ -56,6 +58,9 @@ private:
 	//reglages camera
 	Vector3D posCamera_ = Vector3D(50.0f, -50.f, 5.f);
 	Vector3D lookCamera_ = Vector3D(0.f, 100.f, 15.f);
+
+	//mouse
+	Vector3D mousePos = Vector3D();
 
 	
 
