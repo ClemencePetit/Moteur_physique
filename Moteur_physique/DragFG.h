@@ -2,7 +2,7 @@
 #define DRAG_FORCE_GENERATOR
 
 #include "ParticleForceGenerator.h"
-class DragForceGenerator : public ParticleForceGenerator
+class DragFG : public ParticleForceGenerator
 {
 private:
 
@@ -10,7 +10,7 @@ private:
 	float k2_;
 
 public:
-	DragForceGenerator(float k1, float k2) : k1_(k1), k2_(k2) {
+	DragFG(float k1, float k2) : k1_(k1), k2_(k2) {
 
 	}
 

@@ -3,14 +3,14 @@
 
 #include "ParticleForceGenerator.h"
 
-class GravityForceGenerator : public ParticleForceGenerator
+class GravityFG : public ParticleForceGenerator
 {
 private:
 
 	Vector3D gravity_;
 
 public:
-	GravityForceGenerator(Vector3D g) : gravity_(g) {
+	GravityFG(Vector3D g) : gravity_(g) {
 	}
 
 	void updateForce(Particle* p, float t);

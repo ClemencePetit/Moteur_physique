@@ -163,9 +163,9 @@ void Game::update(int value)
 	std::list<Particle*>::iterator it = particules_.begin();
 	for (it = particules_.begin(); it != particules_.end(); it++)
 	{
-		register_.add(*it, new GravityForceGenerator(g_));
-		register_.add(*it, new DragForceGenerator(k1, k2));
-		register_.add(*it, new BuoyancyForceGenerator(g_));
+		register_.add(*it, new GravityFG(g_));
+		register_.add(*it, new DragFG(k1, k2));
+		register_.add(*it, new BuoyancyFG(g_));
 	}
 
 	register_.updateForces((float)elapsedTime);

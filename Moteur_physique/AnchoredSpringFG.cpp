@@ -1,6 +1,6 @@
-#include "ParticleAnchoredSpring.h"
+#include "AnchoredSpringFG.h"
 
-void ParticleAnchoredSpring::updateForce(Particle* p, float t) {
+void AnchoredSpringFG::updateForce(Particle* p, float t) {
 
 	Vector3D d = *p->getPos() - anchor_;
 
