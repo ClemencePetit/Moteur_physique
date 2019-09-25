@@ -119,17 +119,17 @@ void Game::drawScene()
 		0, 0, 1);
 
 	//dessin du sol
-	/*glColor3f(1, 1, 1);
+	glColor3f(1, 1, 1);
 
 	glBegin(GL_QUADS);
 	glVertex3f(-200, -100, 0);
 	glVertex3f(200, -100, 0);
 	glColor3f(0.5, 0.5, 0.5);
-	glVertex3f(200, 400, 0);
-	glVertex3f(-200, 400, 0);
+	glVertex3f(200, 400, 0.2);
+	glVertex3f(-200, 400, 0.2);
 
 	glEnd();
-	*/
+	
 	//redraw all particules
 	std::list<Particle*>::iterator it;
 	for (it = particules_.begin(); it != particules_.end(); it++)

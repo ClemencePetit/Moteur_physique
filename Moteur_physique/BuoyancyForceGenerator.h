@@ -11,12 +11,11 @@ private:
 	// if r = 2.f
 	float v_ = 33.51f;
 	float zWater_ = 0.f;
-	float density_ = 1000.f;
-	Vector3D g_;
+	float density_ = 250.f;
 
 public:
 
-	BuoyancyForceGenerator(Vector3D g);
+	BuoyancyForceGenerator();
 	~BuoyancyForceGenerator();
 
 	void updateForce(Particle* p, float t);
