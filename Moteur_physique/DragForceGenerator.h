@@ -5,6 +5,7 @@
 class DragForceGenerator : public ParticleForceGenerator
 {
 private:
+
 	float k1_;
 	float k2_;
 
