@@ -3,7 +3,7 @@
 
 #include "ParticleForceGenerator.h"
 
-class BuoyancyForceGenerator: public ParticleForceGenerator
+class BuoyancyFG: public ParticleForceGenerator
 {
 private:
 
@@ -15,8 +15,8 @@ private:
 
 public:
 
-	BuoyancyForceGenerator();
-	~BuoyancyForceGenerator();
+	BuoyancyFG();
+	~BuoyancyFG();
 
 	void updateForce(Particle* p, float t);
 };

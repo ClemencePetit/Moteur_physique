@@ -1,15 +1,15 @@
-#include "BuoyancyForceGenerator.h"
+#include "BuoyancyFG.h"
 
-BuoyancyForceGenerator::BuoyancyForceGenerator()
+BuoyancyFG::BuoyancyFG()
 {
 }
 
 
-BuoyancyForceGenerator::~BuoyancyForceGenerator()
+BuoyancyFG::~BuoyancyFG()
 {
 }
 
-void BuoyancyForceGenerator::updateForce(Particle* p, float t) {
+void BuoyancyFG::updateForce(Particle* p, float t) {
 	if (p->getPos()->z > (s_ + zWater_))
 	{
 		cout << "out" << endl;
