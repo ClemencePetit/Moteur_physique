@@ -24,6 +24,11 @@ Vector3D Vector3D::operator+(const Vector3D& b) {
 	return result;
 }
 
+Vector3D Vector3D::operator-(const Vector3D& b) {
+	Vector3D result(x - b.x, y - b.y, z - b.z);
+	return result;
+}
+
 Vector3D Vector3D::operator*(const float& lambda) {
 	Vector3D result(lambda * x, lambda * y, lambda * z);
 	return result;

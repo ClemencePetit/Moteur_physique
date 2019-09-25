@@ -23,6 +23,7 @@ public:
 
 	//Surcharges Opérateurs
 	Vector3D operator+(const Vector3D& b);
+	Vector3D operator-(const Vector3D& b);
 	Vector3D operator*(const float& lambda);
 
 	//Opérations
