@@ -33,6 +33,8 @@ public:
 	float norm();
 	Vector3D normalized();
 
+	float distanceWith(Vector3D other);
+
 	//autre
 	void display();
 };
