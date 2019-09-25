@@ -12,7 +12,7 @@
 #include "ParticleForceRegister.h"
 #include "DragFG.h"
 #include "GravityFG.h"
-#include "BuoyancyForceGenerator.h"
+#include "BuoyancyFG.h"
 
 // Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Game

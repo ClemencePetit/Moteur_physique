@@ -1,6 +1,6 @@
 #include "BungeeSpringFG.h"
 
-void ParticleBungeeSpring::updateForce(Particle* p, float t) {
+void BungeeSpringFG::updateForce(Particle* p, float t) {
 
 	Vector3D d = *p->getPos() - *other_->getPos();
 

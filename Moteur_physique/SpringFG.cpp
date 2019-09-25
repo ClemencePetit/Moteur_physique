@@ -1,7 +1,7 @@
 #include "SpringFG.h"
 
 
-void ParticleSpring::updateForce(Particle* p, float t) {
+void SpringFG::updateForce(Particle* p, float t) {
 
 	Vector3D d = *p->getPos() - *other_->getPos();
 

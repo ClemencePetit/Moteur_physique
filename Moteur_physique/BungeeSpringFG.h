@@ -2,7 +2,7 @@
 #define PARTICLE_BUNGEE_SPRING
 
 #include "ParticleForceGenerator.h"
-class ParticleBungeeSpring :
+class BungeeSpringFG :
 	public ParticleForceGenerator
 {
 
@@ -14,7 +14,7 @@ private:
 public:
 
 	//constructors
-	ParticleBungeeSpring(Particle* other, float k, float l0) :
+	BungeeSpringFG(Particle* other, float k, float l0) :
 		other_(other), k_(k), l0_(l0) {};
 
 	void updateForce(Particle* p, float t);

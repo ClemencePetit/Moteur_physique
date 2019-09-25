@@ -3,7 +3,7 @@
 #define PARTICLE_ANCHORED_SPRING
 
 #include "ParticleForceGenerator.h"
-class ParticleAnchoredSpring :
+class AnchoredSpringFG :
 	public ParticleForceGenerator
 {
 private:
@@ -14,7 +14,7 @@ private:
 public:
 
 	//constructors
-	ParticleAnchoredSpring(Vector3D anchor, float k, float l0) :
+	AnchoredSpringFG(Vector3D anchor, float k, float l0) :
 		anchor_(anchor), k_(k), l0_(l0) {};
 
 	void updateForce(Particle* p, float t);

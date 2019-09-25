@@ -2,7 +2,7 @@
 #define PARTICLE_SPRING
 
 #include "ParticleForceGenerator.h"
-class ParticleSpring :
+class SpringFG :
 	public ParticleForceGenerator
 {
 
@@ -14,7 +14,7 @@ private:
 public:
 
 	//constructors
-	ParticleSpring(Particle* other, float k, float l0) :
+	SpringFG(Particle* other, float k, float l0) :
 		other_(other), k_(k), l0_(l0) {};
 
 	void updateForce(Particle* p, float t);

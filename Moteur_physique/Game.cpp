@@ -165,7 +165,7 @@ void Game::update(int value)
 	{
 		register_.add(*it, new GravityFG(g_));
 		register_.add(*it, new DragFG(k1, k2));
-		register_.add(*it, new BuoyancyForceGenerator(g_));
+		register_.add(*it, new BuoyancyFG(g_));
 	}
 
 	register_.updateForces((float)elapsedTime);
