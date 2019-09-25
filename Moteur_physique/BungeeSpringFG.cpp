@@ -1,4 +1,4 @@
-#include "ParticleBungeeSpring.h"
+#include "BungeeSpringFG.h"
 
 void ParticleBungeeSpring::updateForce(Particle* p, float t) {
 

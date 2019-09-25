@@ -1,7 +1,7 @@
 #ifndef PARTICLE_BUNGEE_SPRING
 #define PARTICLE_BUNGEE_SPRING
 
-#include "ParticleSpring.h"
+#include "ParticleForceGenerator.h"
 class ParticleBungeeSpring :
 	public ParticleForceGenerator
 {

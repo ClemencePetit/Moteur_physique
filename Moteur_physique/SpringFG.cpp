@@ -1,4 +1,4 @@
-#include "ParticleSpring.h"
+#include "SpringFG.h"
 
 
 void ParticleSpring::updateForce(Particle* p, float t) {

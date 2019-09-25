@@ -1,7 +1,7 @@
-#include "DragForceGenerator.h"
+#include "DragFG.h"
 #include <cmath>
 
-void DragForceGenerator::updateForce(Particle* p, float t) {
+void DragFG::updateForce(Particle* p, float t) {
 
 	Vector3D vitUnit = p->getVit().normalized();
 	float dragForce = k1_ * p->getVit().norm() +

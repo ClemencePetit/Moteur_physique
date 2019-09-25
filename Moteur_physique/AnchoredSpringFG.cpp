@@ -1,4 +1,4 @@
-#include "ParticleAnchoredSpring.h"
+#include "AnchoredSpringFG.h"
 
 void ParticleAnchoredSpring::updateForce(Particle* p, float t) {
 
