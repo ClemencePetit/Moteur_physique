@@ -247,16 +247,17 @@ void Game::update(int value)
 	std::list<Particle*>::iterator it = particules_.begin();
 	//Particle* previousP = NULL;
 	for (it = particules_.begin(); it != particules_.end(); it++)
-	{
-		register_.add(*it, new GravityFG(g_));
-		register_.add(*it, new DragFG(k1, k2));
-		if (isInPool(*it)) {
-			register_.add(*it, new BuoyancyFG());
-		}
-		else if ((*it)->getPos()->z <= 2) {
+	{		
+		if ((*it)->getPos()->z <= 2 && !isInPool(*it)) {
 			//register_.add(*it, new WeakSpringFG(5.0f, 0.7f));
 		}
-
+		else {
+			register_.add(*it, new GravityFG(g_));
+			register_.add(*it, new DragFG(k1, k2));
+			if (isInPool(*it)) {
+				register_.add(*it, new BuoyancyFG());
+			}
+		}
 
 		//register_.add(*it, new AnchoredSpringFG(mousePos, 10., 5.));
 
