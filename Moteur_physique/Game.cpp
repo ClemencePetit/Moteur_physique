@@ -125,7 +125,7 @@ void Game::drawScene()
 	gluLookAt(posCamera_.x, posCamera_.y, posCamera_.z, 
 		lookCamera_.x, lookCamera_.y, lookCamera_.z, 
 		0, 0, 1);
-
+	
 	//dessin du sol
 	glBegin(GL_QUADS);
 	glColor3f(0.7f, 0.47f, 0.f);
@@ -169,7 +169,7 @@ void Game::drawScene()
 	glVertex3f(200, 500, -50);
 	glVertex3f(200, 150, -50);
 	glEnd();
-
+	
 	//redraw all particules
 	std::list<Particle*>::iterator it;
 	for (it = particules_.begin(); it != particules_.end(); it++)
@@ -210,10 +210,7 @@ void Game::update(int value)
 			register_.add(*it, new BuoyancyFG());
 		}
 		else if ((*it)->getPos()->z <= 2) {
-			if ((*it)->getPosInit().z == -1) {
-				(*it)->setPosInit();
-			}
-			register_.add(*it, new WeakSpringFG((*it)->getPosInit(), 5.0f, 0.7f));
+			//register_.add(*it, new WeakSpringFG(5.0f, 0.7f));
 		}
 
 

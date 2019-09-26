@@ -11,7 +11,7 @@ private:
 	// if r = 2.f
 	float v_ = 33.51f;
 	float zWater_ = 0.f;
-	float density_ = 250.f;
+	float density_ = 1000.f;
 
 public:
 
