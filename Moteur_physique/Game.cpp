@@ -18,8 +18,6 @@ Game::~Game()
 
 void Game::handleKeypress(unsigned char key, int x, int y)
 {
-	Particle* pa = NULL;
-
 	switch (key)
 	{
 	case 's':
@@ -46,13 +44,22 @@ void Game::handleKeypress(unsigned char key, int x, int y)
 		break;
 
 	case 'o':
-		pa = getTestWater();
-		addParticle(pa);
+		addParticle(getTestWater());
+		break;
+
+	case 'd':
+		while (!particules_.empty()) {
+			deleteParticle(particules_.front());
+		}
+		break;
+
+	//ESCAPE key
+	case 27:
+		exit(0);
 		break;
 
 	default:
 		break;
-
 	}
 }
 
@@ -274,7 +281,12 @@ void Game::update(int value)
 	while (it != particules_.end()) {
 		if (*it != NULL) {
 			(*it)->integrer((float)elapsedTime);
-			it++;
+			if ((*it)->getPos()->z < -100) {
+				deleteParticle(*it++);
+			}
+			else {
+				it++;
+			}
 		}
 	}
 
@@ -308,6 +320,8 @@ void Game::instructions() {
 	cout << "Touche S pour changer la camera (3 cameras sont disponibles)." << endl;
 	cout << "Touche V pour voir dans la piscine." << endl;
 	cout << "Touche O pour faire apparaitre une particule directement dans la piscine." << endl;
+	cout << "Touche D pour supprimer les particules." << endl;
+	cout << "Touche ESCAPE pour quitter le test." << endl;
 }
 
 //démarrage du jeu
@@ -406,7 +420,6 @@ void Game::addParticle(Particle* pa) {
 
 //Supprime la particule de la simulation
 void Game::deleteParticle(Particle* pa) {
-
 	particules_.remove(pa);
 	delete(pa);
 }
