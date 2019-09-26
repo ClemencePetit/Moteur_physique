@@ -18,6 +18,8 @@ Game::~Game()
 
 void Game::handleKeypress(unsigned char key, int x, int y)
 {
+	Particle* pa = NULL;
+
 	switch (key)
 	{
 	case 's':
@@ -34,6 +36,10 @@ void Game::handleKeypress(unsigned char key, int x, int y)
 		}
 
 		break;
+
+	case 'o':
+		pa = getTestWater();
+		addParticle(pa);
 
 	default:
 		break;
@@ -121,17 +127,49 @@ void Game::drawScene()
 		0, 0, 1);
 
 	//dessin du sol
-	glColor3f(1, 1, 1);
-
 	glBegin(GL_QUADS);
+	glColor3f(0.7f, 0.47f, 0.f);
 	glVertex3f(-200, -100, 0);
 	glVertex3f(200, -100, 0);
-	glColor3f(0.5, 0.5, 0.5);
-	glVertex3f(200, 400, 0.2);
-	glVertex3f(-200, 400, 0.2);
-
+	glVertex3f(200, 150, 0);
+	glVertex3f(-200, 150, 0);
 	glEnd();
 	
+	//dessin de la piscine
+	glBegin(GL_QUADS);
+	glColor3f(0.3f, 0.86f, 1.f);
+	//derriere
+	glVertex3f(200, 150, -50);
+	glVertex3f(200, 500, -50);
+	glVertex3f(200, 500, 0);
+	glVertex3f(200, 150, 0);
+	//devant
+	glVertex3f(-200, 150, -50);
+	glVertex3f(-200, 500, -50);
+	glVertex3f(-200, 500, 0);
+	glVertex3f(-200, 150, 0);
+	//gauche
+	glVertex3f(200, 150, -50);
+	glVertex3f(-200, 150, -50);
+	glVertex3f(-200, 150, 0);
+	glVertex3f(200, 150, 0);
+	//droite
+	glVertex3f(200, 500, -50);
+	glVertex3f(-200, 500, -50);
+	glVertex3f(-200, 500, 0);
+	glVertex3f(200, 500, 0);
+	//haut
+	glVertex3f(-200, 150, 0);
+	glVertex3f(-200, 500, 0);
+	glVertex3f(200, 500, 0);
+	glVertex3f(200, 150, 0);
+	//bas
+	glVertex3f(-200, 150, -50);
+	glVertex3f(-200, 500, -50);
+	glVertex3f(200, 500, -50);
+	glVertex3f(200, 150, -50);
+	glEnd();
+
 	//redraw all particules
 	std::list<Particle*>::iterator it;
 	for (it = particules_.begin(); it != particules_.end(); it++)
@@ -163,12 +201,20 @@ void Game::update(int value)
 
 	//Register
 	std::list<Particle*>::iterator it = particules_.begin();
-	Particle* previousP = NULL;
+	//Particle* previousP = NULL;
 	for (it = particules_.begin(); it != particules_.end(); it++)
 	{
 		register_.add(*it, new GravityFG(g_));
 		register_.add(*it, new DragFG(k1, k2));
-		register_.add(*it, new BuoyancyFG());
+		if (isInPool(*it)) {
+			register_.add(*it, new BuoyancyFG());
+		}
+		else if ((*it)->getPos()->z <= 2) {
+			if ((*it)->getPosInit().z == -1) {
+				(*it)->setPosInit();
+			}
+			register_.add(*it, new WeakSpringFG((*it)->getPosInit(), 5.0f, 0.7f));
+		}
 
 
 		//register_.add(*it, new AnchoredSpringFG(mousePos, 10., 5.));
@@ -194,14 +240,7 @@ void Game::update(int value)
 	while (it != particules_.end()) {
 		if (*it != NULL) {
 			(*it)->integrer((float)elapsedTime);
-			//cout << 1.0 / elapsedTime << " fps" << endl;
-			if ((*it)->getPos()->z < 0) {
-				//deleteParticle(*(it++))
-				it++;
-			}
-			else {
-				it++;
-			}
+			it++;
 		}
 	}
 
@@ -331,6 +370,12 @@ float Game::lerp01(float a, float b, float t) {
 	return a + t * (b - a);
 }
 
+bool Game::isInPool(Particle* p) {
+	return (p->getPos()->x > -200
+		&& p->getPos()->x < 200
+		&& p->getPos()->y > 150
+		&& p->getPos()->y < 500);
+}
 //part of hotfix
 void Game::setupInstance() {
 	::j_CurrentInstance = this;

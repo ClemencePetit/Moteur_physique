@@ -1,6 +1,5 @@
-
-#ifndef PARTICLE_ANCHORED_SPRING
-#define PARTICLE_ANCHORED_SPRING
+#ifndef ANCHORED_SPRING_FORCE_GENERATOR
+#define ANCHORED_SPRING_FORCE_GENERATOR
 
 #include "ParticleForceGenerator.h"
 class AnchoredSpringFG :

@@ -11,6 +11,7 @@ class Particle
 private:
 
 	Vector3D* pos_; //position
+	Vector3D posInit_; //position lorsque la particule touche le sol
 	Vector3D vel_; //velocité
 
 	Vector3D forceAccum_;
@@ -29,11 +30,13 @@ public:
 	void setVit(Vector3D vit) { vel_ = vit; };
 	void setMassInv(float massInv) { massInv_ = massInv; };	
 	void setShape(Shape* sh) { shape_ = sh; }
+	void setPosInit() { posInit_ = *pos_; }
 
 	Vector3D* getPos() { return pos_; };
 	Vector3D getVit() { return vel_; };
 	float getMassInv() { return massInv_; };
 	Shape* getShape() { return shape_; }
+	Vector3D getPosInit() { return posInit_; }
 
 	//methods for forceAccum
 	void addForce(const Vector3D &force);
@@ -69,4 +72,9 @@ static Particle* getSnowflake() {
 	return pa;
 }
 
+static Particle* getTestWater() {
+	Particle* pa = new Particle(new Vector3D(175, 0, -30), Vector3D(0, 0, 0), 50.0);
+	pa->setShape(new Sphere(pa->getPos(), 0.0, 1.0, 1.0, 2));
+	return pa;
+}
 #endif

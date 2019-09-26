@@ -16,6 +16,7 @@
 #include "BuoyancyFG.h"
 #include "AnchoredSpringFG.h"
 #include "BungeeSpringFG.h"
+#include "WeakSpringFG.h"
 
 // Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Game
@@ -80,9 +81,9 @@ public:
 	//part of hotfix
 	void setupInstance();
 
+	//utils
 	float lerp01(float a, float b, float t);
-
-public:
+	bool isInPool(Particle* p);
 
 	//constructor/deconstructor
 	Game();

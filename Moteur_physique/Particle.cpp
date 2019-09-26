@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3D* pos, Vector3D vit, float m) : pos_(pos), vel_(vit), massInv_(1/m), forceAccum_(0, 0, 0)
+Particle::Particle(Vector3D* pos, Vector3D vit, float m) : pos_(pos), vel_(vit), massInv_(1/m), forceAccum_(0, 0, 0), posInit_(0, 0, -1)
 {
 }
 

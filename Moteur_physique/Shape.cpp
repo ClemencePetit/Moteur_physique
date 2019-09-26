@@ -10,6 +10,7 @@ void Rect3D::Draw() {
 	glTranslatef(position_->x, position_->y, position_->z);
 
 	glBegin(GL_QUADS);
+	//derriere
 	glVertex3f(-width/2, -height/2, depth/2);
 	glVertex3f(-width / 2, height / 2, depth / 2);
 	glVertex3f(width / 2, height / 2, depth / 2);

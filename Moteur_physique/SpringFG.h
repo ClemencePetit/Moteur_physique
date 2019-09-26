@@ -1,5 +1,5 @@
-#ifndef PARTICLE_SPRING
-#define PARTICLE_SPRING
+#ifndef SPRING_FORCE_GENERATOR
+#define SPRING_FORCE_GENERATOR
 
 #include "ParticleForceGenerator.h"
 class SpringFG :
