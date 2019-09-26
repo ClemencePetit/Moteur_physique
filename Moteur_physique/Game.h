@@ -63,7 +63,8 @@ private:
 	//mouse
 	Vector3D mousePos = Vector3D();
 
-	
+	//pour voir dans la piscine
+	bool seeInWater_ = false;
 
 public:
 
@@ -97,7 +98,9 @@ public:
 	void drawScene();
 	void update(int value);
 
-	//start the game
+	//start the game and write the instructions
+
+	void instructions();
 	void execute(int argc, char** argv);
 	
 };

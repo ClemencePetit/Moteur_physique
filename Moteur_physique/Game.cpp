@@ -29,17 +29,26 @@ void Game::handleKeypress(unsigned char key, int x, int y)
 			posCamera_ = Vector3D(200.0f, 100.f, 40.f);
 			lookCamera_ = Vector3D(-200.f, 100.f, 40.f);
 		}
-		else
+		else if (posCamera_.x == 500.0f)
 		{
 			posCamera_ = Vector3D(50.0f, -50.f, 5.f);
 			lookCamera_ = Vector3D(0.f, 100.f, 15.f);
 		}
+		else if (posCamera_.x == 200.f)
+		{
+			posCamera_ = Vector3D(500.0f, 100.f, 0.f);
+			lookCamera_ = Vector3D(0.f, 100.f, 0.f);
+		}
+		break;
 
+	case 'v':
+		seeInWater_ = !seeInWater_;
 		break;
 
 	case 'o':
 		pa = getTestWater();
 		addParticle(pa);
+		break;
 
 	default:
 		break;
@@ -129,45 +138,73 @@ void Game::drawScene()
 	//dessin du sol
 	glBegin(GL_QUADS);
 	glColor3f(0.7f, 0.47f, 0.f);
+	//derriere
+	glVertex3f(-200, -100, -5);
+	glVertex3f(-200, 100, -5);
+	glVertex3f(-200, 100, 0);
+	glVertex3f(-200, -100, 0);
+	//devant
+	glVertex3f(200, -100, -5);
+	glVertex3f(200, 100, -5);
+	glVertex3f(200, 100, 0);
+	glVertex3f(200, -100, 0);
+	//gauche
+	glVertex3f(200, -100, -5);
+	glVertex3f(200, -100, 0);
+	glVertex3f(-200, -100, 0);
+	glVertex3f(-200, -100, -5);
+	//droite
+	glVertex3f(200, 100, -5);
+	glVertex3f(200, 100, 0);
+	glVertex3f(-200, 100, 0);
+	glVertex3f(-200, 100, -5);
+	//haut
 	glVertex3f(-200, -100, 0);
 	glVertex3f(200, -100, 0);
-	glVertex3f(200, 150, 0);
-	glVertex3f(-200, 150, 0);
+	glVertex3f(200, 100, 0);
+	glVertex3f(-200, 100, 0);
+	//bas
+	glVertex3f(-200, -100, -5);
+	glVertex3f(200, -100, -5);
+	glVertex3f(200, 100, -5);
+	glVertex3f(-200, 100, -5);
 	glEnd();
 	
 	//dessin de la piscine
 	glBegin(GL_QUADS);
 	glColor3f(0.3f, 0.86f, 1.f);
 	//derriere
-	glVertex3f(200, 150, -50);
-	glVertex3f(200, 500, -50);
-	glVertex3f(200, 500, 0);
-	glVertex3f(200, 150, 0);
-	//devant
-	glVertex3f(-200, 150, -50);
-	glVertex3f(-200, 500, -50);
-	glVertex3f(-200, 500, 0);
-	glVertex3f(-200, 150, 0);
-	//gauche
-	glVertex3f(200, 150, -50);
-	glVertex3f(-200, 150, -50);
-	glVertex3f(-200, 150, 0);
-	glVertex3f(200, 150, 0);
-	//droite
-	glVertex3f(200, 500, -50);
-	glVertex3f(-200, 500, -50);
-	glVertex3f(-200, 500, 0);
-	glVertex3f(200, 500, 0);
-	//haut
-	glVertex3f(-200, 150, 0);
-	glVertex3f(-200, 500, 0);
-	glVertex3f(200, 500, 0);
-	glVertex3f(200, 150, 0);
+	glVertex3f(-200, 100, -50);
+	glVertex3f(-200, 300, -50);
+	glVertex3f(-200, 300, 0);
+	glVertex3f(-200, 100, 0);
+	if (!seeInWater_) {
+		//devant
+		glVertex3f(200, 100, -50);
+		glVertex3f(200, 300, -50);
+		glVertex3f(200, 300, 0);
+		glVertex3f(200, 100, 0);
+		//haut
+		glVertex3f(-200, 100, 0);
+		glVertex3f(-200, 300, 0);
+		glVertex3f(200, 300, 0);
+		glVertex3f(200, 100, 0);
+	}
 	//bas
-	glVertex3f(-200, 150, -50);
-	glVertex3f(-200, 500, -50);
-	glVertex3f(200, 500, -50);
-	glVertex3f(200, 150, -50);
+	glVertex3f(-200, 100, -50);
+	glVertex3f(-200, 300, -50);
+	glVertex3f(200, 300, -50);
+	glVertex3f(200, 100, -50);
+	//gauche
+	glVertex3f(200, 100, -50);
+	glVertex3f(-200, 100, -50);
+	glVertex3f(-200, 100, 0);
+	glVertex3f(200, 100, 0);
+	//droite
+	glVertex3f(200, 300, -50);
+	glVertex3f(-200, 300, -50);
+	glVertex3f(-200, 300, 0);
+	glVertex3f(200, 300, 0);
 	glEnd();
 	
 	//redraw all particules
@@ -260,9 +297,24 @@ void Game::update(int value)
 	glutTimerFunc((unsigned int)elapsedTime, updateCallback, 0);
 }
 
+//liste d'instructions
+void Game::instructions() {
+	cout << "##############################################" << endl;
+	cout << "# Bienvenue dans le test du moteur physique! #" << endl;
+	cout << "##############################################" << endl << endl;
+	cout << "Les differentes touches sont:" << endl << endl;
+	cout << "Clic gauche pour tirer (il faut rester appuye pour augmenter la puissance)." << endl;
+	cout << "Clic droit pour changer de type de projectile." << endl;
+	cout << "Touche S pour changer la camera (3 cameras sont disponibles)." << endl;
+	cout << "Touche V pour voir dans la piscine." << endl;
+	cout << "Touche O pour faire apparaitre une particule directement dans la piscine." << endl;
+}
+
 //démarrage du jeu
 void Game::execute(int argc, char** argv)
 {
+	instructions();
+
 	crosshair_ = new Particle(&Vector3D(), Vector3D(), 0.f);
 	crosshair_->setShape(new Sphere(crosshair_->getPos(), 0.f, 1.f, 0.f, 2));
 
@@ -316,7 +368,6 @@ void Game::drawLine(Vector3D a, Vector3D b) {
 //Retourne un exemplaire du type de projectile actuellement sélectionné.
 Particle* Game::getCurrentParticle() {
 
-	Vector3D pos = *crosshair_->getPos();
 	switch (indexCurrentParticle_) {
 		case 0:
 			return getBasicBall();
@@ -370,8 +421,10 @@ float Game::lerp01(float a, float b, float t) {
 bool Game::isInPool(Particle* p) {
 	return (p->getPos()->x > -200
 		&& p->getPos()->x < 200
-		&& p->getPos()->y > 150
-		&& p->getPos()->y < 500);
+		&& p->getPos()->y > 100
+		&& p->getPos()->y < 300
+		&& p->getPos()->z > -50
+		&& p->getPos()->z < 5);
 }
 //part of hotfix
 void Game::setupInstance() {

@@ -58,7 +58,7 @@ static Particle* getCannonBall() {
 }
 
 static Particle* getLaser() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), -1.0);
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), -1.f);
 	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 1, 1, 1)); //Rouge
 	return pa;
 }
@@ -70,8 +70,8 @@ static Particle* getSnowflake() {
 }
 
 static Particle* getTestWater() {
-	Particle* pa = new Particle(new Vector3D(175, 0, -30), Vector3D(0, 0, 0), 10.0);
-	pa->setShape(new Sphere(pa->getPos(), 0.0, 1.0, 1.0, 2));
+	Particle* pa = new Particle(new Vector3D(125, 0, -30), Vector3D(0, 0, 0), 400.0);
+	pa->setShape(new Sphere(pa->getPos(), 1.0, 0.0, 1.0, 2));
 	return pa;
 }
 #endif

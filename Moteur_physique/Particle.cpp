@@ -11,6 +11,9 @@ void Particle::integrer(float t)
 		vel_ = vel_ + forceAccum_ * massInv_ * t;//calcul de la nouvelle velocite
 		clearAccum();
 	}
+	else {
+		*pos_ = *pos_ + vel_ * t;
+	}
 }
 
 Particle::~Particle()
