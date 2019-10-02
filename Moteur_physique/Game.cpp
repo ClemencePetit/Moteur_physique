@@ -91,16 +91,19 @@ void Game::handlePassiveMouseMotion(int x, int y) {
 
 void Game::handleMouseClick(int button, int state, int x, int y) {
 
-	Particle* pa = NULL;
+	IParticle* pa = NULL;
 
 	switch (button) {
 		//gestion du tir/chargement du tir
 		case GLUT_LEFT_BUTTON:
 			if (state == GLUT_UP) {
 
-				pa = getCurrentParticle();
+				//TIREZ!
+
+				pa = getCurrentProjectile();
 				pa->setPos(*crosshair_->getPos());
 				pa->setVit(crosshair_->getPos()->normalized() * baseVelocity_ * currentShotPower);
+				
 				addParticle(pa);
 
 				//reset charge values
@@ -123,7 +126,7 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 				indexCurrentParticle_++;
 				indexCurrentParticle_ %= 4; //4 = nb projectile types
 
-				changeCrosshairWithParticle(getCurrentParticle());
+				changeCrosshairWithParticle(getCurrentProjectile());
 				drawScene();
 			}
 
@@ -223,7 +226,7 @@ void Game::drawScene()
 		}
 	}
 
-	crosshair_->getShape()->Draw();
+	crosshair_->Draw();
 
 	//Draw power line
 	float lineLenght = lerp01(1.f, 3.f, currentShotPower / maxShotPower);
@@ -331,9 +334,8 @@ void Game::execute(int argc, char** argv)
 	instructions();
 
 	crosshair_ = new Particle(&Vector3D(), Vector3D(), 0.f);
-	crosshair_->setShape(new Sphere(crosshair_->getPos(), 0.f, 1.f, 0.f, 2));
 
-	changeCrosshairWithParticle(getBasicBall());
+	changeCrosshairWithParticle(ParticleFactory::getBasicBall());
 
 	//launch Glut
 	glutInit(&argc, argv);
@@ -381,27 +383,27 @@ void Game::drawLine(Vector3D a, Vector3D b) {
 #pragma region Gestion Particules
 
 //Retourne un exemplaire du type de projectile actuellement sélectionné.
-Particle* Game::getCurrentParticle() {
+IParticle* Game::getCurrentProjectile() {
 
 	switch (indexCurrentParticle_) {
 		case 0:
-			return getBasicBall();
+			return ParticleFactory::getBasicBall();
 			break;
 		case 1:
-			return getCannonBall();
+			return ParticleFactory::getCannonBall();
 			break;
 		case 2:
-			return getLaser();
+			return ParticleFactory::getLaser();
 			break;
 		case 3:
-			return getSnowflake();
+			return ParticleFactory::getSnowflake();
 			break;
 	}
-	return getBasicBall();
+	return ParticleFactory::getBasicBall();
 }
 
 //Change le type de particule utilisé par le réticule de visée
-void Game::changeCrosshairWithParticle(Particle* pa) {
+void Game::changeCrosshairWithParticle(IParticle* pa) {
 
 	Vector3D tempPos = *crosshair_->getPos();
 
@@ -415,8 +417,21 @@ void Game::changeCrosshairWithParticle(Particle* pa) {
 }
 
 //Ajoute la particule à la simulation
+/*
 void Game::addParticle(Particle* pa) {
 	particules_.push_back(pa);
+} */
+
+
+void Game::addParticle(IParticle* pa) {
+
+	if (Particle* ptrPq = dynamic_cast<Particle*>(pa)) {
+		particules_.push_back(ptrPq);
+	}
+	else if (ParticleGroup* ptrPg = dynamic_cast<ParticleGroup*>(pa)) {
+		ptrPg->addTo(particules_);
+	}
+	//particules_.push_back(pa);
 }
 
 //Supprime la particule de la simulation

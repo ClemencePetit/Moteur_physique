@@ -21,6 +21,15 @@ Particle::~Particle()
 	delete(shape_);
 }
 
+
+void Particle::addTo(list<Particle*> list) {
+	list.push_back(this);
+}
+
+void Particle::Draw() {
+	shape_->Draw();
+}
+
 void Particle::addForce(const Vector3D &force) {
 	forceAccum_ = forceAccum_ + force;
 }

@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "Particle.h"
+#include "ParticleGroup.h"
 #include "Vector3D.h"
 #include "ParticleForceRegister.h"
 #include "DragFG.h"
@@ -17,6 +18,8 @@
 #include "AnchoredSpringFG.h"
 #include "BungeeSpringFG.h"
 #include "WeakSpringFG.h"
+#include "IParticle.h"
+#include "ParticleFactory.h"
 
 // Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Game
@@ -26,7 +29,7 @@ private:
 	//Registre
 	ParticleForceRegister register_;
 
-	Particle* crosshair_;//particule servant à la visée (réticule)
+	IParticle* crosshair_; //particule servant à la visée (réticule)
 	float distanceReticleFromOrigin_ = 10.f;
 	float baseVelocity_ = 50.f;
 
@@ -64,7 +67,7 @@ private:
 	Vector3D mousePos = Vector3D();
 
 	//pour voir dans la piscine
-	bool seeInWater_ = false;
+	bool seeInWater_ = true;
 
 public:
 
@@ -74,9 +77,10 @@ public:
 	void drawLine(Vector3D a, Vector3D b);
 
 	//particles
-	void changeCrosshairWithParticle(Particle* pa);
-	Particle* getCurrentParticle();
-	void addParticle(Particle* pa);
+	void changeCrosshairWithParticle(IParticle* pa);
+	IParticle* getCurrentProjectile();
+
+	void addParticle(IParticle* pa);
 	void deleteParticle(Particle* pa);
 
 	//part of hotfix

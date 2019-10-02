@@ -3,9 +3,10 @@
 
 #include "Vector3D.h"
 #include "Shape.h"
+#include "IParticle.h"
 
 // Classe contenant les données concernant la particule d'un point de vue physique, plus la forme qui est associée à la particule
-class Particle
+class Particle : public IParticle
 {
 
 private:
@@ -35,6 +36,10 @@ public:
 	float getMassInv() { return massInv_; };
 	Shape* getShape() { return shape_; }
 
+	//IPARTICLE
+	void addTo(list<Particle*> list);
+	void Draw();
+
 	//methods for forceAccum
 	void addForce(const Vector3D &force);
 	void clearAccum();
@@ -45,29 +50,6 @@ public:
 
 // Fonctions static retournant des projectiles paramétrés
 
-static Particle* getBasicBall() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 500.0);
-	pa->setShape(new Sphere(pa->getPos(), 0, 1.0, 0.0, 2)); //Vert
-	return pa;
-}
-
-static Particle* getCannonBall() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 5000.0);
-	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 0.0, 2)); //Noir
-	return pa;
-}
-
-static Particle* getLaser() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), -1.f);
-	pa->setShape(new Rect3D(pa->getPos(), 1.0, 0.0, 0.0, 1, 1, 1)); //Rouge
-	return pa;
-}
-
-static Particle* getSnowflake() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 55.0);
-	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 1.0, 2)); //Bleu
-	return pa;
-}
 
 static Particle* getTestWater() {
 	Particle* pa = new Particle(new Vector3D(0, 125, -30), Vector3D(0.f, 0.1f, 0.f), 400.0);
