@@ -12,6 +12,8 @@ private:
 
 	std::vector<Particle*> particles_;
 	ParticleForceRegister forcesRegister_; //Forces specific to that group
+
+	void addRandomOffsets();
 public:
 
 	ParticleGroup() {}
@@ -19,18 +21,24 @@ public:
 	ParticleGroup(std::vector<Particle*> particles, ParticleForceRegister forcesRegister)
 		: particles_(particles), forcesRegister_(forcesRegister)
 	{
-
+		addRandomOffsets();
 	}
 
 	//Getter and Setter
 
-	//Set all particles to the same Pos (TODO : Keep offset)
+	//Set central particle to new pos and keep the offset between them
 	void setPos(Vector3D pos) {
 
 		std::vector<Particle*>::iterator it;
+
+		Vector3D initialFirstParticlePos = *getPos();
+
 		for (it = particles_.begin(); it != particles_.end(); it++)
 		{
-			(*it)->setPos(pos);
+			Vector3D initialPos = *(*it)->getPos();
+			Vector3D offset = initialFirstParticlePos - initialPos;
+
+			(*it)->setPos(pos + offset);
 		}
 	};
 
@@ -48,15 +56,14 @@ public:
 		return (*particles_.begin())->getPos();
 	};
 
+	std::vector<Particle*> getParticles() {
+		return particles_;
+	}
 
 	void Draw();
 
-	void addRecurringForce(Particle* pa, ParticleForceGenerator* fg);
-	void addParticle(Particle* pa);
+	void updateForces(float elapsedTime);
 
-	void applyForces(float elapsedTime);
-
-	void addTo(list<Particle*> list);
 };
 
 #endif

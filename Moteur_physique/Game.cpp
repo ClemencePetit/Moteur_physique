@@ -280,7 +280,7 @@ void Game::update(int value)
 	//Apply all group forces to the particles
 	for (ite = particulesGroups_.begin(); ite != particulesGroups_.end(); ite++)
 	{
-		(*ite)->applyForces((float)elapsedTime);
+		(*ite)->updateForces((float)elapsedTime);
 	}
 
 	register_.updateForces((float)elapsedTime);
@@ -415,7 +415,10 @@ void Game::addParticle(IParticle* pa) {
 		particules_.push_back(ptrPq);
 	}
 	else if (ParticleGroup* ptrPg = dynamic_cast<ParticleGroup*>(pa)) {
-		ptrPg->addTo(particules_);
+
+		for (auto const& pa : ptrPg->getParticles()) {
+			particules_.push_back(pa);
+		}
 
 		particulesGroups_.push_back(ptrPg);
 	}

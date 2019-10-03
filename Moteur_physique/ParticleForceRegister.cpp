@@ -18,6 +18,7 @@ void ParticleForceRegister::add(Particle* p, ParticleForceGenerator* fg) {
 
 
 void ParticleForceRegister::add(std::vector<ForceRecord> otherRegister) {
+		
 	std::vector<ForceRecord>::iterator it;
 	for (it = otherRegister.begin(); it != otherRegister.end(); it++)
 	{

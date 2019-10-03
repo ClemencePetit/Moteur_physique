@@ -24,6 +24,7 @@ IParticle* ParticleFactory::getCurrentProjectile() {
 		break;
 	case 6:
 		return getBlob2();
+		break;
 	}
 	return getBasicBall();
 }
@@ -86,7 +87,7 @@ IParticle* ParticleFactory::getBlob1() {
 
 	float r = 100;
 	float v = 100;
-	float bl = 0;
+	float bl = 30;
 	a->getShape()->setColor(r, v, bl);
 	b->getShape()->setColor(r, v, bl);
 	c->getShape()->setColor(r, v, bl);
@@ -100,10 +101,12 @@ IParticle* ParticleFactory::getBlob1() {
 	//Forces
 	ParticleForceRegister fg;
 
+	
 	fg.add(a, new BungeeSpringFG(b, 0.5, 100));
 	fg.add(b, new BungeeSpringFG(c, 0.5, 100));
 	fg.add(c, new BungeeSpringFG(d, 0.5, 100));
 	fg.add(d, new BungeeSpringFG(a, 0.5, 100));
+	
 
 	ParticleGroup* pg = new ParticleGroup(pas, fg);
 
