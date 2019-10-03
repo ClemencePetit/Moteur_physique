@@ -28,6 +28,12 @@ public:
 		return Vector3D(r_, v_, b_);
 	}
 
+	void setColor(float r, float v, float b) {
+		r_ = r;
+		v_ = v;
+		b_ = b;
+	}
+
 	//Constructors
 	Shape(Vector3D* pos, float r, float v, float b) : position_(pos), r_(r), v_(v), b_(b) { }
 

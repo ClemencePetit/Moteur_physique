@@ -100,7 +100,7 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 
 				//TIREZ!
 
-				pa = getCurrentProjectile();
+				pa = factory.getCurrentProjectile();
 				pa->setPos(*crosshair_->getPos());
 				pa->setVit(crosshair_->getPos()->normalized() * baseVelocity_ * currentShotPower);
 				
@@ -123,10 +123,8 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 
 			if (state == GLUT_DOWN) {
 
-				indexCurrentParticle_++;
-				indexCurrentParticle_ %= 4; //4 = nb projectile types
 
-				changeCrosshairWithParticle(getCurrentProjectile());
+				changeCrosshairWithParticle(factory.nextProjectile());
 				drawScene();
 			}
 
@@ -277,6 +275,14 @@ void Game::update(int value)
 		} */
 	}
 
+	std::list<ParticleGroup*>::iterator ite;
+
+	//Apply all group forces to the particles
+	for (ite = particulesGroups_.begin(); ite != particulesGroups_.end(); ite++)
+	{
+		(*ite)->applyForces((float)elapsedTime);
+	}
+
 	register_.updateForces((float)elapsedTime);
 	register_.clear();
 
@@ -382,26 +388,6 @@ void Game::drawLine(Vector3D a, Vector3D b) {
 
 #pragma region Gestion Particules
 
-//Retourne un exemplaire du type de projectile actuellement sélectionné.
-IParticle* Game::getCurrentProjectile() {
-
-	switch (indexCurrentParticle_) {
-		case 0:
-			return ParticleFactory::getBasicBall();
-			break;
-		case 1:
-			return ParticleFactory::getCannonBall();
-			break;
-		case 2:
-			return ParticleFactory::getLaser();
-			break;
-		case 3:
-			return ParticleFactory::getSnowflake();
-			break;
-	}
-	return ParticleFactory::getBasicBall();
-}
-
 //Change le type de particule utilisé par le réticule de visée
 void Game::changeCrosshairWithParticle(IParticle* pa) {
 
@@ -430,6 +416,8 @@ void Game::addParticle(IParticle* pa) {
 	}
 	else if (ParticleGroup* ptrPg = dynamic_cast<ParticleGroup*>(pa)) {
 		ptrPg->addTo(particules_);
+
+		particulesGroups_.push_back(ptrPg);
 	}
 	//particules_.push_back(pa);
 }

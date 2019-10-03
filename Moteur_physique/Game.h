@@ -43,7 +43,9 @@ private:
 	bool isLeftMouseButtonDown = false;
 
 	list <Particle*> particules_; //liste des particules créées
-	int indexCurrentParticle_; //indice du type de projectile actuellement choisi
+	list <ParticleGroup*> particulesGroups_;
+
+	ParticleFactory factory;
 
 	//Constantes
 	Vector3D g_ = Vector3D(0, 0, -9.8f);
@@ -78,7 +80,6 @@ public:
 
 	//particles
 	void changeCrosshairWithParticle(IParticle* pa);
-	IParticle* getCurrentProjectile();
 
 	void addParticle(IParticle* pa);
 	void deleteParticle(Particle* pa);

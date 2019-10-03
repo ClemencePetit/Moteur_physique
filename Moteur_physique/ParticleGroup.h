@@ -10,11 +10,13 @@ class ParticleGroup : public IParticle
 {
 private:
 
-	std::vector<Particle> particles_;
+	std::vector<Particle*> particles_;
 	ParticleForceRegister forcesRegister_; //Forces specific to that group
 public:
 
-	ParticleGroup(std::vector<Particle> particles, ParticleForceRegister forcesRegister)
+	ParticleGroup() {}
+
+	ParticleGroup(std::vector<Particle*> particles, ParticleForceRegister forcesRegister)
 		: particles_(particles), forcesRegister_(forcesRegister)
 	{
 
@@ -25,31 +27,36 @@ public:
 	//Set all particles to the same Pos (TODO : Keep offset)
 	void setPos(Vector3D pos) {
 
-		std::vector<Particle>::iterator it;
+		std::vector<Particle*>::iterator it;
 		for (it = particles_.begin(); it != particles_.end(); it++)
 		{
-			it->setPos(pos);
+			(*it)->setPos(pos);
 		}
 	};
 
 	//Set all particles to the same speed
 	void setVit(Vector3D vit) {
-		std::vector<Particle>::iterator it;
+		std::vector<Particle*>::iterator it;
 		for (it = particles_.begin(); it != particles_.end(); it++)
 		{
-			it->setVit(vit);
+			(*it)->setVit(vit);
 		}
 	};
 
-
 	Vector3D* getPos() {
 		//Return the pos of the first particle
-		return particles_.begin()->getPos();
+		return (*particles_.begin())->getPos();
 	};
 
-	void addTo(list<Particle*> list);
+
 	void Draw();
-	//virtual getForceRegister()
+
+	void addRecurringForce(Particle* pa, ParticleForceGenerator* fg);
+	void addParticle(Particle* pa);
+
+	void applyForces(float elapsedTime);
+
+	void addTo(list<Particle*> list);
 };
 
 #endif
