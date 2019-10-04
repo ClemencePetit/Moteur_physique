@@ -10,6 +10,8 @@ class Particle : public IParticle
 {
 
 private:
+	
+	int index_;
 
 	Vector3D* pos_; //position
 	Vector3D vel_; //velocité
@@ -21,7 +23,7 @@ private:
 
 public:
 
-	Particle(Vector3D* pos, Vector3D vit, float m);
+	Particle(Vector3D* pos, Vector3D vit, float m, int index);
 
 	~Particle();
 
@@ -29,12 +31,13 @@ public:
 	void setPos(Vector3D pos) { *pos_ = pos; };
 	void setVit(Vector3D vit) { vel_ = vit; };
 	void setMassInv(float massInv) { massInv_ = massInv; };	
-	void setShape(Shape* sh) { shape_ = sh; }
+	void setShape(Shape* sh) { shape_ = sh; };
 
 	Vector3D* getPos() { return pos_; };
 	Vector3D getVit() { return vel_; };
 	float getMassInv() { return massInv_; };
-	Shape* getShape() { return shape_; }
+	Shape* getShape() { return shape_; };
+	int getIndex() { return index_; };
 
 	//IPARTICLE
 	void addTo(list<Particle*> list);

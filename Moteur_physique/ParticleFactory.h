@@ -18,11 +18,16 @@
 class ParticleFactory
 {
 private:
+
+	int currentParticleIndex_ = 0;
+
 	int currentProjectileIndex_;
 
 public:
 
-	ParticleFactory() : currentProjectileIndex_(0) {}
+	ParticleFactory() :	currentProjectileIndex_(0) {}
+
+	int getCurrentIndex() { return currentParticleIndex_; }
 
 	IParticle* getCurrentProjectile();
 
@@ -32,16 +37,16 @@ public:
 		return getCurrentProjectile();
 	}
 
-	static IParticle* getBasicBall();
-	static IParticle* getCannonBall();
-	static IParticle* getLaser();
-	static IParticle* getSnowflake();
+	IParticle* getBasicBall();
+	IParticle* getCannonBall();
+	IParticle* getLaser();
+	IParticle* getSnowflake();
 
-	static IParticle* getYoyo();
+	IParticle* getYoyo();
 
-	static IParticle* getBlob1();
-	static IParticle* getBlob2();
-	static IParticle* getTestWater();
+	IParticle* getBlob1();
+	IParticle* getBlob2();
+	IParticle* getTestWater();
 
 };
 

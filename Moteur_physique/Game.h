@@ -45,7 +45,7 @@ private:
 	list <Particle*> particules_; //liste des particules créées
 	list <ParticleGroup*> particulesGroups_;
 
-	ParticleFactory factory;
+	ParticleFactory factory_;
 
 	//Constantes
 	Vector3D g_ = Vector3D(0, 0, -9.8f);
@@ -83,6 +83,7 @@ public:
 
 	void addParticle(IParticle* pa);
 	void deleteParticle(Particle* pa);
+	void deleteParticleGroup(ParticleGroup* paG);
 
 	//part of hotfix
 	void setupInstance();

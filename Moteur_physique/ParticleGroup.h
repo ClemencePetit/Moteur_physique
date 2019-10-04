@@ -12,8 +12,8 @@ private:
 
 	std::vector<Particle*> particles_;
 	ParticleForceRegister forcesRegister_; //Forces specific to that group
-
 	void addRandomOffsets();
+
 public:
 
 	ParticleGroup() {}
@@ -67,7 +67,7 @@ public:
 
 	void updateForces(float elapsedTime);
 
-	bool hasNullParticle();
+	bool hasIndex(int index);
 
 };
 

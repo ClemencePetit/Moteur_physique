@@ -2,12 +2,6 @@
 
 
 ParticleGroup::~ParticleGroup() {
-	std::vector<Particle*>::iterator it;
-	for (it = particles_.begin(); it != particles_.end(); it++)
-	{
-		delete(*it);
-	}
-
 	forcesRegister_.clear();
 }
 
@@ -27,8 +21,8 @@ void ParticleGroup::Draw() {
 }
 
 void ParticleGroup::updateForces(float t) {
-	forcesRegister_.updateForces(t);
 
+	forcesRegister_.updateForces(t);
 	//We do not clear the register because we want to re-apply
 	//those forces each loop
 }
@@ -50,21 +44,17 @@ void ParticleGroup::addRandomOffsets() {
 		Vector3D newPos = *(*it)->getPos() + offset;
 		(*it)->setPos(newPos);
 	}
-
-	//We do not clear the register because we want to re-apply
-	//those forces each loop
 }
 
 
-bool ParticleGroup::hasNullParticle() {
+bool ParticleGroup::hasIndex(int index) {
 	std::vector<Particle*>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
-		if (*it == NULL) {
+		if ((*it)->getIndex() == index) {
 			return true;
 		}
 	}
-
 	return false;
 }
 

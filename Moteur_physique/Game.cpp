@@ -11,8 +11,7 @@ Game::~Game()
 		deleteParticle(particules_.front());
 	}
 	while (!particulesGroups_.empty()) {
-		delete(particulesGroups_.front());
-		particulesGroups_.remove(particulesGroups_.front());
+		deleteParticleGroup(particulesGroups_.front());
 	}
 }
 
@@ -48,12 +47,15 @@ void Game::handleKeypress(unsigned char key, int x, int y)
 		break;
 
 	case 'o':
-		addParticle(factory.getTestWater());
+		addParticle(factory_.getTestWater());
 		break;
 
 	case 'd':
 		while (!particules_.empty()) {
 			deleteParticle(particules_.front());
+		}
+		while (!particulesGroups_.empty()) {
+			deleteParticleGroup(particulesGroups_.front());
 		}
 		break;
 
@@ -104,7 +106,7 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 
 				//TIREZ!
 
-				pa = factory.getCurrentProjectile();
+				pa = factory_.getCurrentProjectile();
 				pa->setPos(*crosshair_->getPos());
 				pa->setVit(crosshair_->getPos()->normalized() * baseVelocity_ * currentShotPower);
 				
@@ -127,8 +129,7 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 
 			if (state == GLUT_DOWN) {
 
-
-				changeCrosshairWithParticle(factory.nextProjectile());
+				changeCrosshairWithParticle(factory_.nextProjectile());
 				drawScene();
 			}
 
@@ -254,7 +255,7 @@ void Game::drawScene()
 
 void Game::handleRegister() {
 
-	std::list<Particle*>::iterator it = particules_.begin();
+	std::list<Particle*>::iterator it;
 	std::list<ParticleGroup*>::iterator ite;
 
 	//Register Particules
@@ -284,7 +285,7 @@ void Game::handleRegister() {
 
 void Game::updateAndDelete() {
 
-	std::list<Particle*>::iterator it = particules_.begin();
+	std::list<Particle*>::iterator it;
 	std::list<ParticleGroup*>::iterator ite;
 
 	//update physics for each particles
@@ -293,25 +294,24 @@ void Game::updateAndDelete() {
 		if (*it != NULL) {
 			(*it)->integrer((float)elapsedTime);
 			if ((*it)->getPos()->z < -100) {
+				int indexTemp = (*it)->getIndex();
+				//delete blop
+				ite = particulesGroups_.begin();
+				while (ite != particulesGroups_.end())
+				{
+					if ((*ite)->hasIndex(indexTemp)) {
+						deleteParticleGroup(*ite++);
+					}
+					else {
+						ite++;
+					}
+				}
+				//
 				deleteParticle(*it++);
 			}
 			else {
 				it++;
 			}
-		}
-	}
-
-	//delete blop
-	ite = particulesGroups_.begin();
-	while (ite != particulesGroups_.end())
-	{
-		if ((*ite)->hasNullParticle()) {
-			ParticleGroup* paG = *ite++;
-			particulesGroups_.remove(paG);
-			delete(paG);
-		}
-		else {
-			ite++;
 		}
 	}
 }
@@ -365,9 +365,9 @@ void Game::execute(int argc, char** argv)
 {
 	instructions();
 
-	crosshair_ = new Particle(&Vector3D(), Vector3D(), 0.f);
+	crosshair_ = new Particle(&Vector3D(), Vector3D(), 0.f, -1);
 
-	changeCrosshairWithParticle(ParticleFactory::getBasicBall());
+	changeCrosshairWithParticle(factory_.getBasicBall());
 
 	//launch Glut
 	glutInit(&argc, argv);
@@ -435,6 +435,12 @@ void Game::deleteParticle(Particle* pa) {
 	particules_.remove(pa);
 	delete(pa);
 }
+
+void Game::deleteParticleGroup(ParticleGroup* paG) {
+	particulesGroups_.remove(paG);
+	delete(paG);
+}
+
 #pragma endregion
 
 //Interpolation linéaire entre entre A et B avec t dans [0,1]
@@ -451,6 +457,7 @@ bool Game::isInPool(Particle* p) {
 		&& p->getPos()->z > -50
 		&& p->getPos()->z < 5);
 }
+
 //part of hotfix
 void Game::setupInstance() {
 	::j_CurrentInstance = this;
