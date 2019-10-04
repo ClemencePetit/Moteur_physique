@@ -100,7 +100,14 @@ public:
 	void handleResize(int w, int h);
 	void handlePassiveMouseMotion(int x, int y);
 	void handleMouseClick(int button, int state, int x, int y);
+
+	void drawGround();
+	void drawPool();
+	void drawParticles();
 	void drawScene();
+
+	void handleRegister();
+	void updateAndDelete();
 	void update(int value);
 
 	//start the game and write the instructions

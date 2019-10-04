@@ -47,14 +47,4 @@ public:
 	void integrer(float t);//integrator
 };
 
-
-// Fonctions static retournant des projectiles paramétrés
-
-
-static Particle* getTestWater() {
-	Particle* pa = new Particle(new Vector3D(0, 125, -30), Vector3D(0.f, 0.1f, 0.f), 400.0);
-	pa->setShape(new Sphere(pa->getPos(), 1.0, 1.0, 0.0, 2)); //Jaune
-	return pa;
-}
-
 #endif

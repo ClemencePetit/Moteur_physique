@@ -41,8 +41,7 @@ public:
 
 	static IParticle* getBlob1();
 	static IParticle* getBlob2();
-
-
+	static IParticle* getTestWater();
 
 };
 

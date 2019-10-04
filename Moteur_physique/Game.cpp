@@ -10,6 +10,10 @@ Game::~Game()
 	while (!particules_.empty()) {
 		deleteParticle(particules_.front());
 	}
+	while (!particulesGroups_.empty()) {
+		delete(particulesGroups_.front());
+		particulesGroups_.remove(particulesGroups_.front());
+	}
 }
 
 #pragma region Public Methods 
@@ -44,7 +48,7 @@ void Game::handleKeypress(unsigned char key, int x, int y)
 		break;
 
 	case 'o':
-		addParticle(getTestWater());
+		addParticle(factory.getTestWater());
 		break;
 
 	case 'd':
@@ -132,17 +136,8 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 	}
 }
 
-void Game::drawScene()
-{
-	//mise a zéro de l'affichage
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.5, 0.5, 0.5, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(posCamera_.x, posCamera_.y, posCamera_.z, 
-		lookCamera_.x, lookCamera_.y, lookCamera_.z, 
-		0, 0, 1);
-	
+void Game::drawGround() {
+
 	//dessin du sol
 	glBegin(GL_QUADS);
 	glColor3f(0.7f, 0.47f, 0.f);
@@ -177,7 +172,10 @@ void Game::drawScene()
 	glVertex3f(200, 100, -5);
 	glVertex3f(-200, 100, -5);
 	glEnd();
-	
+}
+
+void Game::drawPool() {
+
 	//dessin de la piscine
 	glBegin(GL_QUADS);
 	glColor3f(0.3f, 0.86f, 1.f);
@@ -214,7 +212,9 @@ void Game::drawScene()
 	glVertex3f(-200, 300, 0);
 	glVertex3f(200, 300, 0);
 	glEnd();
-	
+}
+
+void Game::drawParticles() {
 	//redraw all particules
 	std::list<Particle*>::iterator it;
 	for (it = particules_.begin(); it != particules_.end(); it++)
@@ -223,7 +223,22 @@ void Game::drawScene()
 			(*it)->getShape()->Draw();
 		}
 	}
+}
 
+void Game::drawScene()
+{
+	//mise a zéro de l'affichage
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.5, 0.5, 0.5, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(posCamera_.x, posCamera_.y, posCamera_.z, 
+		lookCamera_.x, lookCamera_.y, lookCamera_.z, 
+		0, 0, 1);
+	
+	drawGround();
+	drawPool();
+	drawParticles();
 	crosshair_->Draw();
 
 	//Draw power line
@@ -235,20 +250,16 @@ void Game::drawScene()
 
 #pragma endregion
 
-// Boucle d'update maintenant à jour les particules et d'autres valeurs. 
-void Game::update(int value)
-{
-	//fps
-	startTime = stopTime;
-	stopTime = clock();
-	elapsedTime= (stopTime - startTime) / (CLOCKS_PER_SEC / (double) 1000.0);
-	elapsedTime = elapsedTime / 1000;
+// Boucle d'update maintenant à jour les particules et d'autres valeurs.
 
-	//Register
+void Game::handleRegister() {
+
 	std::list<Particle*>::iterator it = particules_.begin();
-	//Particle* previousP = NULL;
+	std::list<ParticleGroup*>::iterator ite;
+
+	//Register Particules
 	for (it = particules_.begin(); it != particules_.end(); it++)
-	{		
+	{
 		if ((*it)->getPos()->z <= 2 && !isInPool(*it)) {
 			//register_.add(*it, new WeakSpringFG(5.0f, 0.7f));
 		}
@@ -259,36 +270,22 @@ void Game::update(int value)
 				register_.add(*it, new BuoyancyFG());
 			}
 		}
-
-		//register_.add(*it, new AnchoredSpringFG(mousePos, 10., 5.));
-
-		//register_.add(*it, new AnchoredSpringFG(*new Vector3D(), 209., 2.));
-
-		/*
-		if (previousP == NULL) {
-			previousP = *it;
-			continue;
-		}
-		else {
-			register_.add(*it, new SpringFG(previousP, 100., 5.));
-			previousP = *it;
-		} */
 	}
+	register_.updateForces((float)elapsedTime);
+	register_.clear();
 
-	std::list<ParticleGroup*>::iterator ite;
-
-	//Apply all group forces to the particles
+	//Register Group Particules
 	for (ite = particulesGroups_.begin(); ite != particulesGroups_.end(); ite++)
 	{
-		if ((*ite)->hasNullParticle()) {
-			particulesGroups_.remove(*ite);
-			delete(*ite);
-		}
 		(*ite)->updateForces((float)elapsedTime);
 	}
 
-	register_.updateForces((float)elapsedTime);
-	register_.clear();
+}
+
+void Game::updateAndDelete() {
+
+	std::list<Particle*>::iterator it = particules_.begin();
+	std::list<ParticleGroup*>::iterator ite;
 
 	//update physics for each particles
 	it = particules_.begin();
@@ -304,6 +301,32 @@ void Game::update(int value)
 		}
 	}
 
+	//delete blop
+	ite = particulesGroups_.begin();
+	while (ite != particulesGroups_.end())
+	{
+		if ((*ite)->hasNullParticle()) {
+			ParticleGroup* paG = *ite++;
+			particulesGroups_.remove(paG);
+			delete(paG);
+		}
+		else {
+			ite++;
+		}
+	}
+}
+
+void Game::update(int value)
+{
+	//fps
+	startTime = stopTime;
+	stopTime = clock();
+	elapsedTime= (stopTime - startTime) / (CLOCKS_PER_SEC / (double) 1000.0);
+	elapsedTime = elapsedTime / 1000;
+
+	handleRegister();
+	updateAndDelete();
+
 	//Charge le tir
 	if (isLeftMouseButtonDown) {
 
@@ -317,7 +340,6 @@ void Game::update(int value)
 			currentLoadTime = 0.f;
 		}
 	}
-
 
 	glutPostRedisplay();
 	glutTimerFunc((unsigned int)elapsedTime, updateCallback, 0);
@@ -393,12 +415,6 @@ void Game::changeCrosshairWithParticle(IParticle* pa) {
 }
 
 //Ajoute la particule à la simulation
-/*
-void Game::addParticle(Particle* pa) {
-	particules_.push_back(pa);
-} */
-
-
 void Game::addParticle(IParticle* pa) {
 
 	if (Particle* ptrPq = dynamic_cast<Particle*>(pa)) {
@@ -412,7 +428,6 @@ void Game::addParticle(IParticle* pa) {
 
 		particulesGroups_.push_back(ptrPg);
 	}
-	//particules_.push_back(pa);
 }
 
 //Supprime la particule de la simulation
