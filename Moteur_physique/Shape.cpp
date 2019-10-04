@@ -1,5 +1,22 @@
 #include "Shape.h"
 
+//Trace une ligne entre a et b.
+void Shape::drawLine(Vector3D a, Vector3D b) {
+
+	glPushMatrix();
+
+	glColor3f(1, 0, 0);
+
+	glBegin(GL_LINES);
+
+	glVertex3f(2.f, a.y, a.z);
+	glVertex3f(2.f, b.y, b.z);
+	glEnd();
+
+	glPopMatrix();
+}
+
+
 //Dessine les 6 faces du parallélépipède rectangle, centré sur la position de la particule
 void Rect3D::Draw() {
 

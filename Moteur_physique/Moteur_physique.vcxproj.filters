@@ -63,6 +63,12 @@
     <ClCompile Include="SpringFG.cpp">
       <Filter>Fichiers sources\ForceGenerators</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleGroup.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleFactory.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -103,6 +109,15 @@
     </ClInclude>
     <ClInclude Include="SpringFG.h">
       <Filter>Fichiers d%27en-tête\ForceGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="IParticle.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleGroup.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleFactory.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

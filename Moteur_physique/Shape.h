@@ -22,15 +22,23 @@ protected:
 
 public:
 
-	virtual void Draw() = 0; //pure virtual function
+	//Constructors
+	Shape(Vector3D* pos, float r, float v, float b) : position_(pos), r_(r), v_(v), b_(b) { }
+
 
 	Vector3D getColor() {
 		return Vector3D(r_, v_, b_);
 	}
 
-	//Constructors
-	Shape(Vector3D* pos, float r, float v, float b) : position_(pos), r_(r), v_(v), b_(b) { }
+	void setColor(float r, float v, float b) {
+		r_ = r;
+		v_ = v;
+		b_ = b;
+	}
 
+	virtual void Draw() = 0; //pure virtual function
+
+	static void drawLine(Vector3D a, Vector3D b);
 
 };
 
