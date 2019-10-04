@@ -24,6 +24,9 @@ public:
 		addRandomOffsets();
 	}
 
+
+	~ParticleGroup();
+
 	//Getter and Setter
 
 	//Set central particle to new pos and keep the offset between them
@@ -63,6 +66,8 @@ public:
 	void Draw();
 
 	void updateForces(float elapsedTime);
+
+	bool hasNullParticle();
 
 };
 

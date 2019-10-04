@@ -1,9 +1,27 @@
 #include "ParticleGroup.h"
 
-void ParticleGroup::Draw() {
+
+ParticleGroup::~ParticleGroup() {
 	std::vector<Particle*>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
+		delete(*it);
+	}
+
+	forcesRegister_.clear();
+}
+
+void ParticleGroup::Draw() {
+
+	Particle* centerParticle = *particles_.begin();
+	std::vector<Particle*>::iterator it;
+	for (it = particles_.begin(); it != particles_.end(); it++)
+	{
+		if (*it != centerParticle) {
+			Shape::drawLine(
+				*(*it)->getPos(),
+				*centerParticle->getPos());
+		}
 		(*it)->Draw();
 	}
 }
@@ -21,6 +39,8 @@ void ParticleGroup::addRandomOffsets() {
 	std::vector<Particle*>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
+		//Skip the first particle
+		if (it == particles_.begin()) continue;
 
 		float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 4));
 		float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 4));
@@ -33,5 +53,18 @@ void ParticleGroup::addRandomOffsets() {
 
 	//We do not clear the register because we want to re-apply
 	//those forces each loop
+}
+
+
+bool ParticleGroup::hasNullParticle() {
+	std::vector<Particle*>::iterator it;
+	for (it = particles_.begin(); it != particles_.end(); it++)
+	{
+		if (*it == NULL) {
+			return true;
+		}
+	}
+
+	return false;
 }
 

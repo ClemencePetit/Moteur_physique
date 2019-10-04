@@ -3,6 +3,10 @@
 
 void SpringFG::updateForce(Particle* p, float t) {
 
+	if (other_ == NULL) {
+		return;
+	}
+
 	Vector3D d = *p->getPos() - *other_->getPos();
 
 	p->addForce(

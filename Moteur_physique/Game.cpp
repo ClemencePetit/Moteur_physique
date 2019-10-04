@@ -228,7 +228,7 @@ void Game::drawScene()
 
 	//Draw power line
 	float lineLenght = lerp01(1.f, 3.f, currentShotPower / maxShotPower);
-	drawLine((*crosshair_->getPos()), (*crosshair_->getPos()) * lineLenght);
+	Shape::drawLine((*crosshair_->getPos()), (*crosshair_->getPos()) * lineLenght);
 
 	glutSwapBuffers();
 }
@@ -280,6 +280,10 @@ void Game::update(int value)
 	//Apply all group forces to the particles
 	for (ite = particulesGroups_.begin(); ite != particulesGroups_.end(); ite++)
 	{
+		if ((*ite)->hasNullParticle()) {
+			particulesGroups_.remove(*ite);
+			delete(*ite);
+		}
 		(*ite)->updateForces((float)elapsedTime);
 	}
 
@@ -369,20 +373,6 @@ void Game::initRendering()//initialisation de l'affichage
 	glClearColor(0.5, 0.5, 0.5, 1);
 }
 
-//Trace une ligne entre a et b.
-void Game::drawLine(Vector3D a, Vector3D b) {
-
-	glPushMatrix();
-
-	glColor3f(1, 0, 0);
-
-	glBegin(GL_LINES);
-	glVertex3f(2.f, a.y, a.z);
-	glVertex3f(2.f, b.y, b.z);
-	glEnd();
-
-	glPopMatrix();
-}
 
 #pragma endregion
 

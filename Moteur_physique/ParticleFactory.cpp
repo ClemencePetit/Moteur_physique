@@ -67,7 +67,7 @@ IParticle* ParticleFactory::getYoyo() {
 	//Forces
 	ParticleForceRegister fg;
 
-	fg.add(a, new AnchoredSpringFG(Vector3D(), 0.5, 1000));
+	//fg.add(a, new AnchoredSpringFG(Vector3D(), 0.5, 1000));
 
 	ParticleGroup* pg = new ParticleGroup(pas, fg);
 
