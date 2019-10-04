@@ -262,7 +262,7 @@ void Game::handleRegister() {
 	for (it = particules_.begin(); it != particules_.end(); it++)
 	{
 		if ((*it)->getPos()->z <= 2 && !isInPool(*it)) {
-			//register_.add(*it, new WeakSpringFG(5.0f, 0.7f));
+			//register_.add(*it, new WeakSpringFG(0.1f, 0.7f));
 		}
 		else {
 			register_.add(*it, new GravityFG(g_));
@@ -272,15 +272,72 @@ void Game::handleRegister() {
 			}
 		}
 	}
-	register_.updateForces((float)elapsedTime);
+	register_.updateForces(elapsedTime);
 	register_.clear();
 
 	//Register Group Particules
 	for (ite = particulesGroups_.begin(); ite != particulesGroups_.end(); ite++)
 	{
-		(*ite)->updateForces((float)elapsedTime);
+		(*ite)->updateForces(elapsedTime);
 	}
 
+}
+
+void Game::handleCollisions() {
+
+	int nbCollisions = 0;
+	//nbCollisions = testCollisions();
+	contactResolver_.setIter(2 * nbCollisions);
+
+	while (contactResolver_.limitNotReached()) {
+		contactResolver_.resolveContacts(elapsedTime);
+		//testCollisions();
+	}
+
+	contactResolver_.limitReached();
+}
+
+int Game::testCollisions() {
+	
+	int iter = 0;
+	
+	float restit;
+	float dPene;
+	Vector3D n;
+
+	std::list<Particle*>::iterator itA;
+	std::list<Particle*>::iterator itB;
+
+	for (itA = particules_.begin(); itA != particules_.end(); itA++) {
+		//Collisions entre particules
+		for (itB = next(itA, 1); itB != particules_.end(); itB++) {
+			if ((*itA)->getPos()->distanceWith(*(*itB)->getPos()) < 4) {
+				restit = 0.95f;
+				dPene = 4 - (*itA)->getPos()->distanceWith(*(*itB)->getPos());
+				n = *(*itB)->getPos() - *(*itA)->getPos();
+				contactResolver_.addContact(new ParticleContact(*itA, *itB, restit, dPene, n));
+				iter += 1;
+			}
+		}
+		//Collisions avec le sol
+		if ((*itA)->getPos()->z < 2 && !isInPool(*itA)) {
+			restit = 0.50;
+			dPene = 2 - (*itA)->getPos()->z;
+			n = Vector3D(0, 0, -1);
+			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+			iter += 1;
+		}
+		//Collisions avec le fond de la piscine
+		else if ((*itA)->getPos()->z < 2 && !isInPool(*itA)) {
+			restit = 0.50;
+			dPene = - 48 - (*itA)->getPos()->z;
+			n = Vector3D(0, 0, -1);
+			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+			iter += 1;
+		}
+	}
+	
+	return iter;
 }
 
 void Game::updateAndDelete() {
@@ -292,7 +349,7 @@ void Game::updateAndDelete() {
 	it = particules_.begin();
 	while (it != particules_.end()) {
 		if (*it != NULL) {
-			(*it)->integrer((float)elapsedTime);
+			(*it)->integrer(elapsedTime);
 			if ((*it)->getPos()->z < -100) {
 				int indexTemp = (*it)->getIndex();
 				//delete blop
@@ -321,10 +378,12 @@ void Game::update(int value)
 	//fps
 	startTime = stopTime;
 	stopTime = clock();
-	elapsedTime= (stopTime - startTime) / (CLOCKS_PER_SEC / (double) 1000.0);
-	elapsedTime = elapsedTime / 1000;
+	elapsedTime = ((float)(stopTime - startTime)) / (CLOCKS_PER_SEC);
+
+	//elapsedTime = std::fmaxf(elapsedTime, 0.000001f);
 
 	handleRegister();
+	handleCollisions();
 	updateAndDelete();
 
 	//Charge le tir
@@ -333,7 +392,7 @@ void Game::update(int value)
 		//Puissance actuelle en fonction du temps de charge
 		currentShotPower = lerp01(minShotPower, maxShotPower, currentLoadTime / timeLoadMaxShot);
 
-		currentLoadTime += (float)elapsedTime;
+		currentLoadTime += elapsedTime;
 
 		//Si puissance max atteinte, retour à 0.
 		if (currentLoadTime >= timeLoadMaxShot) {
@@ -342,7 +401,7 @@ void Game::update(int value)
 	}
 
 	glutPostRedisplay();
-	glutTimerFunc((unsigned int)elapsedTime, updateCallback, 0);
+	glutTimerFunc((unsigned int)elapsedTime * 1000, updateCallback, 0);
 }
 
 //liste d'instructions

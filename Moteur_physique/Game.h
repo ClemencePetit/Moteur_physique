@@ -20,6 +20,7 @@
 #include "WeakSpringFG.h"
 #include "IParticle.h"
 #include "ParticleFactory.h"
+#include "ContactResolver.h"
 
 // Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Game
@@ -28,6 +29,9 @@ private:
 
 	//Registre
 	ParticleForceRegister register_;
+
+	//Collisions
+	ContactResolver contactResolver_;
 
 	IParticle* crosshair_; //particule servant à la visée (réticule)
 	float distanceReticleFromOrigin_ = 10.f;
@@ -53,8 +57,8 @@ private:
 	float k2 = 1.2f;
 
 	//time
-	double elapsedTime;
-	clock_t stopTime = 0;
+	float elapsedTime;
+	clock_t stopTime = clock();
 	clock_t startTime;
 
 	//dimensions de l'écran
@@ -73,10 +77,8 @@ private:
 
 public:
 
-
 	//Glut
 	void initRendering();
-	void drawLine(Vector3D a, Vector3D b);
 
 	//particles
 	void changeCrosshairWithParticle(IParticle* pa);
@@ -102,17 +104,24 @@ public:
 	void handlePassiveMouseMotion(int x, int y);
 	void handleMouseClick(int button, int state, int x, int y);
 
+	//fonctions draw
 	void drawGround();
 	void drawPool();
 	void drawParticles();
 	void drawScene();
 
+	//// fonctions update
+	// Register
 	void handleRegister();
+	// Collisions
+	int testCollisions();
+	void handleCollisions();
+	// Update and Delete
 	void updateAndDelete();
+	// global update
 	void update(int value);
 
 	//start the game and write the instructions
-
 	void instructions();
 	void execute(int argc, char** argv);
 	
