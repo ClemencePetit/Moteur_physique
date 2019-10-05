@@ -47,8 +47,17 @@ void ParticleContact::resolveInterpenetration() {
 	}
 	//Cas de 2 particules
 	else {
-		float pTemp = dPene_ / ((1 / particles_[0]->getMassInv()) + (1 / particles_[1]->getMassInv()));
-		particles_[0]->setPos(*particles_[0]->getPos() + n_ * -(1 / particles_[1]->getMassInv()));
-		particles_[1]->setPos(*particles_[1]->getPos() + n_ * (1 / particles_[0]->getMassInv()));
+		float ma = 1 / particles_[0]->getMassInv();
+		float mb = 1 / particles_[1]->getMassInv();
+
+		Vector3D deltaPA = n_ * (mb / (ma + mb)) * dPene_;
+		Vector3D deltaPB = n_ * -1 * (ma / (ma + mb)) * dPene_;
+
+		particles_[0]->setPos(*particles_[0]->getPos() + deltaPA);
+		particles_[1]->setPos(*particles_[1]->getPos() + deltaPB);
+
+		//float pTemp = dPene_ / ((1 / particles_[0]->getMassInv()) + (1 / particles_[1]->getMassInv()));
+		//particles_[0]->setPos(*particles_[0]->getPos() + n_ * -(1 / particles_[1]->getMassInv()));
+		//particles_[1]->setPos(*particles_[1]->getPos() + n_ * (1 / particles_[0]->getMassInv()));
 	}
 }
