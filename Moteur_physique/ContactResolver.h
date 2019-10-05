@@ -22,6 +22,8 @@ public:
 
 	void resolveContacts(float t);
 
+	void sortByAscendingVelocities();
+
 	void addContact(ParticleContact* paC) { contacts_.push_front(paC); }
 	void deleteContact(ParticleContact* paC);
 
@@ -29,5 +31,6 @@ public:
 	void limitReached() { iterUsed_ = 0; }
 
 };
+
 
 #endif

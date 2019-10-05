@@ -4,6 +4,7 @@ ParticleContact::ParticleContact(Particle* pa1, Particle* pa2, float restit, flo
 {
 	particles_[0] = pa1;
 	particles_[1] = pa2;
+	vs_ = calculVs();
 }
 
 ParticleContact::~ParticleContact()
@@ -27,7 +28,7 @@ float ParticleContact::calculVs() {
 }
 
 void ParticleContact::resolveVelocity(float t) {
-	float vTemp = restit_ * calculVs();
+	float vTemp = restit_ * vs_;
 	//Cas d'un sol
 	if (particles_[1] = NULL) {
 		particles_[0]->setVit(particles_[0]->getVit() + n_ * -vTemp);

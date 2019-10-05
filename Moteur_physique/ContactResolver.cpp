@@ -19,6 +19,14 @@ void ContactResolver::resolveContacts(float t) {
 	}
 }
 
+
+void ContactResolver::sortByAscendingVelocities() {
+	contacts_.sort([](ParticleContact* c1, ParticleContact* c2) {
+		return c1->getVs() < c2->getVs();
+	});
+}
+
+
 void ContactResolver::deleteContact(ParticleContact* paC) {
 	contacts_.remove(paC);
 	delete(paC);

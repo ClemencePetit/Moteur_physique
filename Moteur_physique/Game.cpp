@@ -298,12 +298,14 @@ void Game::handleRegister() {
 void Game::handleCollisions() {
 
 	int nbCollisions = 0;
-	//nbCollisions = testCollisions();
+	nbCollisions = testCollisions();
 	contactResolver_.setIter(2 * nbCollisions);
+
+	contactResolver_.sortByAscendingVelocities();
 
 	while (contactResolver_.limitNotReached()) {
 		contactResolver_.resolveContacts(elapsedTime);
-		//testCollisions();
+		testCollisions();
 	}
 
 	contactResolver_.limitReached();
