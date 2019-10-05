@@ -68,11 +68,12 @@ void Shape::drawLine(Vector3D a, Vector3D b) {
 	glPushMatrix();
 
 	glColor3f(1, 0, 0);
+	glTranslatef(0, 0, 0);
 
 	glBegin(GL_LINES);
 
-	glVertex3f(2.f, a.y, a.z);
-	glVertex3f(2.f, b.y, b.z);
+	glVertex3f(a.x, a.y, a.z);
+	glVertex3f(b.x, b.y, b.z);
 	glEnd();
 
 	glPopMatrix();

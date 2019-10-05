@@ -108,6 +108,7 @@ public:
 	void drawGround();
 	void drawPool();
 	void drawParticles();
+	void drawGroupParticles();
 	void drawScene();
 
 	//// fonctions update

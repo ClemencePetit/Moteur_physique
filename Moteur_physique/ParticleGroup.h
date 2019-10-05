@@ -63,7 +63,8 @@ public:
 		return particles_;
 	}
 
-	void Draw();
+	void Draw(); 
+	void DrawLinks();
 
 	void updateForces(float elapsedTime);
 

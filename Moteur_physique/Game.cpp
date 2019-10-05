@@ -226,6 +226,17 @@ void Game::drawParticles() {
 	}
 }
 
+void Game::drawGroupParticles() {
+	//redraw all link between grouped particles
+	std::list<ParticleGroup*>::iterator it;
+	for (it = particulesGroups_.begin(); it != particulesGroups_.end(); it++)
+	{
+		if (*it != NULL) {
+			(*it)->DrawLinks();
+		}
+	}
+}
+
 void Game::drawScene()
 {
 	//mise a zéro de l'affichage
@@ -240,6 +251,7 @@ void Game::drawScene()
 	drawGround();
 	drawPool();
 	drawParticles();
+	drawGroupParticles();
 	crosshair_->Draw();
 
 	//Draw power line

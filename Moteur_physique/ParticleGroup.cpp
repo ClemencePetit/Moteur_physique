@@ -11,12 +11,22 @@ void ParticleGroup::Draw() {
 	std::vector<Particle*>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
-		if (*it != centerParticle) {
-			Shape::drawLine(
-				*(*it)->getPos(),
-				*centerParticle->getPos());
-		}
+		Shape::drawLine(
+			*(*it)->getPos(),
+			*centerParticle->getPos());
 		(*it)->Draw();
+	}
+}
+
+void ParticleGroup::DrawLinks() {
+
+	Particle* centerParticle = *particles_.begin();
+	std::vector<Particle*>::iterator it;
+	for (it = particles_.begin(); it != particles_.end(); it++)
+	{
+		Shape::drawLine(
+			*(*it)->getPos(),
+			*centerParticle->getPos());
 	}
 }
 
