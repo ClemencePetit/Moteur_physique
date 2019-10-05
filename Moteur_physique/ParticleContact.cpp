@@ -18,7 +18,7 @@ void ParticleContact::resolve(float t) {
 
 float ParticleContact::calculVs() {
 	//Cas d'un sol
-	if (particles_[1] = NULL) {
+	if (particles_[1] == NULL) {
 		return (particles_[0]->getVit().dotProd(n_));
 	}
 	//Cas de 2 particules
@@ -30,7 +30,7 @@ float ParticleContact::calculVs() {
 void ParticleContact::resolveVelocity(float t) {
 	float vTemp = restit_ * vs_;
 	//Cas d'un sol
-	if (particles_[1] = NULL) {
+	if (particles_[1] == NULL) {
 		particles_[0]->setVit(particles_[0]->getVit() + n_ * -vTemp);
 	}
 	//Cas de 2 particules
@@ -42,7 +42,7 @@ void ParticleContact::resolveVelocity(float t) {
 
 void ParticleContact::resolveInterpenetration() {
 	//Cas d'un sol
-	if (particles_[1] = NULL) {
+	if (particles_[1] == NULL) {
 		particles_[0]->setPos(*particles_[0]->getPos() + n_ * -dPene_);
 	}
 	//Cas de 2 particules
