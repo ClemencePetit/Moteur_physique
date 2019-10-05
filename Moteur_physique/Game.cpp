@@ -301,7 +301,7 @@ void Game::handleCollisions() {
 	nbCollisions = testCollisions();
 	contactResolver_.setIter(2 * nbCollisions);
 
-	contactResolver_.sortByAscendingVelocities();
+	//.sortByAscendingVelocities();
 
 	while (contactResolver_.limitNotReached()) {
 		contactResolver_.resolveContacts(elapsedTime);
@@ -325,9 +325,10 @@ int Game::testCollisions() {
 	for (itA = particules_.begin(); itA != particules_.end(); itA++) {
 		//Collisions entre particules
 		for (itB = next(itA, 1); itB != particules_.end(); itB++) {
-			if ((*itA)->getPos()->distanceWith(*(*itB)->getPos()) < 4) {
-				restit = 0.95f;
-				dPene = 4 - (*itA)->getPos()->distanceWith(*(*itB)->getPos());
+			float distAB = (*itA)->getPos()->distanceWith(*(*itB)->getPos());
+			if (distAB < 4) {
+				restit = 0.9f;
+				dPene = 4 - distAB;
 				n = *(*itB)->getPos() - *(*itA)->getPos();
 				contactResolver_.addContact(new ParticleContact(*itA, *itB, restit, dPene, n));
 				iter += 1;

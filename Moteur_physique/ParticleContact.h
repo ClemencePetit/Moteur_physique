@@ -9,7 +9,7 @@ private:
 	Particle* particles_[2];
 	float restit_;
 	float dPene_;
-	float vs_; //public is required for sort comparator
+	float vs_;
 
 	Vector3D n_; //Dans le sens particles_[0] -> particles_[1]
 

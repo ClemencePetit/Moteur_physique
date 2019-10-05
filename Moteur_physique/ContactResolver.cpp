@@ -12,6 +12,7 @@ ContactResolver::~ContactResolver()
 }
 
 void ContactResolver::resolveContacts(float t) {
+	sortByAscendingVelocities();
 	while (!contacts_.empty()) {
 		contacts_.front()->resolve(t);
 		deleteContact(contacts_.front());

@@ -1,6 +1,6 @@
 #include "ParticleContact.h"
 
-ParticleContact::ParticleContact(Particle* pa1, Particle* pa2, float restit, float dPene, Vector3D n): restit_(restit), dPene_(dPene), n_(n)
+ParticleContact::ParticleContact(Particle* pa1, Particle* pa2, float restit, float dPene, Vector3D n): restit_(restit), dPene_(dPene), n_(n.normalized())
 {
 	particles_[0] = pa1;
 	particles_[1] = pa2;
