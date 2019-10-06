@@ -5,7 +5,7 @@
 #include "Shape.h"
 #include "IParticle.h"
 
-// Classe contenant les données concernant la particule d'un point de vue physique, plus la forme qui est associée à la particule
+// Classe contenant les donnï¿½es concernant la particule d'un point de vue physique, plus la forme qui est associï¿½e ï¿½ la particule
 class Particle : public IParticle
 {
 
@@ -14,12 +14,12 @@ private:
 	int index_;
 
 	Vector3D* pos_; //position
-	Vector3D vel_; //velocité
+	Vector3D vel_; //velocitï¿½
 
 	Vector3D forceAccum_;
 	float massInv_;
 
-	Shape* shape_; //forme associée à la particule pour la dessiner
+	Shape* shape_; //forme associï¿½e ï¿½ la particule pour la dessiner
 
 public:
 
@@ -41,7 +41,8 @@ public:
 
 	//IPARTICLE
 	void addTo(list<Particle*> list);
-	void Draw();
+	void draw();
+	void drawVelocity();
 
 	//methods for forceAccum
 	void addForce(const Vector3D &force);

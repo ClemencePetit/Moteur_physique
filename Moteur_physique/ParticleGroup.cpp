@@ -5,7 +5,7 @@ ParticleGroup::~ParticleGroup() {
 	forcesRegister_.clear();
 }
 
-void ParticleGroup::Draw() {
+void ParticleGroup::draw() {
 
 	Particle* centerParticle = *particles_.begin();
 	std::vector<Particle*>::iterator it;
@@ -14,7 +14,7 @@ void ParticleGroup::Draw() {
 		Shape::drawLine(
 			*(*it)->getPos(),
 			*centerParticle->getPos());
-		(*it)->Draw();
+		(*it)->draw();
 	}
 }
 

@@ -27,8 +27,13 @@ void Particle::addTo(list<Particle*> list) {
 	list.push_back(this);
 }
 
-void Particle::Draw() {
-	shape_->Draw();
+void Particle::draw() {
+	shape_->draw();
+	drawVelocity(); //debug
+}
+
+void Particle::drawVelocity() {
+	Shape::drawLine(*getPos(), *getPos() + getVit() * 0.2f);
 }
 
 void Particle::addForce(const Vector3D &force) {

@@ -13,7 +13,7 @@ public:
 
 	virtual Vector3D* getPos() = 0;
 
-	virtual void Draw() = 0;
+	virtual void draw() = 0;
 
 };
 

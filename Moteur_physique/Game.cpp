@@ -221,7 +221,7 @@ void Game::drawParticles() {
 	for (it = particules_.begin(); it != particules_.end(); it++)
 	{
 		if (*it != NULL && (*it)->getShape() != NULL) {
-			(*it)->getShape()->Draw();
+			(*it)->draw();
 		}
 	}
 }
@@ -252,7 +252,7 @@ void Game::drawScene()
 	drawPool();
 	drawParticles();
 	drawGroupParticles();
-	crosshair_->Draw();
+	crosshair_->draw();
 
 	//Draw power line
 	float lineLenght = lerp01(1.f, 3.f, currentShotPower / maxShotPower);
@@ -325,9 +325,11 @@ int Game::testCollisions() {
 	for (itA = particules_.begin(); itA != particules_.end(); itA++) {
 		//Collisions entre particules
 		for (itB = next(itA, 1); itB != particules_.end(); itB++) {
+
 			float distAB = (*itA)->getPos()->distanceWith(*(*itB)->getPos());
+
 			if (distAB < 4) {
-				restit = 0.9f;
+				restit = 0.95f;
 				dPene = 4 - distAB;
 				n = *(*itB)->getPos() - *(*itA)->getPos();
 				contactResolver_.addContact(new ParticleContact(*itA, *itB, restit, dPene, n));

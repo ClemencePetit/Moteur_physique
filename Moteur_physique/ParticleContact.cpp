@@ -28,15 +28,18 @@ float ParticleContact::calculVs() {
 }
 
 void ParticleContact::resolveVelocity(float t) {
+
+	if (vs_ <= 0) return; //ils ne se rapprochent pas et non donc pas besoin d'etre �loign�s
+
 	float vTemp = restit_ * vs_;
 	//Cas d'un sol
 	if (particles_[1] == NULL) {
-		particles_[0]->setVit(particles_[0]->getVit() + n_ * -vTemp);
+		particles_[0]->setVit(particles_[0]->getVit() + n_ * -vTemp * t);
 	}
 	//Cas de 2 particules
 	else {
-		particles_[0]->setVit(particles_[0]->getVit() + n_ * -vTemp);
-		particles_[1]->setVit(particles_[1]->getVit() + n_ * vTemp);
+		particles_[0]->setVit(particles_[0]->getVit() + n_ * -vTemp * t);
+		particles_[1]->setVit(particles_[1]->getVit() + n_ * -vTemp * t);
 	}
 }
 
@@ -55,9 +58,5 @@ void ParticleContact::resolveInterpenetration() {
 
 		particles_[0]->setPos(*particles_[0]->getPos() + deltaPA);
 		particles_[1]->setPos(*particles_[1]->getPos() + deltaPB);
-
-		//float pTemp = dPene_ / ((1 / particles_[0]->getMassInv()) + (1 / particles_[1]->getMassInv()));
-		//particles_[0]->setPos(*particles_[0]->getPos() + n_ * -(1 / particles_[1]->getMassInv()));
-		//particles_[1]->setPos(*particles_[1]->getPos() + n_ * (1 / particles_[0]->getMassInv()));
 	}
 }
