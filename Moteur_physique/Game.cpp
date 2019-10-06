@@ -13,6 +13,7 @@ Game::~Game()
 	while (!particulesGroups_.empty()) {
 		deleteParticleGroup(particulesGroups_.front());
 	}
+
 }
 
 #pragma region Public Methods 
@@ -57,6 +58,8 @@ void Game::handleKeypress(unsigned char key, int x, int y)
 		while (!particulesGroups_.empty()) {
 			deleteParticleGroup(particulesGroups_.front());
 		}
+		register_.clear();
+		contactResolver_.clear();
 		break;
 
 	//ESCAPE key

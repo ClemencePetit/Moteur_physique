@@ -7,6 +7,7 @@ ParticleForceRegister::ParticleForceRegister()
 
 ParticleForceRegister::~ParticleForceRegister()
 {
+	clear();
 }
 
 void ParticleForceRegister::add(Particle* p, ParticleForceGenerator* fg) {

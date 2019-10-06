@@ -6,9 +6,7 @@ ContactResolver::ContactResolver()
 
 ContactResolver::~ContactResolver()
 {
-	while (!contacts_.empty()) {
-		deleteContact(contacts_.front());
-	}
+	clear();
 }
 
 void ContactResolver::resolveContacts(float t) {
@@ -31,4 +29,10 @@ void ContactResolver::sortByAscendingVelocities() {
 void ContactResolver::deleteContact(ParticleContact* paC) {
 	contacts_.remove(paC);
 	delete(paC);
+}
+
+void ContactResolver::clear() {
+	while (!contacts_.empty()) {
+		deleteContact(contacts_.front());
+	}
 }

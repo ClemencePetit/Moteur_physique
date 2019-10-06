@@ -13,6 +13,7 @@ struct ForceRecord {
 class ParticleForceRegister {
 
 private:
+
 	std::vector<ForceRecord> register_;
 
 public:

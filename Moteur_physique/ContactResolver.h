@@ -30,6 +30,7 @@ public:
 	bool limitNotReached() { return (!contacts_.empty() && iterUsed_ < iter_); }
 	void limitReached() { iterUsed_ = 0; }
 
+	void clear();
 };
 
 
