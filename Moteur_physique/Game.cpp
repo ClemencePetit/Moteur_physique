@@ -336,9 +336,10 @@ int Game::testCollisions() {
 				iter += 1;
 			}
 		}
-		//Collisions avec le sol
+
 
 		float z = (*itA)->getPos()->z;
+		//Collisions avec le sol
 		if (z < 2 && !isInPool(*itA)) {
 			restit = 0.50;
 			dPene = 2 - z;
@@ -347,7 +348,7 @@ int Game::testCollisions() {
 			iter += 1;
 		}
 		//Collisions avec le fond de la piscine
-		else if (z < 2 && !isInPool(*itA)) {
+		else if (z < -48 && isInPool(*itA)) {
 			restit = 0.50;
 			dPene = -48 - z;
 			n = Vector3D(0, 0, -1);
