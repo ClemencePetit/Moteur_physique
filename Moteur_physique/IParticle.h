@@ -12,6 +12,7 @@ public:
 	virtual void setVit(Vector3D vit) = 0;
 
 	virtual Vector3D* getPos() = 0;
+	virtual Vector3D getVit() = 0;
 
 	virtual void draw() = 0;
 

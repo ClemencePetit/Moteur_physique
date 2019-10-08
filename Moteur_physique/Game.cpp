@@ -88,14 +88,18 @@ void Game::handlePassiveMouseMotion(int x, int y) {
 
 	//move reticle toward mouse
 
-	Vector3D mouseDirection2D = Vector3D(0.0f, (float)x, (float)(screenHeight - y));
+	float h = (float)(screenHeight - y - 50);
+	Vector3D mouseDirection2D = Vector3D(0.0f, (float)x, h);
 	
 	mousePos = mouseDirection2D; //he he he
 
 	Vector3D normalizedDirection = mouseDirection2D.normalized();
 
+	//Set pos
 	Vector3D* pos = crosshair_->getPos();
-	*pos = normalizedDirection * 5.f;
+	*pos = crosshairOrigin_ + normalizedDirection * 5.f;
+
+	crosshair_->setVit((*pos - crosshairOrigin_).normalized());
 }
 
 void Game::handleMouseClick(int button, int state, int x, int y) {
@@ -111,7 +115,7 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 
 				pa = factory_.getCurrentProjectile();
 				pa->setPos(*crosshair_->getPos());
-				pa->setVit(crosshair_->getPos()->normalized() * baseVelocity_ * currentShotPower);
+				pa->setVit((crosshair_->getVit().normalized()) * baseVelocity_ * currentShotPower);
 				
 				addParticle(pa);
 
@@ -256,10 +260,14 @@ void Game::drawScene()
 	drawParticles();
 	drawGroupParticles();
 	crosshair_->draw();
+	Shape::drawLine(crosshairOrigin_, *crosshair_->getPos()); //origin to crosshair
+	Shape::drawLine(crosshairOrigin_, Vector3D()); //ground
 
 	//Draw power line
-	float lineLenght = lerp01(1.f, 3.f, currentShotPower / maxShotPower);
-	Shape::drawLine((*crosshair_->getPos()), (*crosshair_->getPos()) * lineLenght);
+	float lineLenght = lerp01(4.f, 15.f, currentShotPower / maxShotPower);
+	Vector3D directionAim = (*crosshair_->getPos() - crosshairOrigin_).normalized() * lineLenght;
+	Shape::drawLine(*crosshair_->getPos(), (*crosshair_->getPos()) + directionAim);
+	//Shape::drawLine((*crosshair_->getPos()), (*crosshair_->getPos()) + directionAim.normalized() * lineLenght);
 
 	glutSwapBuffers();
 }
@@ -448,7 +456,8 @@ void Game::execute(int argc, char** argv)
 {
 	instructions();
 
-	crosshair_ = new Particle(&Vector3D(), Vector3D(), 0.f, -1);
+	crosshairOrigin_ = Vector3D(0, 0, 10);
+	crosshair_ = new Particle(&crosshairOrigin_, Vector3D(), 0.f, -1);
 
 	changeCrosshairWithParticle(factory_.getBasicBall());
 
@@ -487,12 +496,12 @@ void Game::initRendering()//initialisation de l'affichage
 void Game::changeCrosshairWithParticle(IParticle* pa) {
 
 	Vector3D tempPos = *crosshair_->getPos();
+	Vector3D tempVit = crosshair_->getVit();
 
 	delete(crosshair_);
 	crosshair_ = pa;
 
-	//no movement
-	pa->setVit(Vector3D());
+	pa->setVit(tempVit);
 	pa->setPos(tempPos);
 
 }

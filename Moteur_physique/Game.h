@@ -34,7 +34,7 @@ private:
 	ContactResolver contactResolver_;
 
 	IParticle* crosshair_; //particule servant à la visée (réticule)
-	float distanceReticleFromOrigin_ = 10.f;
+	Vector3D crosshairOrigin_;
 	float baseVelocity_ = 50.f;
 
 	//load shot

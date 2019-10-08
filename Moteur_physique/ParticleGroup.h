@@ -59,6 +59,10 @@ public:
 		return (*particles_.begin())->getPos();
 	};
 
+	Vector3D getVit() {
+		return (*particles_.begin())->getVit();
+	}
+
 	std::vector<Particle*> getParticles() {
 		return particles_;
 	}
