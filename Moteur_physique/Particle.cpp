@@ -2,10 +2,6 @@
 
 Particle::Particle(Vector3D* pos, Vector3D vit, float m, int index) : pos_(pos), vel_(vit), massInv_(1/m), forceAccum_(0, 0, 0), index_(index)
 {
-	pos_WS = Vector3D(0, 0, 0);
-	vel_WS = Vector3D(0, 0, 0);
-	debut_WS = 0;
-	started = false;
 }
 
 void Particle::integrer(float t)
@@ -22,7 +18,6 @@ void Particle::integrer(float t)
 
 Particle::~Particle()
 {
-	
 	delete(shape_);
 	delete(pos_);
 }
