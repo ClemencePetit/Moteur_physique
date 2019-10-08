@@ -24,7 +24,7 @@ public:
 
 	void resolve(float t);
 	float calculVs();
-	void resolveVelocity(float t);
+	void resolveVelocity();
 	void resolveInterpenetration();
 
 
