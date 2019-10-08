@@ -13,14 +13,20 @@ struct ForceRecord {
 class ParticleForceRegister {
 
 private:
+
 	std::vector<ForceRecord> register_;
 
 public:
 
 	void add(Particle* p, ParticleForceGenerator* fg);
+	void add(std::vector<ForceRecord> otherRegister);
 	void remove();
 	void clear();
 	void updateForces(float t);
+
+	std::vector<ForceRecord> getRegister() {
+		return register_;
+	}
 
 	ParticleForceRegister();
 	~ParticleForceRegister();

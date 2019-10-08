@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3D* pos, Vector3D vit, float m) : pos_(pos), vel_(vit), massInv_(1/m), forceAccum_(0, 0, 0)
+Particle::Particle(Vector3D* pos, Vector3D vit, float m, int index) : pos_(pos), vel_(vit), massInv_(1/m), forceAccum_(0, 0, 0), index_(index)
 {
 	pos_WS = Vector3D(0, 0, 0);
 	vel_WS = Vector3D(0, 0, 0);
@@ -24,7 +24,21 @@ Particle::~Particle()
 {
 	
 	delete(shape_);
-	//delete(pos_);
+	delete(pos_);
+}
+
+
+void Particle::addTo(list<Particle*> list) {
+	list.push_back(this);
+}
+
+void Particle::draw() {
+	shape_->draw();
+	drawVelocity(); //debug
+}
+
+void Particle::drawVelocity() {
+	Shape::drawLine(*getPos(), *getPos() + getVit() * 0.2f);
 }
 
 void Particle::addForce(const Vector3D &force) {

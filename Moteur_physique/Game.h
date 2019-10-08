@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "Particle.h"
+#include "ParticleGroup.h"
 #include "Vector3D.h"
 #include "ParticleForceRegister.h"
 #include "DragFG.h"
@@ -17,6 +18,9 @@
 #include "AnchoredSpringFG.h"
 #include "BungeeSpringFG.h"
 #include "WeakSpringFG.h"
+#include "IParticle.h"
+#include "ParticleFactory.h"
+#include "ContactResolver.h"
 
 // Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Game
@@ -26,7 +30,10 @@ private:
 	//Registre
 	ParticleForceRegister register_;
 
-	Particle* crosshair_;//particule servant à la visée (réticule)
+	//Collisions
+	ContactResolver contactResolver_;
+
+	IParticle* crosshair_; //particule servant à la visée (réticule)
 	float distanceReticleFromOrigin_ = 10.f;
 	float baseVelocity_ = 50.f;
 
@@ -40,7 +47,9 @@ private:
 	bool isLeftMouseButtonDown = false;
 
 	list <Particle*> particules_; //liste des particules créées
-	int indexCurrentParticle_; //indice du type de projectile actuellement choisi
+	list <ParticleGroup*> particulesGroups_;
+
+	ParticleFactory factory_;
 
 	//Constantes
 	Vector3D g_ = Vector3D(0, 0, -9.8f);
@@ -48,8 +57,8 @@ private:
 	float k2 = 1.2f;
 
 	//time
-	double elapsedTime;
-	clock_t stopTime = 0;
+	float elapsedTime;
+	clock_t stopTime = clock();
 	clock_t startTime;
 
 	//dimensions de l'écran
@@ -64,20 +73,19 @@ private:
 	Vector3D mousePos = Vector3D();
 
 	//pour voir dans la piscine
-	bool seeInWater_ = false;
+	bool seeInWater_ = true;
 
 public:
 
-
 	//Glut
 	void initRendering();
-	void drawLine(Vector3D a, Vector3D b);
 
 	//particles
-	void changeCrosshairWithParticle(Particle* pa);
-	Particle* getCurrentParticle();
-	void addParticle(Particle* pa);
+	void changeCrosshairWithParticle(IParticle* pa);
+
+	void addParticle(IParticle* pa);
 	void deleteParticle(Particle* pa);
+	void deleteParticleGroup(ParticleGroup* paG);
 
 	//part of hotfix
 	void setupInstance();
@@ -95,11 +103,26 @@ public:
 	void handleResize(int w, int h);
 	void handlePassiveMouseMotion(int x, int y);
 	void handleMouseClick(int button, int state, int x, int y);
+
+	//fonctions draw
+	void drawGround();
+	void drawPool();
+	void drawParticles();
+	void drawGroupParticles();
 	void drawScene();
+
+	//// fonctions update
+	// Register
+	void handleRegister();
+	// Collisions
+	int testCollisions();
+	void handleCollisions();
+	// Update and Delete
+	void updateAndDelete();
+	// global update
 	void update(int value);
 
 	//start the game and write the instructions
-
 	void instructions();
 	void execute(int argc, char** argv);
 	

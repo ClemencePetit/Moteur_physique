@@ -22,15 +22,23 @@ protected:
 
 public:
 
-	virtual void Draw() = 0; //pure virtual function
+	//Constructors
+	Shape(Vector3D* pos, float r, float v, float b) : position_(pos), r_(r), v_(v), b_(b) { }
+
 
 	Vector3D getColor() {
 		return Vector3D(r_, v_, b_);
 	}
 
-	//Constructors
-	Shape(Vector3D* pos, float r, float v, float b) : position_(pos), r_(r), v_(v), b_(b) { }
+	void setColor(float r, float v, float b) {
+		r_ = r;
+		v_ = v;
+		b_ = b;
+	}
 
+	virtual void draw() = 0; //pure virtual function
+
+	static void drawLine(Vector3D a, Vector3D b);
 
 };
 
@@ -44,7 +52,7 @@ private:
 
 public:
 
-	void Draw();
+	void draw();
 
 	//Constructors
 	Rect3D(Vector3D* pos, float r = 0, float v = 0, float b = 0, float w = 2, float h = 2, float p = 2) : width(w), height(h), depth(p), Shape(pos, r, v, b) { }
@@ -57,7 +65,7 @@ private:
 	float rayon;
 
 public:
-	void Draw();
+	void draw();
 
 	//Constructors
 	Sphere(Vector3D* pos, float r = 0, float v = 0, float b = 0,  float rayon = 2) : rayon(rayon), Shape(pos, r, v, b) { }
