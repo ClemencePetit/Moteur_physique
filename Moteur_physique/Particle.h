@@ -19,6 +19,8 @@ private:
 	Vector3D forceAccum_;
 	float massInv_;
 
+	float collRadius_;
+
 	Shape* shape_; //forme associ�e � la particule pour la dessiner
 
 public:
@@ -31,13 +33,18 @@ public:
 	void setPos(Vector3D pos) { *pos_ = pos; };
 	void setVit(Vector3D vit) { vel_ = vit; };
 	void setMassInv(float massInv) { massInv_ = massInv; };	
-	void setShape(Shape* sh) { shape_ = sh; };
+	void setShape(Shape* sh) { 
+		shape_ = sh; 
+		collRadius_ = sh->getRadius();
+	};
+	void setCollRadius(float rad) { collRadius_ = rad; };
 
 	Vector3D* getPos() { return pos_; };
 	Vector3D getVit() { return vel_; };
 	float getMassInv() { return massInv_; };
 	Shape* getShape() { return shape_; };
 	int getIndex() { return index_; };
+	float getCollRadius() { return collRadius_; };
 
 	//IPARTICLE
 	void addTo(list<Particle*> list);

@@ -37,7 +37,7 @@ IParticle* ParticleFactory::getBasicBall() {
 
 IParticle* ParticleFactory::getCannonBall() {
 	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 5000.0, currentParticleIndex_++);
-	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 0.0, 2)); //Noir
+	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 0.0, 3)); //Noir
 	return pa;
 }
 
@@ -49,7 +49,7 @@ IParticle* ParticleFactory::getLaser() {
 
 IParticle* ParticleFactory::getSnowflake() {
 	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0, 0, 0), 55.0, currentParticleIndex_++);
-	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 1.0, 2)); //Bleu
+	pa->setShape(new Sphere(pa->getPos(), 0.0, 0.0, 1.0, 1.2)); //Bleu
 	return pa;
 }
 

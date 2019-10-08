@@ -330,12 +330,13 @@ int Game::testCollisions() {
 		for (itB = next(itA, 1); itB != particules_.end(); itB++) {
 
 			float distAB = (*itA)->getPos()->distanceWith(*(*itB)->getPos());
+			float cumulatedRadius = (*itA)->getCollRadius() + (*itB)->getCollRadius();
 
-			if (distAB < 4) {
+			if (distAB < cumulatedRadius) {
 				restit = 0.95f;
-				dPene = 4 - distAB;
+				dPene = cumulatedRadius - distAB;
 				n = *(*itB)->getPos() - *(*itA)->getPos();
-				contactResolver_.addContact(new ParticleContact(*itA, *itB, restit, dPene, n));
+				contactResolver_.addContact(new ParticleContact(*itA, *itB, restit, dPene, n.normalized()));
 				iter += 1;
 			}
 		}

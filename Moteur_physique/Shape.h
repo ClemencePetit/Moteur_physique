@@ -36,6 +36,8 @@ public:
 		b_ = b;
 	}
 
+	virtual float getRadius() = 0; //Used for collision, only really makes sense for spheres
+
 	virtual void draw() = 0; //pure virtual function
 
 	static void drawLine(Vector3D a, Vector3D b);
@@ -46,29 +48,32 @@ class Rect3D : public Shape {
 
 private:
 
-	float width;
-	float height;
-	float depth;
+	float width_;
+	float height_;
+	float depth_;
 
 public:
 
+	float getRadius();
 	void draw();
 
 	//Constructors
-	Rect3D(Vector3D* pos, float r = 0, float v = 0, float b = 0, float w = 2, float h = 2, float p = 2) : width(w), height(h), depth(p), Shape(pos, r, v, b) { }
+	Rect3D(Vector3D* pos, float r = 0, float v = 0, float b = 0, float w = 2, float h = 2, float p = 2) : width_(w), height_(h), depth_(p), Shape(pos, r, v, b) { }
 };
 
 class Sphere : public Shape {
 
 private:
 
-	float rayon;
+	float radius_;
 
 public:
+
+	float getRadius();
 	void draw();
 
 	//Constructors
-	Sphere(Vector3D* pos, float r = 0, float v = 0, float b = 0,  float rayon = 2) : rayon(rayon), Shape(pos, r, v, b) { }
+	Sphere(Vector3D* pos, float r = 0, float v = 0, float b = 0,  float radius_ = 2) : radius_(radius_), Shape(pos, r, v, b) { }
 };
 
 #endif

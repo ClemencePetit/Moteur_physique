@@ -11,39 +11,43 @@ void Rect3D::draw() {
 
 	glBegin(GL_QUADS);
 	//derriere
-	glVertex3f(-width/2, -height/2, depth/2);
-	glVertex3f(-width / 2, height / 2, depth / 2);
-	glVertex3f(width / 2, height / 2, depth / 2);
-	glVertex3f(width / 2, -height / 2, depth / 2);
+	glVertex3f(-width_/2, -height_/2, depth_/2);
+	glVertex3f(-width_ / 2, height_ / 2, depth_ / 2);
+	glVertex3f(width_ / 2, height_ / 2, depth_ / 2);
+	glVertex3f(width_ / 2, -height_ / 2, depth_ / 2);
 	//devant
-	glVertex3f(-width / 2, -height / 2, -depth / 2);
-	glVertex3f(-width / 2, height / 2, -depth / 2);
-	glVertex3f(width / 2, height / 2, -depth / 2);
-	glVertex3f(width / 2, -height / 2, -depth / 2);
+	glVertex3f(-width_ / 2, -height_ / 2, -depth_ / 2);
+	glVertex3f(-width_ / 2, height_ / 2, -depth_ / 2);
+	glVertex3f(width_ / 2, height_ / 2, -depth_ / 2);
+	glVertex3f(width_ / 2, -height_ / 2, -depth_ / 2);
 	//gauche
-	glVertex3f(-width / 2, -height / 2, depth / 2);
-	glVertex3f(-width / 2, height / 2, depth / 2);
-	glVertex3f(-width / 2, height / 2, -depth / 2);
-	glVertex3f(-width / 2, -height / 2, -depth / 2);
+	glVertex3f(-width_ / 2, -height_ / 2, depth_ / 2);
+	glVertex3f(-width_ / 2, height_ / 2, depth_ / 2);
+	glVertex3f(-width_ / 2, height_ / 2, -depth_ / 2);
+	glVertex3f(-width_ / 2, -height_ / 2, -depth_ / 2);
 	//haut
-	glVertex3f(width / 2, height / 2, depth / 2);
-	glVertex3f(-width / 2, height / 2, depth / 2);
-	glVertex3f(-width / 2, height / 2, -depth / 2);
-	glVertex3f(width / 2, height / 2, -depth / 2);
+	glVertex3f(width_ / 2, height_ / 2, depth_ / 2);
+	glVertex3f(-width_ / 2, height_ / 2, depth_ / 2);
+	glVertex3f(-width_ / 2, height_ / 2, -depth_ / 2);
+	glVertex3f(width_ / 2, height_ / 2, -depth_ / 2);
 	//bas
-	glVertex3f(-width / 2, -height / 2, depth / 2);
-	glVertex3f(width / 2, -height / 2, depth / 2);
-	glVertex3f(width / 2, -height / 2, -depth / 2);
-	glVertex3f(-width / 2, -height / 2, -depth / 2);
+	glVertex3f(-width_ / 2, -height_ / 2, depth_ / 2);
+	glVertex3f(width_ / 2, -height_ / 2, depth_ / 2);
+	glVertex3f(width_ / 2, -height_ / 2, -depth_ / 2);
+	glVertex3f(-width_ / 2, -height_ / 2, -depth_ / 2);
 	//droite
-	glVertex3f(width / 2, height / 2, depth / 2);
-	glVertex3f(width / 2, -height / 2, depth / 2);
-	glVertex3f(width / 2, -height / 2, -depth / 2);
-	glVertex3f(width / 2, height / 2, -depth / 2);
+	glVertex3f(width_ / 2, height_ / 2, depth_ / 2);
+	glVertex3f(width_ / 2, -height_ / 2, depth_ / 2);
+	glVertex3f(width_ / 2, -height_ / 2, -depth_ / 2);
+	glVertex3f(width_ / 2, height_ / 2, -depth_ / 2);
 	
 	glEnd();
 
 	glPopMatrix();
+}
+
+float Rect3D::getRadius() {
+	return (width_ + height_ + depth_) / 3;
 }
 
 //dessine la sph�re centr�e sur la position de la particule
@@ -57,9 +61,13 @@ void Sphere::draw() {
 
 	GLUquadric* quadrique = gluNewQuadric();
 	gluQuadricDrawStyle(quadrique, GLU_FILL);
-	gluSphere(quadrique, rayon, 20, 20);
+	gluSphere(quadrique, radius_, 20, 20);
 	gluDeleteQuadric(quadrique);
 	glPopMatrix();
+}
+
+float Sphere::getRadius() {
+	return radius_;
 }
 
 //Trace une ligne entre a et b.
