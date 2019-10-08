@@ -2,7 +2,7 @@
 
 
 ParticleGroup::~ParticleGroup() {
-	forcesRegister_.clear();
+	delete(forcesRegister_);
 }
 
 void ParticleGroup::draw() {
@@ -32,7 +32,7 @@ void ParticleGroup::DrawLinks() {
 
 void ParticleGroup::updateForces(float t) {
 
-	forcesRegister_.updateForces(t);
+	forcesRegister_->updateForces(t);
 	//We do not clear the register because we want to re-apply
 	//those forces each loop
 }
