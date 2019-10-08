@@ -70,9 +70,9 @@ IParticle* ParticleFactory::getYoyo() {
 	pas.push_back(a);
 
 	//Forces
-	ParticleForceRegister fg;
+	ParticleForceRegister* fg = new ParticleForceRegister();
 
-	//fg.add(a, new AnchoredSpringFG(Vector3D(), 0.5, 1000));
+	fg->add(a, new AnchoredSpringFG(Vector3D(0, 0, 0), 50, 5));
 
 	ParticleGroup* pg = new ParticleGroup(pas, fg);
 
@@ -104,13 +104,13 @@ IParticle* ParticleFactory::getBlob1() {
 	pas.push_back(d);
 
 	//Forces
-	ParticleForceRegister fg;
+	ParticleForceRegister* fg = new ParticleForceRegister();
 
 	
-	fg.add(a, new BungeeSpringFG(b, 0.5, 100));
-	fg.add(b, new BungeeSpringFG(c, 0.5, 100));
-	fg.add(c, new BungeeSpringFG(d, 0.5, 100));
-	fg.add(d, new BungeeSpringFG(a, 0.5, 100));
+	fg->add(a, new BungeeSpringFG(b, 50, 1));
+	fg->add(b, new BungeeSpringFG(c, 50, 1));
+	fg->add(c, new BungeeSpringFG(d, 50, 1));
+	fg->add(d, new BungeeSpringFG(a, 50, 1));
 	
 
 	ParticleGroup* pg = new ParticleGroup(pas, fg);
@@ -145,12 +145,12 @@ IParticle* ParticleFactory::getBlob2() {
 	pas.push_back(d);
 
 	//Forces
-	ParticleForceRegister fg;
+	ParticleForceRegister* fg = new ParticleForceRegister();
 
-	fg.add(a, new SpringFG(b, 1, 5));
-	fg.add(b, new SpringFG(c, 1, 5));
-	fg.add(c, new SpringFG(d, 1, 5));
-	fg.add(d, new SpringFG(a, 1, 5));
+	fg->add(a, new SpringFG(b, 50, 1));
+	fg->add(b, new SpringFG(c, 50, 1));
+	fg->add(c, new SpringFG(d, 50, 1));
+	fg->add(d, new SpringFG(a, 50, 1));
 
 	ParticleGroup* pg = new ParticleGroup(pas, fg);
 

@@ -11,14 +11,14 @@ class ParticleGroup : public IParticle
 private:
 
 	std::vector<Particle*> particles_;
-	ParticleForceRegister forcesRegister_; //Forces specific to that group
+	ParticleForceRegister* forcesRegister_; //Forces specific to that group
 	void addRandomOffsets();
 
 public:
 
 	ParticleGroup() {}
 
-	ParticleGroup(std::vector<Particle*> particles, ParticleForceRegister forcesRegister)
+	ParticleGroup(std::vector<Particle*> particles, ParticleForceRegister* forcesRegister)
 		: particles_(particles), forcesRegister_(forcesRegister)
 	{
 		addRandomOffsets();
