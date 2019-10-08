@@ -344,17 +344,17 @@ int Game::testCollisions() {
 
 		float z = (*itA)->getPos()->z;
 		//Collisions avec le sol
-		if (z < 2 && !isInPool(*itA)) {
+		if (z < (*itA)->getCollRadius() && !isInPool(*itA)) {
 			restit = 0.50;
-			dPene = 2 - z;
+			dPene = (*itA)->getCollRadius() - z;
 			n = Vector3D(0, 0, -1);
 			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
 			iter += 1;
 		}
 		//Collisions avec le fond de la piscine
-		else if (z < -48 && isInPool(*itA)) {
+		else if (z < -50 + (*itA)->getCollRadius() && isInPool(*itA)) {
 			restit = 0.50;
-			dPene = -48 - z;
+			dPene = -50 + (*itA)->getCollRadius() - z;
 			n = Vector3D(0, 0, -1);
 			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
 			iter += 1;
