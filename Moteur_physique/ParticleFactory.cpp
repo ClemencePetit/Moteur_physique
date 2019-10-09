@@ -25,6 +25,9 @@ IParticle* ParticleFactory::getCurrentProjectile() {
 	case 6:
 		return getBlob2();
 		break;
+	case 7:
+		return getBlob3();
+		break;
 	}
 	return getBasicBall();
 }
@@ -151,6 +154,43 @@ IParticle* ParticleFactory::getBlob2() {
 	fg->add(b, new SpringFG(c, 50, 1));
 	fg->add(c, new SpringFG(d, 50, 1));
 	fg->add(d, new SpringFG(a, 50, 1));
+
+	ParticleGroup* pg = new ParticleGroup(pas, fg);
+
+	return pg;
+}
+
+IParticle* ParticleFactory::getTestBlop() {
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), Vector3D(0.f, 0.f, 0.f), 400.0, currentParticleIndex_++);
+	pa->setShape(new Sphere(pa->getPos(), 0.8f, 0.f, 0.6f, 0.7f));
+	return pa;
+}
+
+IParticle* ParticleFactory::getBlob3() {
+
+
+	//Particles
+	std::vector<Particle*> pas;
+
+	//Forces
+	ParticleForceRegister* fg = new ParticleForceRegister();
+
+	//Centre
+	Particle* a = (Particle*)getTestBlop();
+	pas.push_back(a);
+
+	//Corps
+	Particle* b = NULL;
+	for (int i = 0; i < 50; i++) {
+
+		b = (Particle*)getTestBlop();
+
+		pas.push_back(b);
+
+		fg->add(b, new SpringFG(a, 100, 1));
+		fg->add(a, new SpringFG(b, 100, 1));
+
+	}
 
 	ParticleGroup* pg = new ParticleGroup(pas, fg);
 

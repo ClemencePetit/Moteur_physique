@@ -14,7 +14,8 @@ void ParticleGroup::draw() {
 		Shape::drawLine(
 			*(*it)->getPos(),
 			*centerParticle->getPos());
-		(*it)->draw();
+
+		(*it)->draw();		
 	}
 }
 

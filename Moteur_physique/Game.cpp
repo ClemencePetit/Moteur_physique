@@ -222,6 +222,44 @@ void Game::drawPool() {
 	glEnd();
 }
 
+void Game::drawWall() {
+
+	//dessin du mur
+	glBegin(GL_QUADS);
+	glColor3f(0.25f, 0.25f, 0.25f);
+	//derriere
+	glVertex3f(-200, 80, 10);
+	glVertex3f(-200, 90, 10);
+	glVertex3f(-200, 90, 40);
+	glVertex3f(-200, 80, 40);
+	//devant
+	glVertex3f(200, 80, 10);
+	glVertex3f(200, 90, 10);
+	glVertex3f(200, 90, 40);
+	glVertex3f(200, 80, 40);
+	//haut
+	glVertex3f(-200, 80, 40);
+	glVertex3f(-200, 90, 40);
+	glVertex3f(200, 90, 40);
+	glVertex3f(200, 80, 40);
+	//bas
+	glVertex3f(-200, 80, 10);
+	glVertex3f(-200, 90, 10);
+	glVertex3f(200, 90, 10);
+	glVertex3f(200, 80, 10);
+	//gauche
+	glVertex3f(200, 80, 10);
+	glVertex3f(-200, 80, 10);
+	glVertex3f(-200, 80, 40);
+	glVertex3f(200, 80, 40);
+	//droite
+	glVertex3f(200, 90, 10);
+	glVertex3f(-200, 90, 10);
+	glVertex3f(-200, 90, 40);
+	glVertex3f(200, 90, 40);
+	glEnd();
+}
+
 void Game::drawParticles() {
 	//redraw all particules
 	std::list<Particle*>::iterator it;
@@ -257,9 +295,11 @@ void Game::drawScene()
 	
 	drawGround();
 	drawPool();
+	drawWall();
 	drawParticles();
 	drawGroupParticles();
 	crosshair_->draw();
+
 	Shape::drawLine(crosshairOrigin_, *crosshair_->getPos()); //origin to crosshair
 	Shape::drawLine(crosshairOrigin_, Vector3D()); //ground
 
@@ -351,21 +391,64 @@ int Game::testCollisions() {
 
 
 		float z = (*itA)->getPos()->z;
+		float radius = (*itA)->getCollRadius();
 		//Collisions avec le sol
-		if (z < (*itA)->getCollRadius() && !isInPool(*itA)) {
+		if (z < radius && !isInPool(*itA)) {
 			restit = 0.50;
-			dPene = (*itA)->getCollRadius() - z;
+			dPene = radius - z;
 			n = Vector3D(0, 0, -1);
 			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
 			iter += 1;
 		}
 		//Collisions avec le fond de la piscine
-		else if (z < -50 + (*itA)->getCollRadius() && isInPool(*itA)) {
+		else if (z < -50 + radius && isInPool(*itA)) {
 			restit = 0.50;
-			dPene = -50 + (*itA)->getCollRadius() - z;
+			dPene = -50 + radius - z;
 			n = Vector3D(0, 0, -1);
 			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
 			iter += 1;
+		}
+		//Collisions avec le mur
+		else {
+			float y = (*itA)->getPos()->y;
+			//Gauche et droite
+			if (z < 40 + radius && z > 10 - radius) {
+				//Gauche
+				if (y < 80 + radius && y > 80 - radius) {
+					restit = 0.75;
+					dPene = y + radius - 80;
+					n = Vector3D(0, 1, 0);
+					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+					iter += 1;
+				}
+				//Droite
+				else if (y > 90 - radius && y < 90 + radius) {
+					restit = 0.75;
+					dPene = 90 + radius - y;
+					n = Vector3D(0, -1, 0);
+					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+					iter += 1;
+				}
+			}
+			//Haut et bas
+			else if (y < 90 + radius && y > 80 - radius) {
+				//Haut
+				if (z < 40 + radius && z > 40 - radius) {
+					restit = 0.75;
+					dPene = 40 + radius - z;
+					n = Vector3D(0, 0, -1);
+					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+					iter += 1;
+				}
+				//Bas
+				else if (z < 10 + radius && z > 10 - radius) {
+					restit = 0.75;
+					dPene = z + radius - 10;
+					n = Vector3D(0, 0, 1);
+					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+					iter += 1;
+				}
+			}
 		}
 	}
 	

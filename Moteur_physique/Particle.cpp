@@ -30,7 +30,7 @@ void Particle::addTo(list<Particle*> list) {
 
 void Particle::draw() {
 	shape_->draw();
-	drawVelocity(); //debug
+	//drawVelocity(); //debug
 }
 
 void Particle::drawVelocity() {

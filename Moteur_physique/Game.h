@@ -107,6 +107,7 @@ public:
 	//fonctions draw
 	void drawGround();
 	void drawPool();
+	void drawWall();
 	void drawParticles();
 	void drawGroupParticles();
 	void drawScene();

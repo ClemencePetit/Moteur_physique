@@ -33,7 +33,7 @@ public:
 
 	IParticle* nextProjectile() {
 		currentProjectileIndex_++;
-		currentProjectileIndex_ %= 7; //nb projectiles
+		currentProjectileIndex_ %= 8; //nb projectiles
 		return getCurrentProjectile();
 	}
 
@@ -48,6 +48,8 @@ public:
 	IParticle* getBlob2();
 	IParticle* getTestWater();
 
+	IParticle* getTestBlop();
+	IParticle* getBlob3();
 };
 
 #endif
