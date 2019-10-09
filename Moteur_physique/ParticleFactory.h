@@ -21,13 +21,14 @@ private:
 
 	int currentParticleIndex_ = 0;
 
-	int currentProjectileIndex_;
+	int currentProjectileIndex_ = 0;
 
 public:
 
 	ParticleFactory() :	currentProjectileIndex_(0) {}
 
 	int getCurrentIndex() { return currentParticleIndex_; }
+	int getCurrentProjectileIndex() { return currentProjectileIndex_; };
 
 	IParticle* getCurrentProjectile();
 
@@ -50,6 +51,8 @@ public:
 
 	IParticle* getTestBlop();
 	IParticle* getBlob3();
+
+
 };
 
 #endif

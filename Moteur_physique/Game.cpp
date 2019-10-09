@@ -115,7 +115,12 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 
 				pa = factory_.getCurrentProjectile();
 				pa->setPos(*crosshair_->getPos());
-				pa->setVit((crosshair_->getVit().normalized()) * baseVelocity_ * currentShotPower);
+				if (factory_.getCurrentProjectileIndex() == 2) {
+					pa->setVit((crosshair_->getVit().normalized()) * baseVelocity_ * maxShotPower);
+				}
+				else {
+					pa->setVit((crosshair_->getVit().normalized()) * baseVelocity_ * currentShotPower);
+				}
 				
 				addParticle(pa);
 
