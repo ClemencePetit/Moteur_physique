@@ -187,40 +187,8 @@ void Game::drawPool() {
 
 void Game::drawWall() {
 
-	//dessin du mur
-	glBegin(GL_QUADS);
-	glColor3f(0.25f, 0.25f, 0.25f);
-	//derriere
-	glVertex3f(-200, 80, 10);
-	glVertex3f(-200, 90, 10);
-	glVertex3f(-200, 90, 40);
-	glVertex3f(-200, 80, 40);
-	//devant
-	glVertex3f(200, 80, 10);
-	glVertex3f(200, 90, 10);
-	glVertex3f(200, 90, 40);
-	glVertex3f(200, 80, 40);
-	//haut
-	glVertex3f(-200, 80, 40);
-	glVertex3f(-200, 90, 40);
-	glVertex3f(200, 90, 40);
-	glVertex3f(200, 80, 40);
-	//bas
-	glVertex3f(-200, 80, 10);
-	glVertex3f(-200, 90, 10);
-	glVertex3f(200, 90, 10);
-	glVertex3f(200, 80, 10);
-	//gauche
-	glVertex3f(200, 80, 10);
-	glVertex3f(-200, 80, 10);
-	glVertex3f(-200, 80, 40);
-	glVertex3f(200, 80, 40);
-	//droite
-	glVertex3f(200, 90, 10);
-	glVertex3f(-200, 90, 10);
-	glVertex3f(-200, 90, 40);
-	glVertex3f(200, 90, 40);
-	glEnd();
+	GlutUtils::drawRectangle(Vector3D(0, 85, 25), 200, 10, 30, Color::darkGray);
+
 }
 
 
