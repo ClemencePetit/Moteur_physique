@@ -4,6 +4,7 @@
 #include <GL/glut.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include "GlutUtils.h"
 
 #include "Vector3D.h"
 
@@ -15,32 +16,29 @@ protected:
 
 	Vector3D* position_;
 	
-	//colors
-	float r_;
-	float v_;
-	float b_;
+	Vector3D color_;
 
 public:
 
 	//Constructors
-	Shape(Vector3D* pos, float r, float v, float b) : position_(pos), r_(r), v_(v), b_(b) { }
-
+	Shape(Vector3D* pos, Vector3D rgb) : position_(pos), color_(rgb) { }
 
 	Vector3D getColor() {
-		return Vector3D(r_, v_, b_);
+		return color_;
 	}
 
-	void setColor(float r, float v, float b) {
-		r_ = r;
-		v_ = v;
-		b_ = b;
+	void setColor(float r, float g, float b) {
+		color_ = Vector3D(r, g, b);
+	}
+
+	void setColor(Vector3D rgb) {
+		color_ = rgb;
 	}
 
 	virtual float getRadius() = 0; //Used for collision, only really makes sense for spheres
 
 	virtual void draw() = 0; //pure virtual function
 
-	static void drawLine(Vector3D a, Vector3D b);
 
 };
 
@@ -58,7 +56,7 @@ public:
 	void draw();
 
 	//Constructors
-	Rect3D(Vector3D* pos, float r = 0, float v = 0, float b = 0, float w = 2, float h = 2, float p = 2) : width_(w), height_(h), depth_(p), Shape(pos, r, v, b) { }
+	Rect3D(Vector3D* pos, Vector3D color, float w = 2, float h = 2, float p = 2) : width_(w), height_(h), depth_(p), Shape(pos, color) { }
 };
 
 class Sphere : public Shape {
@@ -73,7 +71,7 @@ public:
 	void draw();
 
 	//Constructors
-	Sphere(Vector3D* pos, float r = 0, float v = 0, float b = 0,  float radius_ = 2) : radius_(radius_), Shape(pos, r, v, b) { }
+	Sphere(Vector3D* pos, Vector3D color,  float radius_ = 2) : radius_(radius_), Shape(pos, color) { }
 };
 
 #endif

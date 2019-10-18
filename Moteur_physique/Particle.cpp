@@ -34,7 +34,7 @@ void Particle::draw() {
 }
 
 void Particle::drawVelocity() {
-	Shape::drawLine(*getPos(), *getPos() + getVit() * 0.2f);
+	GlutUtils::drawLine(*getPos(), *getPos() + getVit() * 0.2f, Color::red);
 }
 
 void Particle::addForce(const Vector3D &force) {

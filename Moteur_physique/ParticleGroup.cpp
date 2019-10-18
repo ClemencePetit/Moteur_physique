@@ -1,6 +1,7 @@
 #include "ParticleGroup.h"
 
 
+
 ParticleGroup::~ParticleGroup() {
 	delete(forcesRegister_);
 }
@@ -11,9 +12,10 @@ void ParticleGroup::draw() {
 	std::vector<Particle*>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
-		Shape::drawLine(
+		GlutUtils::drawLine(
 			*(*it)->getPos(),
-			*centerParticle->getPos());
+			*centerParticle->getPos(),
+			Color::red);
 
 		(*it)->draw();		
 	}
@@ -25,9 +27,10 @@ void ParticleGroup::DrawLinks() {
 	std::vector<Particle*>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
-		Shape::drawLine(
+		GlutUtils::drawLine(
 			*(*it)->getPos(),
-			*centerParticle->getPos());
+			*centerParticle->getPos(),
+			Color::red);
 	}
 }
 

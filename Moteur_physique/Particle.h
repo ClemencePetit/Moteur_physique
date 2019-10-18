@@ -4,6 +4,8 @@
 #include "Vector3D.h"
 #include "Shape.h"
 #include "IParticle.h"
+#include "Color.h"
+
 
 // Classe contenant les donn�es concernant la particule d'un point de vue physique, plus la forme qui est associ�e � la particule
 class Particle : public IParticle

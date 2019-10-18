@@ -75,12 +75,12 @@ void Crosshair::draw()
 	selectedParticle_->draw();
 
 	//draw a line from the crosshair origine to the particle (better aim)
-	Shape::drawLine(pos_, *selectedParticle_->getPos()); 
+	GlutUtils::drawLine(pos_, *selectedParticle_->getPos(), Color::red); 
 	//draw a line from origin to crosshair (better perspective)
-	Shape::drawLine(pos_, Vector3D()); 
+	GlutUtils::drawLine(pos_, Vector3D(), Color::red);
 
 	//Draw the aim line with size depending on shot strenght
 	float lineLenght = lerp01(4.f, 15.f, currentShotPower_ / maxShotPower_);
 	Vector3D directionAim = (*selectedParticle_->getPos() - pos_).normalized() * lineLenght;
-	Shape::drawLine(*selectedParticle_->getPos(), (*selectedParticle_->getPos()) + directionAim);
+	GlutUtils::drawLine(*selectedParticle_->getPos(), (*selectedParticle_->getPos()) + directionAim, Color::red);
 }

@@ -4,6 +4,7 @@
 
 #include "IParticle.h"
 #include "Particle.h"
+#include "Color.h"
 
 
 #include "DragFG.h"

@@ -5,6 +5,7 @@
 #include "IParticle.h"
 #include "Particle.h"
 #include "ParticleForceRegister.h"
+#include "Color.h"
 
 class ParticleGroup : public IParticle
 {
