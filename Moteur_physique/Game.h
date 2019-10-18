@@ -21,40 +21,21 @@
 #include "IParticle.h"
 #include "ParticleFactory.h"
 #include "ContactResolver.h"
+#include "Crosshair.h"
+#include "PhysicSimulator.h"
 
 // Classe de gestion globale. Dessine la scène, gère les particules, upate la logique et appelle leur fonction pour les dessiner
 class Game
 {
 private:
 
-	//Registre
-	ParticleForceRegister register_;
+	Crosshair crosshair_;
 
-	//Collisions
-	ContactResolver contactResolver_;
+	bool isLeftMouseButtonDown_ = false;
 
-	IParticle* crosshair_; //particule servant à la visée (réticule)
-	Vector3D crosshairOrigin_;
-	float baseVelocity_ = 50.f;
-
-	//load shot
-	float minShotPower = 0.5f;
-	float maxShotPower = 2.f;
-	float currentShotPower = 0.f;
-
-	float timeLoadMaxShot = 1.f;
-	float currentLoadTime = 0.f;
-	bool isLeftMouseButtonDown = false;
-
-	list <Particle*> particules_; //liste des particules créées
-	list <ParticleGroup*> particulesGroups_;
+	PhysicSimulator simulator_;
 
 	ParticleFactory factory_;
-
-	//Constantes
-	Vector3D g_ = Vector3D(0, 0, -9.8f);
-	float k1 = 0.5f;
-	float k2 = 1.2f;
 
 	//time
 	float elapsedTime;
@@ -80,23 +61,15 @@ public:
 	//Glut
 	void initRendering();
 
-	//particles
-	void changeCrosshairWithParticle(IParticle* pa);
 
-	void addParticle(IParticle* pa);
-	void deleteParticle(Particle* pa);
-	void deleteParticleGroup(ParticleGroup* paG);
 
 	//part of hotfix
 	void setupInstance();
 
-	//utils
-	float lerp01(float a, float b, float t);
-	bool isInPool(Particle* p);
 
 	//constructor/deconstructor
 	Game();
-	~Game();
+	//~Game();
 
 	// fonctions reliées à Glut et ses callbacks
 	void handleKeypress(unsigned char key, int x, int y);
@@ -108,18 +81,9 @@ public:
 	void drawGround();
 	void drawPool();
 	void drawWall();
-	void drawParticles();
-	void drawGroupParticles();
 	void drawScene();
 
 	//// fonctions update
-	// Register
-	void handleRegister();
-	// Collisions
-	int testCollisions();
-	void handleCollisions();
-	// Update and Delete
-	void updateAndDelete();
 	// global update
 	void update(int value);
 

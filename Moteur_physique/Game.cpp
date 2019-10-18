@@ -1,24 +1,16 @@
 #include "Game.h"
 
-Game::Game()
-{
-}
 
-Game::~Game()
-{
-	//suppression de toutes les particules
-	while (!particules_.empty()) {
-		deleteParticle(particules_.front());
-	}
-	while (!particulesGroups_.empty()) {
-		deleteParticleGroup(particulesGroups_.front());
-	}
-
-}
 
 #pragma region Public Methods 
 
 #pragma region Glut Callbacks
+
+
+
+Game::Game()
+{
+}
 
 void Game::handleKeypress(unsigned char key, int x, int y)
 {
@@ -48,18 +40,11 @@ void Game::handleKeypress(unsigned char key, int x, int y)
 		break;
 
 	case 'o':
-		addParticle(factory_.getTestWater());
+		simulator_.addParticle(factory_.getTestWater());
 		break;
 
 	case 'd':
-		while (!particules_.empty()) {
-			deleteParticle(particules_.front());
-		}
-		while (!particulesGroups_.empty()) {
-			deleteParticleGroup(particulesGroups_.front());
-		}
-		register_.clear();
-		contactResolver_.clear();
+		simulator_.deleteAndClearAll();
 		break;
 
 	//ESCAPE key
@@ -95,11 +80,7 @@ void Game::handlePassiveMouseMotion(int x, int y) {
 
 	Vector3D normalizedDirection = mouseDirection2D.normalized();
 
-	//Set pos
-	Vector3D* pos = crosshair_->getPos();
-	*pos = crosshairOrigin_ + normalizedDirection * 5.f;
-
-	crosshair_->setVit((*pos - crosshairOrigin_).normalized());
+	crosshair_.setAim(normalizedDirection);
 }
 
 void Game::handleMouseClick(int button, int state, int x, int y) {
@@ -113,26 +94,15 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 
 				//TIREZ!
 
-				pa = factory_.getCurrentProjectile();
-				pa->setPos(*crosshair_->getPos());
-				if (factory_.getCurrentProjectileIndex() == 2) {
-					pa->setVit((crosshair_->getVit().normalized()) * baseVelocity_ * maxShotPower);
-				}
-				else {
-					pa->setVit((crosshair_->getVit().normalized()) * baseVelocity_ * currentShotPower);
-				}
 				
-				addParticle(pa);
+				simulator_.addParticle(crosshair_.fireParticle());
 
-				//reset charge values
-				currentShotPower = minShotPower;
-				currentLoadTime = 0.f;
 
-				isLeftMouseButtonDown = false;
+				isLeftMouseButtonDown_ = false;
 			}
 			else if (state == GLUT_DOWN) {
 
-				isLeftMouseButtonDown = true;
+				isLeftMouseButtonDown_ = true;
 				//load shot
 			}
 		break;
@@ -141,7 +111,7 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 
 			if (state == GLUT_DOWN) {
 
-				changeCrosshairWithParticle(factory_.nextProjectile());
+				crosshair_.selectNextParticle();
 				drawScene();
 			}
 
@@ -265,27 +235,6 @@ void Game::drawWall() {
 	glEnd();
 }
 
-void Game::drawParticles() {
-	//redraw all particules
-	std::list<Particle*>::iterator it;
-	for (it = particules_.begin(); it != particules_.end(); it++)
-	{
-		if (*it != NULL && (*it)->getShape() != NULL) {
-			(*it)->draw();
-		}
-	}
-}
-
-void Game::drawGroupParticles() {
-	//redraw all link between grouped particles
-	std::list<ParticleGroup*>::iterator it;
-	for (it = particulesGroups_.begin(); it != particulesGroups_.end(); it++)
-	{
-		if (*it != NULL) {
-			(*it)->DrawLinks();
-		}
-	}
-}
 
 void Game::drawScene()
 {
@@ -301,18 +250,8 @@ void Game::drawScene()
 	drawGround();
 	drawPool();
 	drawWall();
-	drawParticles();
-	drawGroupParticles();
-	crosshair_->draw();
-
-	Shape::drawLine(crosshairOrigin_, *crosshair_->getPos()); //origin to crosshair
-	Shape::drawLine(crosshairOrigin_, Vector3D()); //ground
-
-	//Draw power line
-	float lineLenght = lerp01(4.f, 15.f, currentShotPower / maxShotPower);
-	Vector3D directionAim = (*crosshair_->getPos() - crosshairOrigin_).normalized() * lineLenght;
-	Shape::drawLine(*crosshair_->getPos(), (*crosshair_->getPos()) + directionAim);
-	//Shape::drawLine((*crosshair_->getPos()), (*crosshair_->getPos()) + directionAim.normalized() * lineLenght);
+	simulator_.draw();
+	crosshair_.draw();
 
 	glutSwapBuffers();
 }
@@ -321,177 +260,6 @@ void Game::drawScene()
 
 // Boucle d'update maintenant à jour les particules et d'autres valeurs.
 
-void Game::handleRegister() {
-
-	std::list<Particle*>::iterator it;
-	std::list<ParticleGroup*>::iterator ite;
-
-	//Register Particules
-	for (it = particules_.begin(); it != particules_.end(); it++)
-	{
-		if ((*it)->getPos()->z <= 2 && !isInPool(*it)) {
-			//register_.add(*it, new WeakSpringFG(0.1f, 0.7f));
-		}
-		else {
-			register_.add(*it, new GravityFG(g_));
-			register_.add(*it, new DragFG(k1, k2));
-			if (isInPool(*it)) {
-				register_.add(*it, new BuoyancyFG());
-			}
-		}
-	}
-	register_.updateForces(elapsedTime);
-	register_.clear();
-
-	//Register Group Particules
-	for (ite = particulesGroups_.begin(); ite != particulesGroups_.end(); ite++)
-	{
-		(*ite)->updateForces(elapsedTime);
-	}
-
-}
-
-void Game::handleCollisions() {
-
-	int nbCollisions = 0;
-	nbCollisions = testCollisions();
-	contactResolver_.setIter(2 * nbCollisions);
-
-	//.sortByAscendingVelocities();
-
-	while (contactResolver_.limitNotReached()) {
-		contactResolver_.resolveContacts(elapsedTime);
-		testCollisions();
-	}
-
-	contactResolver_.limitReached();
-}
-
-int Game::testCollisions() {
-	
-	int iter = 0;
-	
-	float restit;
-	float dPene;
-	Vector3D n;
-
-	std::list<Particle*>::iterator itA;
-	std::list<Particle*>::iterator itB;
-
-	for (itA = particules_.begin(); itA != particules_.end(); itA++) {
-		//Collisions entre particules
-		for (itB = next(itA, 1); itB != particules_.end(); itB++) {
-
-			float distAB = (*itA)->getPos()->distanceWith(*(*itB)->getPos());
-			float cumulatedRadius = (*itA)->getCollRadius() + (*itB)->getCollRadius();
-
-			if (distAB < cumulatedRadius) {
-				restit = 0.95f;
-				dPene = cumulatedRadius - distAB;
-				n = *(*itB)->getPos() - *(*itA)->getPos();
-				contactResolver_.addContact(new ParticleContact(*itA, *itB, restit, dPene, n.normalized()));
-				iter += 1;
-			}
-		}
-
-
-		float z = (*itA)->getPos()->z;
-		float radius = (*itA)->getCollRadius();
-		//Collisions avec le sol
-		if (z < radius && !isInPool(*itA)) {
-			restit = 0.50;
-			dPene = radius - z;
-			n = Vector3D(0, 0, -1);
-			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-			iter += 1;
-		}
-		//Collisions avec le fond de la piscine
-		else if (z < -50 + radius && isInPool(*itA)) {
-			restit = 0.50;
-			dPene = -50 + radius - z;
-			n = Vector3D(0, 0, -1);
-			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-			iter += 1;
-		}
-		//Collisions avec le mur
-		else {
-			float y = (*itA)->getPos()->y;
-			//Gauche et droite
-			if (z < 40 + radius && z > 10 - radius) {
-				//Gauche
-				if (y < 80 + radius && y > 80 - radius) {
-					restit = 0.75;
-					dPene = y + radius - 80;
-					n = Vector3D(0, 1, 0);
-					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-					iter += 1;
-				}
-				//Droite
-				else if (y > 90 - radius && y < 90 + radius) {
-					restit = 0.75;
-					dPene = 90 + radius - y;
-					n = Vector3D(0, -1, 0);
-					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-					iter += 1;
-				}
-			}
-			//Haut et bas
-			else if (y < 90 + radius && y > 80 - radius) {
-				//Haut
-				if (z < 40 + radius && z > 40 - radius) {
-					restit = 0.75;
-					dPene = 40 + radius - z;
-					n = Vector3D(0, 0, -1);
-					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-					iter += 1;
-				}
-				//Bas
-				else if (z < 10 + radius && z > 10 - radius) {
-					restit = 0.75;
-					dPene = z + radius - 10;
-					n = Vector3D(0, 0, 1);
-					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-					iter += 1;
-				}
-			}
-		}
-	}
-	
-	return iter;
-}
-
-void Game::updateAndDelete() {
-
-	std::list<Particle*>::iterator it;
-	std::list<ParticleGroup*>::iterator ite;
-
-	//update physics for each particles
-	it = particules_.begin();
-	while (it != particules_.end()) {
-		if (*it != NULL) {
-			(*it)->integrer(elapsedTime);
-			if ((*it)->getPos()->z < -100) {
-				int indexTemp = (*it)->getIndex();
-				//delete blop
-				ite = particulesGroups_.begin();
-				while (ite != particulesGroups_.end())
-				{
-					if ((*ite)->hasIndex(indexTemp)) {
-						deleteParticleGroup(*ite++);
-					}
-					else {
-						ite++;
-					}
-				}
-				//
-				deleteParticle(*it++);
-			}
-			else {
-				it++;
-			}
-		}
-	}
-}
 
 void Game::update(int value)
 {
@@ -502,22 +270,11 @@ void Game::update(int value)
 
 	//elapsedTime = std::fmaxf(elapsedTime, 0.000001f);
 
-	handleRegister();
-	handleCollisions();
-	updateAndDelete();
+	simulator_.updatePhysics(elapsedTime);
 
 	//Charge le tir
-	if (isLeftMouseButtonDown) {
-
-		//Puissance actuelle en fonction du temps de charge
-		currentShotPower = lerp01(minShotPower, maxShotPower, currentLoadTime / timeLoadMaxShot);
-
-		currentLoadTime += elapsedTime;
-
-		//Si puissance max atteinte, retour à 0.
-		if (currentLoadTime >= timeLoadMaxShot) {
-			currentLoadTime = 0.f;
-		}
+	if (isLeftMouseButtonDown_) {
+		crosshair_.loadShot(elapsedTime);
 	}
 
 	glutPostRedisplay();
@@ -543,11 +300,6 @@ void Game::instructions() {
 void Game::execute(int argc, char** argv)
 {
 	instructions();
-
-	crosshairOrigin_ = Vector3D(0, 0, 10);
-	crosshair_ = new Particle(&crosshairOrigin_, Vector3D(), 0.f, -1);
-
-	changeCrosshairWithParticle(factory_.getBasicBall());
 
 	//launch Glut
 	glutInit(&argc, argv);
@@ -578,65 +330,6 @@ void Game::initRendering()//initialisation de l'affichage
 
 #pragma endregion
 
-#pragma region Gestion Particules
-
-//Change le type de particule utilisé par le réticule de visée
-void Game::changeCrosshairWithParticle(IParticle* pa) {
-
-	Vector3D tempPos = *crosshair_->getPos();
-	Vector3D tempVit = crosshair_->getVit();
-
-	delete(crosshair_);
-	crosshair_ = pa;
-
-	pa->setVit(tempVit);
-	pa->setPos(tempPos);
-
-}
-
-//Ajoute la particule à la simulation
-void Game::addParticle(IParticle* pa) {
-
-	if (Particle* ptrPq = dynamic_cast<Particle*>(pa)) {
-		particules_.push_back(ptrPq);
-	}
-	else if (ParticleGroup* ptrPg = dynamic_cast<ParticleGroup*>(pa)) {
-
-		for (auto const& pa : ptrPg->getParticles()) {
-			particules_.push_back(pa);
-		}
-
-		particulesGroups_.push_back(ptrPg);
-	}
-}
-
-//Supprime la particule de la simulation
-void Game::deleteParticle(Particle* pa) {
-	particules_.remove(pa);
-	delete(pa);
-}
-
-void Game::deleteParticleGroup(ParticleGroup* paG) {
-	particulesGroups_.remove(paG);
-	delete(paG);
-}
-
-#pragma endregion
-
-//Interpolation linéaire entre entre A et B avec t dans [0,1]
-float Game::lerp01(float a, float b, float t) {
-
-	return a + t * (b - a);
-}
-
-bool Game::isInPool(Particle* p) {
-	return (p->getPos()->x > -200
-		&& p->getPos()->x < 200
-		&& p->getPos()->y > 100
-		&& p->getPos()->y < 300
-		&& p->getPos()->z > -50
-		&& p->getPos()->z < 5);
-}
 
 //part of hotfix
 void Game::setupInstance() {
