@@ -48,19 +48,9 @@ public:
 
 	void draw();
 
-	void setDirection(Vector3D direction) {
+	void setAim(Vector3D direction) {
 		aimDirection_ = direction.normalized();
-	}
-
-	void setAim(Vector3D aim) {
-		aim = aim.normalized();
-		//TODO : Make it so it doesn't use Vit();
-		Vector3D* pos = selectedParticle_->getPos();
-		//change angle
-		*pos = pos_ + aim * 5.f;
-
-		//change speed
-		selectedParticle_->setVit((*selectedParticle_->getPos() - pos_).normalized());
+		selectedParticle_->setPos(pos_ + aimDirection_ * 5.f);
 	}
 };
 

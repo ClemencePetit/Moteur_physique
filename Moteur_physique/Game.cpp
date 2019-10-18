@@ -72,20 +72,13 @@ void Game::handleResize(int w, int h)
 void Game::handlePassiveMouseMotion(int x, int y) {
 
 	//move reticle toward mouse
-
 	float h = (float)(screenHeight - y - 50);
 	Vector3D mouseDirection2D = Vector3D(0.0f, (float)x, h);
-	
-	mousePos = mouseDirection2D; //he he he
 
-	Vector3D normalizedDirection = mouseDirection2D.normalized();
-
-	crosshair_.setAim(normalizedDirection);
+	crosshair_.setAim(mouseDirection2D);
 }
 
 void Game::handleMouseClick(int button, int state, int x, int y) {
-
-	IParticle* pa = NULL;
 
 	switch (button) {
 		//gestion du tir/chargement du tir
@@ -93,17 +86,12 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 			if (state == GLUT_UP) {
 
 				//TIREZ!
-
-				
 				simulator_.addParticle(crosshair_.fireParticle());
-
-
 				isLeftMouseButtonDown_ = false;
 			}
 			else if (state == GLUT_DOWN) {
 
 				isLeftMouseButtonDown_ = true;
-				//load shot
 			}
 		break;
 		//gestion du changement de la particule

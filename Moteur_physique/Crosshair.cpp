@@ -56,10 +56,10 @@ IParticle* Crosshair::fireParticle()
 
 	//If particle is Laser, constant value.
 	if (factory_.getCurrentProjectileIndex() == 2) {
-		toShoot->setVit((toShoot->getVit().normalized()) * baseVelocity_ * maxShotPower_);
+		toShoot->setVit(aimDirection_ * baseVelocity_ * maxShotPower_);
 	}
 	else {
-		toShoot->setVit((toShoot->getVit().normalized()) * baseVelocity_ * currentShotPower_);
+		toShoot->setVit(aimDirection_ * baseVelocity_ * currentShotPower_);
 	}
 
 	//reset charge values

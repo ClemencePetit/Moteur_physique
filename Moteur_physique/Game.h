@@ -50,8 +50,6 @@ private:
 	Vector3D posCamera_ = Vector3D(50.0f, -50.f, 5.f);
 	Vector3D lookCamera_ = Vector3D(0.f, 100.f, 15.f);
 
-	//mouse
-	Vector3D mousePos = Vector3D();
 
 	//pour voir dans la piscine
 	bool seeInWater_ = true;
