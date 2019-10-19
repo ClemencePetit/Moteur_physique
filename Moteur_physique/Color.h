@@ -23,5 +23,8 @@ public:
 	static Vector3D lightGray;
 	static Vector3D darkGray;
 
+	static Vector3D brown;
+	static Vector3D lightBlue;
+
 };
 #endif

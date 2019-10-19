@@ -38,32 +38,32 @@ void GlutUtils::drawRectangle(Vector3D pos, float width, float height, float dep
 	glTranslatef(pos.x, pos.y, pos.z);
 
 	glBegin(GL_QUADS);
-	//derriere
+	//haut
 	glVertex3f(-width / 2, -height / 2, depth / 2);
 	glVertex3f(-width / 2, height / 2, depth / 2);
 	glVertex3f(width / 2, height / 2, depth / 2);
 	glVertex3f(width / 2, -height / 2, depth / 2);
-	//devant
+	//en bas
 	glVertex3f(-width / 2, -height / 2, -depth / 2);
 	glVertex3f(-width / 2, height / 2, -depth / 2);
 	glVertex3f(width / 2, height / 2, -depth / 2);
 	glVertex3f(width / 2, -height / 2, -depth / 2);
+	//droite
+	glVertex3f(-width / 2, -height / 2, depth / 2);
+	glVertex3f(-width / 2, height / 2, depth / 2);
+	glVertex3f(-width / 2, height / 2, -depth / 2);
+	glVertex3f(-width / 2, -height / 2, -depth / 2);
+	//derrière
+	glVertex3f(width / 2, height / 2, depth / 2);
+	glVertex3f(-width / 2, height / 2, depth / 2);
+	glVertex3f(-width / 2, height / 2, -depth / 2);
+	glVertex3f(width / 2, height / 2, -depth / 2);
 	//gauche
 	glVertex3f(-width / 2, -height / 2, depth / 2);
-	glVertex3f(-width / 2, height / 2, depth / 2);
-	glVertex3f(-width / 2, height / 2, -depth / 2);
-	glVertex3f(-width / 2, -height / 2, -depth / 2);
-	//haut
-	glVertex3f(width / 2, height / 2, depth / 2);
-	glVertex3f(-width / 2, height / 2, depth / 2);
-	glVertex3f(-width / 2, height / 2, -depth / 2);
-	glVertex3f(width / 2, height / 2, -depth / 2);
-	//bas
-	glVertex3f(-width / 2, -height / 2, depth / 2);
 	glVertex3f(width / 2, -height / 2, depth / 2);
 	glVertex3f(width / 2, -height / 2, -depth / 2);
 	glVertex3f(-width / 2, -height / 2, -depth / 2);
-	//droite
+	//devant
 	glVertex3f(width / 2, height / 2, depth / 2);
 	glVertex3f(width / 2, -height / 2, depth / 2);
 	glVertex3f(width / 2, -height / 2, -depth / 2);
@@ -73,3 +73,49 @@ void GlutUtils::drawRectangle(Vector3D pos, float width, float height, float dep
 
 	glPopMatrix();
 }
+
+void GlutUtils::drawHollowRectangle(Vector3D pos, float width, float height, float depth, Vector3D color)
+{
+	glPushMatrix();
+
+	glColor3f(color.x, color.y, color.z);
+	glTranslatef(pos.x, pos.y, pos.z);
+
+	glBegin(GL_QUADS);
+	//haut
+	/*glVertex3f(-width / 2, -height / 2, depth / 2);
+	glVertex3f(-width / 2, height / 2, depth / 2);
+	glVertex3f(width / 2, height / 2, depth / 2);
+	glVertex3f(width / 2, -height / 2, depth / 2);*/
+	//en bas
+	glVertex3f(-width / 2, -height / 2, -depth / 2);
+	glVertex3f(-width / 2, height / 2, -depth / 2);
+	glVertex3f(width / 2, height / 2, -depth / 2);
+	glVertex3f(width / 2, -height / 2, -depth / 2);
+	//droite?
+	glVertex3f(-width / 2, -height / 2, depth / 2);
+	glVertex3f(-width / 2, height / 2, depth / 2);
+	glVertex3f(-width / 2, height / 2, -depth / 2);
+	glVertex3f(-width / 2, -height / 2, -depth / 2);
+	//derrière?
+	glVertex3f(width / 2, height / 2, depth / 2);
+	glVertex3f(-width / 2, height / 2, depth / 2);
+	glVertex3f(-width / 2, height / 2, -depth / 2);
+	glVertex3f(width / 2, height / 2, -depth / 2);
+	//gauche
+	glVertex3f(-width / 2, -height / 2, depth / 2);
+	glVertex3f(width / 2, -height / 2, depth / 2);
+	glVertex3f(width / 2, -height / 2, -depth / 2);
+	glVertex3f(-width / 2, -height / 2, -depth / 2);
+	//devant
+	/*glVertex3f(width / 2, height / 2, depth / 2);
+	glVertex3f(width / 2, -height / 2, depth / 2);
+	glVertex3f(width / 2, -height / 2, -depth / 2);
+	glVertex3f(width / 2, height / 2, -depth / 2);*/
+
+	glEnd();
+
+	glPopMatrix();
+}
+
+

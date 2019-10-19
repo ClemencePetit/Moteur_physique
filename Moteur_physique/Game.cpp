@@ -108,81 +108,12 @@ void Game::handleMouseClick(int button, int state, int x, int y) {
 }
 
 void Game::drawGround() {
-
-	//dessin du sol
-	glBegin(GL_QUADS);
-	glColor3f(0.7f, 0.47f, 0.f);
-	//derriere
-	glVertex3f(-200, -100, -5);
-	glVertex3f(-200, 100, -5);
-	glVertex3f(-200, 100, 0);
-	glVertex3f(-200, -100, 0);
-	//devant
-	glVertex3f(200, -100, -5);
-	glVertex3f(200, 100, -5);
-	glVertex3f(200, 100, 0);
-	glVertex3f(200, -100, 0);
-	//gauche
-	glVertex3f(200, -100, -5);
-	glVertex3f(200, -100, 0);
-	glVertex3f(-200, -100, 0);
-	glVertex3f(-200, -100, -5);
-	//droite
-	glVertex3f(200, 100, -5);
-	glVertex3f(200, 100, 0);
-	glVertex3f(-200, 100, 0);
-	glVertex3f(-200, 100, -5);
-	//haut
-	glVertex3f(-200, -100, 0);
-	glVertex3f(200, -100, 0);
-	glVertex3f(200, 100, 0);
-	glVertex3f(-200, 100, 0);
-	//bas
-	glVertex3f(-200, -100, -5);
-	glVertex3f(200, -100, -5);
-	glVertex3f(200, 100, -5);
-	glVertex3f(-200, 100, -5);
-	glEnd();
+	GlutUtils::drawRectangle(Vector3D(0, 0, -2.5), 400, 200, 5, Color::brown);
 }
 
 void Game::drawPool() {
 
-	//dessin de la piscine
-	glBegin(GL_QUADS);
-	glColor3f(0.3f, 0.86f, 1.f);
-	//derriere
-	glVertex3f(-200, 100, -50);
-	glVertex3f(-200, 300, -50);
-	glVertex3f(-200, 300, 0);
-	glVertex3f(-200, 100, 0);
-	if (!seeInWater_) {
-		//devant
-		glVertex3f(200, 100, -50);
-		glVertex3f(200, 300, -50);
-		glVertex3f(200, 300, 0);
-		glVertex3f(200, 100, 0);
-		//haut
-		glVertex3f(-200, 100, 0);
-		glVertex3f(-200, 300, 0);
-		glVertex3f(200, 300, 0);
-		glVertex3f(200, 100, 0);
-	}
-	//bas
-	glVertex3f(-200, 100, -50);
-	glVertex3f(-200, 300, -50);
-	glVertex3f(200, 300, -50);
-	glVertex3f(200, 100, -50);
-	//gauche
-	glVertex3f(200, 100, -50);
-	glVertex3f(-200, 100, -50);
-	glVertex3f(-200, 100, 0);
-	glVertex3f(200, 100, 0);
-	//droite
-	glVertex3f(200, 300, -50);
-	glVertex3f(-200, 300, -50);
-	glVertex3f(-200, 300, 0);
-	glVertex3f(200, 300, 0);
-	glEnd();
+	GlutUtils::drawHollowRectangle(Vector3D(0, 200, -25), 400, 200, 50, Color::lightBlue);
 }
 
 void Game::drawWall() {
