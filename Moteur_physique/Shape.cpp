@@ -5,19 +5,19 @@ void Rect3D::draw() {
 	GlutUtils::drawRectangle(*position_, width_, height_, depth_, color_);
 }
 
-ParticleContact* Rect3D::collideWith(const Shape& shape) const
+Contact Rect3D::collideWith(const Shape& shape) const
 {
 	shape.collideWithInternal(*this);
 }
 
-ParticleContact* Rect3D::collideWithInternal(const Sphere& sphere) const
+Contact Rect3D::collideWithInternal(const Sphere& sphere) const
 {
-	return ParticleContact::getContact(*this, sphere);
+	return Contact::getContact(*this, sphere);
 }
 
-ParticleContact* Rect3D::collideWithInternal(const Rect3D& rect) const
+Contact Rect3D::collideWithInternal(const Rect3D& rect) const
 {
-	return ParticleContact::getContact(*this, rect);
+	return Contact::getContact(*this, rect);
 }
 
 
@@ -26,19 +26,19 @@ void Sphere::draw() {
 	GlutUtils::drawSphere(*position_, radius_, color_);
 }
 
-ParticleContact* Sphere::collideWith(const Shape& shape) const
+Contact Sphere::collideWith(const Shape& shape) const
 {
 	shape.collideWithInternal(*this);
 }
 
-ParticleContact* Sphere::collideWithInternal(const Sphere& sphere) const
+Contact Sphere::collideWithInternal(const Sphere& sphere) const
 {
-	return ParticleContact::getContact(*this, sphere);
+	return Contact::getContact(*this, sphere);
 }
 
-ParticleContact* Sphere::collideWithInternal(const Rect3D& rect) const
+Contact Sphere::collideWithInternal(const Rect3D& rect) const
 {
-	return ParticleContact::getContact(*this, rect);
+	return Contact::getContact(*this, rect);
 }
 
 

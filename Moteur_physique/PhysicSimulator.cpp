@@ -20,7 +20,7 @@ int PhysicSimulator::resolveCollisions()
 		//Collisions entre particules
 		for (itB = next(itA, 1); itB != particles_.end(); itB++) {
 
-			ParticleContact* contact = (*itA)->getShape()->collideWith(*(*itB)->getShape());
+			ParticleContact* contact = ParticleContact::getContact(*itA, *itB);
 
 			if (contact != nullptr) {
 				contactResolver_.addContact(contact);
