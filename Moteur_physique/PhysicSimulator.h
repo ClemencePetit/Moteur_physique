@@ -54,7 +54,13 @@ private:
 public:
 
 
-	PhysicSimulator() {};
+	PhysicSimulator() 
+	{
+		Particle* ground = new Particle(&Vector3D(0, 0, -2.5));
+		ground->setShape(new Rect3D(ground->getPos(), Color::brown, 400, 200, 5));
+		ground->isStatic_ = true;
+		particles_.push_back(ground);
+	};
 
 	~PhysicSimulator() {
 		deleteAllParticles();

@@ -20,6 +20,13 @@ int PhysicSimulator::resolveCollisions()
 		//Collisions entre particules
 		for (itB = next(itA, 1); itB != particles_.end(); itB++) {
 
+			ParticleContact* contact = (*itA)->getShape()->collideWith(*(*itB)->getShape());
+
+			if (contact != nullptr) {
+				contactResolver_.addContact(contact);
+				iter += 1;
+			}
+			/*
 			float distAB = (*itA)->getPos()->distanceWith(*(*itB)->getPos());
 			float cumulatedRadius = (*itA)->getCollRadius() + (*itB)->getCollRadius();
 
@@ -29,70 +36,73 @@ int PhysicSimulator::resolveCollisions()
 				n = *(*itB)->getPos() - *(*itA)->getPos();
 				contactResolver_.addContact(new ParticleContact(*itA, *itB, restit, dPene, n.normalized()));
 				iter += 1;
-			}
+			} */
 		}
 
 
 		float z = (*itA)->getPos()->z;
-		float radius = (*itA)->getCollRadius();
+		//float radius = (*itA)->getCollRadius();
 		//Collisions avec le sol
-		if (z < radius && !isInPool(*itA)) {
+		/*if (z < radius && !isInPool(*itA)) {
 			restit = 0.50;
 			dPene = radius - z;
 			n = Vector3D(0, 0, -1);
 			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
 			iter += 1;
-		}
+		}*/
 		//Collisions avec le fond de la piscine
-		else if (z < -50 + radius && isInPool(*itA)) {
+		/*if (z < -50 + radius && isInPool(*itA)) {
 			restit = 0.50;
 			dPene = -50 + radius - z;
 			n = Vector3D(0, 0, -1);
 			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
 			iter += 1;
-		}
+		}*/
+
+
+		//GlutUtils::drawRectangle(Vector3D(0, 85, 25), 200, 10, 30, Color::darkGray);
 		//Collisions avec le mur
-		else {
-			float y = (*itA)->getPos()->y;
-			//Gauche et droite
-			if (z < 40 + radius && z > 10 - radius) {
-				//Gauche
-				if (y < 80 + radius && y > 80 - radius) {
-					restit = 0.75;
-					dPene = y + radius - 80;
-					n = Vector3D(0, 1, 0);
-					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-					iter += 1;
-				}
-				//Droite
-				else if (y > 90 - radius && y < 90 + radius) {
-					restit = 0.75;
-					dPene = 90 + radius - y;
-					n = Vector3D(0, -1, 0);
-					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-					iter += 1;
-				}
-			}
-			//Haut et bas
-			else if (y < 90 + radius && y > 80 - radius) {
-				//Haut
-				if (z < 40 + radius && z > 40 - radius) {
-					restit = 0.75;
-					dPene = 40 + radius - z;
-					n = Vector3D(0, 0, -1);
-					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-					iter += 1;
-				}
-				//Bas
-				else if (z < 10 + radius && z > 10 - radius) {
-					restit = 0.75;
-					dPene = z + radius - 10;
-					n = Vector3D(0, 0, 1);
-					contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
-					iter += 1;
-				}
-			}
-		}
+		//else {
+		//	float y = (*itA)->getPos()->y;
+		//	//Gauche et droite
+		//	if (z < 40 + radius && z > 10 - radius) {
+		//		//Gauche
+		//		if (y < 80 + radius && y > 80 - radius) {
+		//			restit = 0.75;
+		//			dPene = y + radius - 80;
+		//			n = Vector3D(0, 1, 0);
+		//			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+		//			iter += 1;
+		//		}
+		//		//Droite
+		//		else if (y > 90 - radius && y < 90 + radius) {
+		//			restit = 0.75;
+		//			dPene = 90 + radius - y;
+		//			n = Vector3D(0, -1, 0);
+		//			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+		//			iter += 1;
+		//		}
+		//	}
+		//	//Haut et bas
+		//	else if (y < 90 + radius && y > 80 - radius) {
+		//		//Haut
+		//		if (z < 40 + radius && z > 40 - radius) {
+		//			restit = 0.75;
+		//			dPene = 40 + radius - z;
+		//			n = Vector3D(0, 0, -1);
+		//			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+		//			iter += 1;
+		//		}
+		//		//Bas
+		//		else if (z < 10 + radius && z > 10 - radius) {
+		//			restit = 0.75;
+		//			dPene = z + radius - 10;
+		//			n = Vector3D(0, 0, 1);
+		//			contactResolver_.addContact(new ParticleContact(*itA, NULL, restit, dPene, n));
+		//			iter += 1;
+		//		}
+		//	}
+		//}
 	}
 
 	return iter;
@@ -109,6 +119,12 @@ void PhysicSimulator::applyRegister(float elapsedTime)
 	//Register Particules
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
+
+		//skip immovable objects
+		if ((*it)->isStatic_) {
+			continue;
+		}
+
 		register_.add(*it, new GravityFG(g_));
 		register_.add(*it, new DragFG(k1, k2));
 
@@ -241,6 +257,7 @@ bool PhysicSimulator::isInPool(Particle* p)
 		&& p->getPos()->z > -50
 		&& p->getPos()->z < 5);
 }
+
 void PhysicSimulator::drawParticles()
 {
 	std::list<Particle*>::iterator it;
@@ -251,6 +268,7 @@ void PhysicSimulator::drawParticles()
 		}
 	}
 }
+
 void PhysicSimulator::drawGroupParticles()
 {//redraw all link between grouped particles
 	std::list<ParticleGroup*>::iterator it;

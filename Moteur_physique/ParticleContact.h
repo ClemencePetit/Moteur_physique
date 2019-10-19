@@ -2,6 +2,7 @@
 #define PARTICLE_CONTACT
 
 #include "Particle.h"
+#include "Shape.h"
 
 class ParticleContact
 {
@@ -26,6 +27,13 @@ public:
 	float calculVs();
 	void resolveVelocity();
 	void resolveInterpenetration();
+
+	static ParticleContact* getContact(Particle* pa, Particle* pb);
+
+	static ParticleContact* getContact(Sphere sphere1, Sphere sphere2);
+	static ParticleContact* getContact(Rect3D rect1, Rect3D rect2);
+	static ParticleContact* getContact(Sphere sphere, Rect3D rect);
+	static ParticleContact* getContact(Rect3D rect, Sphere sphere);
 
 
 };
