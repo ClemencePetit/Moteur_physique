@@ -18,7 +18,7 @@ private:
 
 public:
 
-	void add(Particle* p, ParticleForceGenerator* fg);
+	void add(Particle p, ParticleForceGenerator* fg);
 	void add(std::vector<ForceRecord> otherRegister);
 	void remove();
 	void clear();

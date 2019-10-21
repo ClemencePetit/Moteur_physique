@@ -19,7 +19,6 @@ class Shape
 
 protected:
 
-
 	Vector3D* position_;
 	Vector3D color_;
 

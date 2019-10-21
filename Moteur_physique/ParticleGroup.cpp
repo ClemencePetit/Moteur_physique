@@ -4,6 +4,14 @@
 
 ParticleGroup::~ParticleGroup() {
 	delete(forcesRegister_);
+	std::vector<Particle*>::iterator it;
+	for (it = particles_.begin(); it != particles_.end(); it++)
+	{
+		//(*it)->setGroup(nullptr); //to avoid infinite loop
+		if (*it != NULL) {
+			delete(*it);
+		}
+	}
 }
 
 void ParticleGroup::draw() {

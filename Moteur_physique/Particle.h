@@ -24,6 +24,8 @@ private:
 
 	Shape* shape_; //forme associ�e � la particule pour la dessiner
 
+	ParticleGroup* group_ = nullptr;
+
 public:
 
 	bool isStatic_ = false; //TODO : bad
@@ -40,12 +42,18 @@ public:
 	void setShape(Shape* sh) { 
 		shape_ = sh; 
 	};
+	void setGroup(ParticleGroup* group) {
+		group_ = group;
+	}
 
 	Vector3D* getPos() { return pos_; };
 	Vector3D getVit() { return vel_; };
 	float getMassInv() { return massInv_; };
 	Shape* getShape() { return shape_; };
 	int getIndex() { return index_; };
+	ParticleGroup* getGroup() {
+		return group_;
+	}
 
 	//IPARTICLE
 	void addTo(list<Particle*> list);

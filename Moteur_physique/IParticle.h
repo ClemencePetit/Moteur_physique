@@ -18,4 +18,8 @@ public:
 
 };
 
+//En déclarant les classes ici on évite un problème de dépendance circulaire.
+class Particle;
+class ParticleGroup;
+
 #endif

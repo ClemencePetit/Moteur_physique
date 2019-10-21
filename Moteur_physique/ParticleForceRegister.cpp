@@ -10,10 +10,10 @@ ParticleForceRegister::~ParticleForceRegister()
 	clear();
 }
 
-void ParticleForceRegister::add(Particle* p, ParticleForceGenerator* fg) {
+void ParticleForceRegister::add(Particle p, ParticleForceGenerator* fg) {
 	ForceRecord fr;
 	fr.fg = fg;
-	fr.p = p;
+	fr.p = &p;
 	register_.push_back(fr);
 }
 
@@ -23,7 +23,7 @@ void ParticleForceRegister::add(std::vector<ForceRecord> otherRegister) {
 	std::vector<ForceRecord>::iterator it;
 	for (it = otherRegister.begin(); it != otherRegister.end(); it++)
 	{
-		this->add(it->p, it->fg);
+		this->add(*it->p, it->fg);
 	}
 }
 
