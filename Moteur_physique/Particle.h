@@ -28,7 +28,7 @@ public:
 
 	bool isStatic_ = false; //TODO : bad
 
-	Particle(Vector3D* pos, Vector3D vit, float m, int index);
+	Particle(Vector3D* pos, float m, int index);
 	Particle(Vector3D* pos);
 
 	~Particle();
