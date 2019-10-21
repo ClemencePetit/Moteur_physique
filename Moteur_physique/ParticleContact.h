@@ -27,7 +27,6 @@ public:
 	void resolveVelocity();
 	void resolveInterpenetration();
 
-	static ParticleContact* getContact(Particle* pa, Particle* pb);
 
 
 };

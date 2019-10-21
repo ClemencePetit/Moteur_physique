@@ -6,7 +6,6 @@
 #include "ContactResolver.h"
 #include "ParticleGroup.h"
 
-
 #include "DragFG.h"
 #include "GravityFG.h"
 #include "SpringFG.h"
@@ -40,6 +39,8 @@ private:
 	//Updates de la simulation
 
 	int resolveCollisions();
+
+	ParticleContact* getContact(Particle* pa, Particle* pb);
 
 	void applyRegister(float elapsedTime);
 	void applyCollisions(float elapsedTime);

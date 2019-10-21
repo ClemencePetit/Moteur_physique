@@ -7,6 +7,11 @@
 #include "GlutUtils.h"
 
 #include "Vector3D.h"
+#include "Contact.h"
+
+class Shape;
+class Rect3D;
+class Sphere;
 
 // Classe abstraite gérant l'affichage des particules, deux dérivées pour l'instant : sphère et rectangle 3D
 class Shape
@@ -42,9 +47,11 @@ public:
 	virtual void draw() = 0; //pure virtual function
 
 	//Collisions with DOUBLE DISPATCHIING
-	virtual Contact collideWith(const Shape& shape) const = 0;
-	virtual Contact collideWithInternal(const Sphere& sphere) const = 0;
-	virtual Contact collideWithInternal(const Rect3D& rect) const = 0;
+	virtual Contact collideWith(Shape& shape) = 0;
+	virtual Contact collideWithInternal(Sphere& sphere) = 0;
+	virtual Contact collideWithInternal(Rect3D& rect) = 0;
+
+
 };
 
 class Rect3D : public Shape {
@@ -72,9 +79,9 @@ public:
 
 
 	//Collisions with DOUBLE DISPATCHIING
-	Contact collideWith(const Shape& shape) const override;
-	Contact collideWithInternal(const Sphere& sphere) const override;
-	Contact collideWithInternal(const Rect3D& rect) const override;
+	Contact collideWith(Shape& shape);
+	Contact collideWithInternal(Sphere& sphere);
+	Contact collideWithInternal(Rect3D& rect);
 };
 
 class Sphere : public Shape {
@@ -93,9 +100,9 @@ public:
 	void draw();
 
 	//Collisions with DOUBLE DISPATCHIING
-	Contact collideWith(const Shape& shape) const override;
-	Contact collideWithInternal(const Sphere& sphere) const override;
-	Contact collideWithInternal(const Rect3D& rect) const override;
+	Contact collideWith(Shape& shape);
+	Contact collideWithInternal(Sphere& sphere);
+	Contact collideWithInternal(Rect3D& rect);
 };
 
 

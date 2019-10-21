@@ -20,7 +20,7 @@ int PhysicSimulator::resolveCollisions()
 		//Collisions entre particules
 		for (itB = next(itA, 1); itB != particles_.end(); itB++) {
 
-			ParticleContact* contact = ParticleContact::getContact(*itA, *itB);
+			ParticleContact* contact = getContact(*itA, *itB);
 
 			if (contact != nullptr) {
 				contactResolver_.addContact(contact);
@@ -108,6 +108,20 @@ int PhysicSimulator::resolveCollisions()
 	return iter;
 }
 
+
+ParticleContact* PhysicSimulator::getContact(Particle* pa, Particle* pb)
+{
+	//Test shape contacts
+	Contact contact = pa->getShape()->collideWith(*pb->getShape());
+
+	if (contact.hasContact_) {
+		return new ParticleContact(pa, pb, 0.8f, contact.dPene_, contact.n_);
+	}
+	else {
+		return nullptr;
+	}
+}
+
 /**
 	Apply all registered Forces to the particles, then clear the register.
 **/
@@ -186,28 +200,6 @@ void PhysicSimulator::applyMovements(float elapsedTime)
 			//Compute new positions !
 			(*it)->integrer(elapsedTime);
 
-
-			if ((*it)->getPos()->z < -100) {
-				int indexTemp = (*it)->getIndex();
-				
-				//Delete Particule Group
-				//VERY EXPENSIVE TO OPTIMIZE
-				ite = particlesGroups_.begin();
-				while (ite != particlesGroups_.end())
-				{
-					if ((*ite)->hasIndex(indexTemp)) {
-						deleteParticleGroup(*ite++);
-					}
-					else {
-						ite++;
-					}
-				}
-				//
-				deleteParticle(*it++);
-			}
-			else {
-				it++;
-			}
 		}
 	}
 }

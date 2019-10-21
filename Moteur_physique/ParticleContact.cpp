@@ -86,16 +86,3 @@ void ParticleContact::resolveInterpenetration() {
 		particles_[1]->setPos(*particles_[1]->getPos() + deltaPB);
 	}
 }
-
-ParticleContact* ParticleContact::getContact(Particle* pa, Particle* pb)
-{
-	//Test shape contacts
-	Contact contact = pa->getShape()->collideWith(*pb->getShape());
-
-	if (contact.hasContact_) {
-		return new ParticleContact(pa, pb, 0.8f, contact.dPene_, contact.n_);
-	}
-	else {
-		return nullptr;
-	}
-}

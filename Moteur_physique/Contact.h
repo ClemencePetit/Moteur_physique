@@ -4,7 +4,6 @@
 #define CONTACT
 
 #include "Vector3D.h"
-#include "Shape.h"
 
 class Contact
 {
@@ -22,11 +21,6 @@ public:
 	}
 
 	~Contact() {}
-
-	static Contact getContact(Sphere sphere1, Sphere sphere2);
-	static Contact getContact(Rect3D rect1, Rect3D rect2);
-	static Contact getContact(Sphere sphere, Rect3D rect);
-	static Contact getContact(Rect3D rect, Sphere sphere);
 
 };
 

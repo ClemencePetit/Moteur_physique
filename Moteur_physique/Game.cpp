@@ -164,6 +164,8 @@ void Game::update(int value)
 		crosshair_.loadShot(elapsedTime);
 	}
 
+	drawScene();
+
 	glutPostRedisplay();
 	glutTimerFunc((unsigned int)elapsedTime * 1000, updateCallback, 0);
 }
@@ -182,6 +184,9 @@ void Game::instructions() {
 	cout << "Touche D pour supprimer les particules." << endl;
 	cout << "Touche ESCAPE pour quitter le test." << endl;
 }
+
+
+
 
 //démarrage du jeu
 void Game::execute(int argc, char** argv)
