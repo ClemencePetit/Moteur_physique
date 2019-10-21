@@ -79,6 +79,7 @@ public:
 	void drawGround();
 	void drawPool();
 	void drawWall();
+	void addWalls();
 	void drawScene();
 
 	//// fonctions update

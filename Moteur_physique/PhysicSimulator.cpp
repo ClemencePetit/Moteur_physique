@@ -190,9 +190,8 @@ void PhysicSimulator::applyMovements(float elapsedTime)
 	std::list<Particle*>::iterator it;
 
 	//update physics for each particles
-	it = particles_.begin();
-	while (it != particles_.end()) {
-
+	for (it = particles_.begin(); it != particles_.end(); it++)
+	{
 		//If particle isn't null for some reasons
 		if (*it != NULL) {
 
@@ -200,8 +199,6 @@ void PhysicSimulator::applyMovements(float elapsedTime)
 			(*it)->integrer(elapsedTime);
 
 		}
-
-		it++;
 	}
 }
 
@@ -237,6 +234,9 @@ void PhysicSimulator::verifyDeletion()
 			else {
 				it++;
 			}
+		}
+		else {
+			it++;
 		}
 	}
 }
