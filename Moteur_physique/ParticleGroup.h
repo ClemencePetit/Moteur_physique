@@ -13,7 +13,6 @@ private:
 
 	std::vector<Particle*> particles_;
 	ParticleForceRegister* forcesRegister_; //Forces specific to that group
-
 	void addRandomOffsets();
 
 public:
@@ -21,15 +20,7 @@ public:
 	ParticleGroup(std::vector<Particle*> particles, ParticleForceRegister* forcesRegister)
 		: particles_(particles), forcesRegister_(forcesRegister)
 	{
-
 		addRandomOffsets();
-
-		//Set the group to all particles
-		std::vector<Particle*>::iterator it;
-		for (it = particles_.begin(); it != particles_.end(); it++)
-		{
-			(*it)->setGroup(this);
-		}
 	}
 
 
