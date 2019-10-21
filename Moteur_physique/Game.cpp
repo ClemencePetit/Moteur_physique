@@ -10,6 +10,7 @@
 
 Game::Game()
 {
+	elapsedTime = 0.f;
 }
 
 void Game::handleKeypress(unsigned char key, int x, int y)

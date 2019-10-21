@@ -5,6 +5,7 @@
 #include "ParticleForceRegister.h"
 #include "ContactResolver.h"
 #include "ParticleGroup.h"
+#include "Contact.h"
 
 #include "DragFG.h"
 #include "GravityFG.h"

@@ -9,9 +9,9 @@ int PhysicSimulator::resolveCollisions()
 {
 	int iter = 0;
 
-	float restit;
-	float dPene;
-	Vector3D n;
+	//float restit;
+	//float dPene;
+	//Vector3D n;
 
 	std::list<Particle*>::iterator itA;
 	std::list<Particle*>::iterator itB;

@@ -40,7 +40,7 @@ private:
 	//time
 	float elapsedTime;
 	clock_t stopTime = clock();
-	clock_t startTime;
+	clock_t startTime = clock();
 
 	//dimensions de l'écran
 	int screenWidth = 900;
