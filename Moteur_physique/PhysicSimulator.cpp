@@ -188,7 +188,6 @@ void PhysicSimulator::applyCollisions(float elapsedTime)
 void PhysicSimulator::applyMovements(float elapsedTime)
 {
 	std::list<Particle*>::iterator it;
-	std::list<ParticleGroup*>::iterator ite;
 
 	//update physics for each particles
 	it = particles_.begin();
@@ -201,6 +200,8 @@ void PhysicSimulator::applyMovements(float elapsedTime)
 			(*it)->integrer(elapsedTime);
 
 		}
+
+		it++;
 	}
 }
 
@@ -329,7 +330,7 @@ void PhysicSimulator::updatePhysics(float elapsedTime)
 	applyRegister(elapsedTime);
 	applyCollisions(elapsedTime);
 	applyMovements(elapsedTime);
-	verifyDeletion();
+	//verifyDeletion();
 
 }
 
