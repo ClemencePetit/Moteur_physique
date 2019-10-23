@@ -17,8 +17,6 @@ private:
 
 public:
 
-	ParticleGroup() {}
-
 	ParticleGroup(std::vector<Particle*> particles, ParticleForceRegister* forcesRegister)
 		: particles_(particles), forcesRegister_(forcesRegister)
 	{

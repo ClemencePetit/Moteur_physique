@@ -10,6 +10,7 @@
 
 Game::Game()
 {
+	elapsedTime = 0.f;
 }
 
 void Game::handleKeypress(unsigned char key, int x, int y)
@@ -122,6 +123,20 @@ void Game::drawWall() {
 
 }
 
+void Game::addWalls() {
+
+	Particle* paWall = new Particle{ new Vector3D(0, 85, 25), 50000000.f, 10000 };
+	paWall->setShape(new Rect3D(paWall->getPos(), Color::darkGray, 200.f, 10.f, 30));
+	paWall->isStatic_ = true;
+
+	Particle* paGround = new Particle{ new Vector3D(0, 0, -2.5), 50000000.f, 20000 };
+	paGround->setShape(new Rect3D(paGround->getPos(), Color::brown, 400.f, 200.f, 5.f));
+	paGround->isStatic_ = true;
+
+	simulator_.addParticle(paWall);
+	simulator_.addParticle(paGround);
+}
+
 
 void Game::drawScene()
 {
@@ -134,9 +149,9 @@ void Game::drawScene()
 		lookCamera_.x, lookCamera_.y, lookCamera_.z, 
 		0, 0, 1);
 	
-	drawGround();
+	//drawGround();
 	drawPool();
-	drawWall();
+	//drawWall();
 	simulator_.draw();
 	crosshair_.draw();
 
@@ -164,6 +179,8 @@ void Game::update(int value)
 		crosshair_.loadShot(elapsedTime);
 	}
 
+	drawScene();
+
 	glutPostRedisplay();
 	glutTimerFunc((unsigned int)elapsedTime * 1000, updateCallback, 0);
 }
@@ -183,10 +200,14 @@ void Game::instructions() {
 	cout << "Touche ESCAPE pour quitter le test." << endl;
 }
 
+
+
+
 //démarrage du jeu
 void Game::execute(int argc, char** argv)
 {
 	instructions();
+	addWalls();
 
 	//launch Glut
 	glutInit(&argc, argv);
