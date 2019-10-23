@@ -75,7 +75,7 @@
     <ClCompile Include="ParticleContact.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicSimulator.cpp">
+    <ClCompile Include="Color.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Crosshair.cpp">
@@ -84,7 +84,7 @@
     <ClCompile Include="GlutUtils.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Color.cpp">
+    <ClCompile Include="PhysicSimulator.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Contact.cpp">
@@ -146,7 +146,7 @@
     <ClInclude Include="ParticleContact.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicSimulator.h">
+    <ClInclude Include="Color.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Crosshair.h">
@@ -155,7 +155,7 @@
     <ClInclude Include="GlutUtils.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Color.h">
+    <ClInclude Include="PhysicSimulator.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Contact.h">
