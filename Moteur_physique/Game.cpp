@@ -112,8 +112,12 @@ void Game::drawGround() {
 }
 
 void Game::drawPool() {
-
-	GlutUtils::drawHollowRectangle(Vector3D(0, 200, -25), 400, 200, 50, Color::lightBlue);
+	if (seeInWater_) {
+		GlutUtils::drawHollowRectangle(Vector3D(0, 200, -25), 400, 200, 50, Color::lightBlue);
+	}
+	else {
+		GlutUtils::drawRectangle(Vector3D(0, 200, -25), 400, 200, 50, Color::lightBlue);
+	}
 }
 
 void Game::drawWall() {
