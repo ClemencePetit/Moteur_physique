@@ -1,12 +1,12 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3D* pos, float m, int index) : pos_(pos), vel_(Vector3D()),
-	massInv_(1/m), forceAccum_(0, 0, 0), index_(index)
+Particle::Particle(Vector3D* pos, float m) : pos_(pos), vel_(Vector3D()),
+	massInv_(1/m), forceAccum_(0, 0, 0)
 {
 }
 
 Particle::Particle(Vector3D* pos) : pos_(pos), vel_(Vector3D()),
-massInv_(0.001f), forceAccum_(0, 0, 0), index_(0)
+massInv_(0.001f), forceAccum_(0, 0, 0)
 {
 
 }
@@ -25,6 +25,7 @@ void Particle::integrer(float t)
 
 Particle::~Particle()
 {
+	cout << "Particle deleted" << endl;
 	delete(shape_);
 	delete(pos_);
 }

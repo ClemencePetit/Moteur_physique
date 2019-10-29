@@ -33,31 +33,31 @@ IParticle* ParticleFactory::getCurrentProjectile() {
 }
 
 IParticle* ParticleFactory::getBasicBall() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), 500.0, currentParticleIndex_++);
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), 500.0);
 	pa->setShape(new Sphere(pa->getPos(), Color::green, 2)); //Vert
 	return pa;
 }
 
 IParticle* ParticleFactory::getCannonBall() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), 5000.0, currentParticleIndex_++);
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), 5000.0);
 	pa->setShape(new Sphere(pa->getPos(), Color::black, 3)); //Noir
 	return pa;
 }
 
 IParticle* ParticleFactory::getLaser() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), -1.f, currentParticleIndex_++);
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), -1.f);
 	pa->setShape(new Sphere(pa->getPos(), Color::red, 1)); //Rouge
 	return pa;
 }
 
 IParticle* ParticleFactory::getSnowflake() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), 55.0, currentParticleIndex_++);
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), 55.0);
 	pa->setShape(new Sphere(pa->getPos(), Color::blue, 1.2f)); //Bleu
 	return pa;
 }
 
 IParticle* ParticleFactory::getTestWater() {
-	Particle* pa = new Particle(new Vector3D(0, 125, -30), 400.0, currentParticleIndex_++);
+	Particle* pa = new Particle(new Vector3D(0, 125, -30), 400.0);
 	pa->setShape(new Sphere(pa->getPos(), Color::yellow, 2)); //Jaune
 	return pa;
 }
@@ -161,7 +161,7 @@ IParticle* ParticleFactory::getBlob2() {
 }
 
 IParticle* ParticleFactory::getTestBlop() {
-	Particle* pa = new Particle(new Vector3D(0, 0, 5), 400.0, currentParticleIndex_++);
+	Particle* pa = new Particle(new Vector3D(0, 0, 5), 400.0);
 	pa->setShape(new Sphere(pa->getPos(), Color::purple, 0.7f));
 	return pa;
 }

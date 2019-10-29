@@ -15,6 +15,8 @@ private:
 	ParticleForceRegister* forcesRegister_; //Forces specific to that group
 	void addRandomOffsets();
 
+	bool markedToDeletion_ = false;
+
 public:
 
 	ParticleGroup(std::vector<Particle*> particles, ParticleForceRegister* forcesRegister)
@@ -53,10 +55,15 @@ public:
 		}
 	};
 
+	bool isMarkedToDeletion() {
+		return markedToDeletion_;
+	}
+
 	Vector3D* getPos() {
 		//Return the pos of the first particle
 		return (*particles_.begin())->getPos();
 	};
+
 
 	Vector3D getVit() {
 		return (*particles_.begin())->getVit();
@@ -66,12 +73,20 @@ public:
 		return particles_;
 	}
 
+	void markToDeletion() {
+		markedToDeletion_ = true;
+		std::vector<Particle*>::iterator it;
+		for (it = particles_.begin(); it != particles_.end(); it++)
+		{
+			(*it)->markToDeletion();
+		}
+	}
+
 	void draw(); 
 	void DrawLinks();
 
 	void updateForces(float elapsedTime);
 
-	bool hasIndex(int index);
 
 };
 

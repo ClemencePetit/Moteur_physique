@@ -12,8 +12,6 @@ class Particle : public IParticle
 {
 
 private:
-	
-	int index_;
 
 	Vector3D* pos_; //position
 	Vector3D vel_; //velocit�
@@ -21,14 +19,16 @@ private:
 	Vector3D forceAccum_;
 	float massInv_;
 
-
+	ParticleGroup* group_ = nullptr;
 	Shape* shape_; //forme associ�e � la particule pour la dessiner
+
+	bool markedToDeletion_ = false;
 
 public:
 
 	bool isStatic_ = false; //TODO : bad
 
-	Particle(Vector3D* pos, float m, int index);
+	Particle(Vector3D* pos, float m);
 	Particle(Vector3D* pos);
 
 	~Particle();
@@ -40,12 +40,24 @@ public:
 	void setShape(Shape* sh) { 
 		shape_ = sh; 
 	};
+	void setGroup(ParticleGroup* group) {
+		group_ = group;
+	}
 
 	Vector3D* getPos() { return pos_; };
 	Vector3D getVit() { return vel_; };
 	float getMassInv() { return massInv_; };
 	Shape* getShape() { return shape_; };
-	int getIndex() { return index_; };
+	ParticleGroup* getGroup() {
+		return group_;
+	}
+	bool isMarkedToDeletion() {
+		return markedToDeletion_;
+	}
+
+	void markToDeletion() {
+		markedToDeletion_ = true;
+	}
 
 	//IPARTICLE
 	void addTo(list<Particle*> list);

@@ -129,38 +129,67 @@ void PhysicSimulator::verifyDeletion()
 	std::list<Particle*>::iterator it;
 	std::list<ParticleGroup*>::iterator ite;
 
-	//update physics for each particles
-	it = particles_.begin();
-	while (it != particles_.end()) {
+	//Delete particle groups
+	auto groups_to_erase = std::remove_if(
+		std::begin(particlesGroups_),
+		std::end(particlesGroups_),
+		[](ParticleGroup* paG) { 
+			return paG != NULL && paG->isMarkedToDeletion();
+		}
+	);
 
-		//If particle isn't null for some reasons
-		if (*it != NULL) {
+	//call destructors
+	for (ite = groups_to_erase; ite != cend(particlesGroups_); ite++) {
+		delete(*ite);
+	}
 
-			//Delete them if they are too low
-			if ((*it)->getPos()->z < -100) {
-				int indexTemp = (*it)->getIndex();
+	//erase from list
+	particlesGroups_.erase(groups_to_erase, cend(particlesGroups_));
+	
 
-				//Delete particle groups
-				ite = particlesGroups_.begin();
-				while (ite != particlesGroups_.end())
-				{
-					if ((*ite)->hasIndex(indexTemp)) {
-						deleteParticleGroup(*ite++);
-					}
-					else {
-						ite++;
-					}
-				}
-				deleteParticle(*it++);
-			}
-			else {
-				it++;
-			}
+	auto particles_to_erase = std::remove_if(
+		std::begin(particles_),
+		std::end(particles_),
+		[](Particle* pa) {
+			return pa != NULL && pa->getPos()->z < -100 || pa->isMarkedToDeletion();
+		}
+	);
+
+	//call destructors
+	for (it = particles_to_erase; it != cend(particles_); it++) {
+		delete(*it);
+	}
+
+	//erase from list
+	particles_.erase(particles_to_erase, cend(particles_));
+
+
+	/*
+	ite = particlesGroups_.begin();
+	while (ite != particlesGroups_.end())
+	{
+		if ( *ite != NULL && (*ite)->isMarkedToDeletion()) {
+				deleteParticleGroup(*ite);
 		}
 		else {
-			it++;
+			ite++; //Only increment iterator if there's no deletion.
 		}
-	}
+	} */
+
+	//Delete particles
+	/*
+	it = particles_.begin();
+	while (it != particles_.end())
+	{
+		//Delete them if they are too low
+		if ((*it) != NULL && (*it)->getPos()->z < -100 || (*it)->isMarkedToDeletion()) {
+			deleteParticle(*it);
+		}
+		else {
+			it++; //Only increment iterator if there's no deletion.
+		}
+	} */
+
 }
 
 bool PhysicSimulator::isInPool(Particle* p)
@@ -220,22 +249,27 @@ void PhysicSimulator::addParticle(IParticle* pa)
 void PhysicSimulator::deleteParticle(Particle* pa)
 {
 	particles_.remove(pa);
+	if (pa->getGroup() != nullptr) {
+		deleteParticleGroup(pa->getGroup());
+		pa->setGroup(nullptr);
+	}
 	delete(pa);
 }
 
 void PhysicSimulator::deleteParticleGroup(ParticleGroup* paG)
 {
 	particlesGroups_.remove(paG);
+	paG->markToDeletion();
 	delete(paG);
 }
 
 void PhysicSimulator::deleteAllParticles()
 {
-	while (!particles_.empty()) {
-		deleteParticle(particles_.front());
-	}
 	while (!particlesGroups_.empty()) {
 		deleteParticleGroup(particlesGroups_.front());
+	}
+	while (!particles_.empty()) {
+		deleteParticle(particles_.front());
 	}
 }
 
@@ -252,7 +286,7 @@ void PhysicSimulator::updatePhysics(float elapsedTime)
 	applyRegister(elapsedTime);
 	applyCollisions(elapsedTime);
 	applyMovements(elapsedTime);
-	//verifyDeletion();
+	verifyDeletion();
 
 }
 

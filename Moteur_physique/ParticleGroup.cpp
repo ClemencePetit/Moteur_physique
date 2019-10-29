@@ -3,6 +3,9 @@
 
 
 ParticleGroup::~ParticleGroup() {
+
+	cout << "Particle Group deleted" << endl;
+	markToDeletion();
 	delete(forcesRegister_);
 }
 
@@ -58,17 +61,5 @@ void ParticleGroup::addRandomOffsets() {
 		Vector3D newPos = *(*it)->getPos() + offset;
 		(*it)->setPos(newPos);
 	}
-}
-
-
-bool ParticleGroup::hasIndex(int index) {
-	std::vector<Particle*>::iterator it;
-	for (it = particles_.begin(); it != particles_.end(); it++)
-	{
-		if ((*it)->getIndex() == index) {
-			return true;
-		}
-	}
-	return false;
 }
 

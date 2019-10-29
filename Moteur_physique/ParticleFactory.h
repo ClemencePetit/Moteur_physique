@@ -20,15 +20,12 @@ class ParticleFactory
 {
 private:
 
-	int currentParticleIndex_ = 0;
-
 	int currentProjectileIndex_ = 0;
 
 public:
 
 	ParticleFactory() :	currentProjectileIndex_(0) {}
 
-	int getCurrentIndex() { return currentParticleIndex_; }
 	int getCurrentProjectileIndex() { return currentProjectileIndex_; };
 
 	IParticle* getCurrentProjectile();

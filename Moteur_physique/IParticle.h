@@ -18,4 +18,7 @@ public:
 
 };
 
+class Particle;
+class ParticleGroup;
+
 #endif
