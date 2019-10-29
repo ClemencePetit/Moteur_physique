@@ -125,11 +125,11 @@ void Game::drawWall() {
 
 void Game::addWalls() {
 
-	Particle* paWall = new Particle{ new Vector3D(0, 85, 25), 50000000.f};
+	std::shared_ptr<Particle> paWall = std::make_shared<Particle>(Particle{ new Vector3D(0, 85, 25), 50000000.f});
 	paWall->setShape(new Rect3D(paWall->getPos(), Color::darkGray, 200.f, 10.f, 30));
 	paWall->isStatic_ = true;
 
-	Particle* paGround = new Particle{ new Vector3D(0, 0, -2.5), 50000000.f};
+	std::shared_ptr<Particle> paGround = std::make_shared<Particle>(Particle{ new Vector3D(0, 0, -2.5), 50000000.f});
 	paGround->setShape(new Rect3D(paGround->getPos(), Color::brown, 400.f, 200.f, 5.f));
 	paGround->isStatic_ = true;
 

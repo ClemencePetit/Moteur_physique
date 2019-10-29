@@ -6,7 +6,7 @@ float Crosshair::lerp01(float a, float b, float t)
 	return a + t * (b - a);
 }
 
-void Crosshair::changeParticle(IParticle* pa)
+void Crosshair::changeParticle(std::shared_ptr<IParticle> pa)
 {
 	if (selectedParticle_ == NULL) {
 		//If no particle yet, init it
@@ -19,7 +19,7 @@ void Crosshair::changeParticle(IParticle* pa)
 		pa->setVit(selectedParticle_->getVit());
 		pa->setPos(*selectedParticle_->getPos());
 
-		delete(selectedParticle_);
+		//delete(selectedParticle_);
 		selectedParticle_ = pa;
 	}
 
@@ -44,9 +44,9 @@ void Crosshair::loadShot(float elapsedTime)
 	}
 }
 
-IParticle* Crosshair::fireParticle()
+std::shared_ptr<IParticle> Crosshair::fireParticle()
 {
-	IParticle* toShoot = factory_.getCurrentProjectile();
+	std::shared_ptr<IParticle> toShoot = factory_.getCurrentProjectile();
 
 	//Prepare new particle
 	toShoot->setVit(selectedParticle_->getVit());

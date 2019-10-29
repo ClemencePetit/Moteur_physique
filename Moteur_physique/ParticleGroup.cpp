@@ -11,8 +11,8 @@ ParticleGroup::~ParticleGroup() {
 
 void ParticleGroup::draw() {
 
-	Particle* centerParticle = *particles_.begin();
-	std::vector<Particle*>::iterator it;
+	std::shared_ptr<Particle> centerParticle = *particles_.begin();
+	std::vector<std::shared_ptr<Particle>>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
 		GlutUtils::drawLine(
@@ -26,8 +26,8 @@ void ParticleGroup::draw() {
 
 void ParticleGroup::DrawLinks() {
 
-	Particle* centerParticle = *particles_.begin();
-	std::vector<Particle*>::iterator it;
+	std::shared_ptr<Particle> centerParticle = *particles_.begin();
+	std::vector<std::shared_ptr<Particle>>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
 		GlutUtils::drawLine(
@@ -47,7 +47,7 @@ void ParticleGroup::updateForces(float t) {
 void ParticleGroup::addRandomOffsets() {
 
 
-	std::vector<Particle*>::iterator it;
+	std::vector<std::shared_ptr<Particle>>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
 		//Skip the first particle

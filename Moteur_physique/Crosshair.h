@@ -12,7 +12,7 @@ private:
 
 	ParticleFactory factory_;
 
-	IParticle* selectedParticle_;
+	std::shared_ptr<IParticle> selectedParticle_;
 	Vector3D pos_;
 	Vector3D aimDirection_;
 
@@ -39,12 +39,12 @@ public:
 		changeParticle(factory_.getCurrentProjectile());
 	}
 
-	void changeParticle(IParticle* pa);
+	void changeParticle(std::shared_ptr<IParticle> pa);
 	void selectNextParticle();
 
 	void loadShot(float elapsedTime);
 	
-	IParticle* fireParticle();
+	std::shared_ptr<IParticle> fireParticle();
 
 	void draw();
 

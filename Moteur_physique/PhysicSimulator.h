@@ -33,8 +33,8 @@ private:
 	ContactResolver contactResolver_;
 
 	//Particules à simuler
-	list <Particle*> particles_; //liste des particules créées
-	list <ParticleGroup*> particlesGroups_;
+	list <std::shared_ptr<Particle>> particles_; //liste des particules créées
+	list <std::shared_ptr<ParticleGroup>> particlesGroups_;
 
 	//Constantes
 	Vector3D g_ = Vector3D(0, 0, -9.8f);
@@ -69,9 +69,9 @@ public:
 		deleteAllParticles();
 	}
 
-	void addParticle(IParticle* pa);
-	void deleteParticle(Particle* pa);
-	void deleteParticleGroup(ParticleGroup* paG);
+	void addParticle(std::shared_ptr<IParticle> pa);
+	void deleteParticle(std::shared_ptr<Particle> pa);
+	void deleteParticleGroup(std::shared_ptr<ParticleGroup> paG);
 	void deleteAllParticles();
 	void deleteAndClearAll();
 
@@ -79,11 +79,11 @@ public:
 
 	void draw();
 
-	list <Particle*> getParticles() {
+	list <std::shared_ptr<Particle>> getParticles() {
 		return particles_;
 	}
 
-	list <ParticleGroup*> getParticuleGroups() {
+	list <std::shared_ptr<ParticleGroup>> getParticuleGroups() {
 		return particlesGroups_;
 	}
 

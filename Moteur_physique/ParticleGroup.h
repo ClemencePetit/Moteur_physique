@@ -11,7 +11,7 @@ class ParticleGroup : public IParticle
 {
 private:
 
-	std::vector<Particle*> particles_;
+	std::vector<std::shared_ptr<Particle>> particles_;
 	ParticleForceRegister* forcesRegister_; //Forces specific to that group
 	void addRandomOffsets();
 
@@ -19,7 +19,7 @@ private:
 
 public:
 
-	ParticleGroup(std::vector<Particle*> particles, ParticleForceRegister* forcesRegister)
+	ParticleGroup(std::vector<std::shared_ptr<Particle>> particles, ParticleForceRegister* forcesRegister)
 		: particles_(particles), forcesRegister_(forcesRegister)
 	{
 		addRandomOffsets();
@@ -33,7 +33,7 @@ public:
 	//Set central particle to new pos and keep the offset between them
 	void setPos(Vector3D pos) {
 
-		std::vector<Particle*>::iterator it;
+		std::vector<std::shared_ptr<Particle>>::iterator it;
 
 		Vector3D initialFirstParticlePos = *getPos();
 
@@ -48,7 +48,7 @@ public:
 
 	//Set all particles to the same speed
 	void setVit(Vector3D vit) {
-		std::vector<Particle*>::iterator it;
+		std::vector<std::shared_ptr<Particle>>::iterator it;
 		for (it = particles_.begin(); it != particles_.end(); it++)
 		{
 			(*it)->setVit(vit);
@@ -69,13 +69,13 @@ public:
 		return (*particles_.begin())->getVit();
 	}
 
-	std::vector<Particle*> getParticles() {
+	std::vector<std::shared_ptr<Particle>> getParticles() {
 		return particles_;
 	}
 
 	void markToDeletion() {
 		markedToDeletion_ = true;
-		std::vector<Particle*>::iterator it;
+		std::vector<std::shared_ptr<Particle>>::iterator it;
 		for (it = particles_.begin(); it != particles_.end(); it++)
 		{
 			(*it)->markToDeletion();

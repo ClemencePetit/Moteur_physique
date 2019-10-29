@@ -3,12 +3,13 @@
 Particle::Particle(Vector3D* pos, float m) : pos_(pos), vel_(Vector3D()),
 	massInv_(1/m), forceAccum_(0, 0, 0)
 {
+	shape_ = nullptr;
 }
 
 Particle::Particle(Vector3D* pos) : pos_(pos), vel_(Vector3D()),
 massInv_(0.001f), forceAccum_(0, 0, 0)
 {
-
+	shape_ = nullptr;
 }
 
 void Particle::integrer(float t)

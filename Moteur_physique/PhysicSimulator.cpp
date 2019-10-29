@@ -9,14 +9,14 @@ int PhysicSimulator::resolveCollisions()
 {
 	int iter = 0;
 
-	std::list<Particle*>::iterator itA;
-	std::list<Particle*>::iterator itB;
+	std::list<std::shared_ptr<Particle>>::iterator itA;
+	std::list<std::shared_ptr<Particle>>::iterator itB;
 
 	for (itA = particles_.begin(); itA != particles_.end(); itA++) {
 		//Collisions entre particules
 		for (itB = next(itA, 1); itB != particles_.end(); itB++) {
 
-			ParticleContact* contact = getContact(*itA, *itB);
+			ParticleContact* contact = getContact((*itA).get(), (*itB).get());
 
 			if (contact != nullptr) {
 				contactResolver_.addContact(contact);
@@ -49,8 +49,8 @@ ParticleContact* PhysicSimulator::getContact(Particle* pa, Particle* pb)
 **/
 void PhysicSimulator::applyRegister(float elapsedTime)
 {
-	std::list<Particle*>::iterator it;
-	std::list<ParticleGroup*>::iterator ite;
+	std::list<std::shared_ptr<Particle>>::iterator it;
+	std::list<std::shared_ptr<ParticleGroup>>::iterator ite;
 
 	//Register Particules
 	for (it = particles_.begin(); it != particles_.end(); it++)
@@ -61,11 +61,13 @@ void PhysicSimulator::applyRegister(float elapsedTime)
 			continue;
 		}
 
-		register_.add(*it, new GravityFG(g_));
-		register_.add(*it, new DragFG(k1, k2));
+		Particle* pa = (*it).get();
 
-		if (isInPool(*it)) {
-			register_.add(*it, new BuoyancyFG());
+		register_.add(pa, new GravityFG(g_));
+		register_.add(pa, new DragFG(k1, k2));
+
+		if (isInPool(pa)) {
+			register_.add(pa, new BuoyancyFG());
 		}
 
 		//If very low
@@ -109,7 +111,7 @@ void PhysicSimulator::applyCollisions(float elapsedTime)
 
 void PhysicSimulator::applyMovements(float elapsedTime)
 {
-	std::list<Particle*>::iterator it;
+	std::list<std::shared_ptr<Particle>>::iterator it;
 
 	//update physics for each particles
 	for (it = particles_.begin(); it != particles_.end(); it++)
@@ -126,22 +128,17 @@ void PhysicSimulator::applyMovements(float elapsedTime)
 
 void PhysicSimulator::verifyDeletion()
 {
-	std::list<Particle*>::iterator it;
-	std::list<ParticleGroup*>::iterator ite;
+	std::list<std::shared_ptr<Particle>>::iterator it;
+	std::list<std::shared_ptr<ParticleGroup>>::iterator ite;
 
 	//Delete particle groups
 	auto groups_to_erase = std::remove_if(
 		std::begin(particlesGroups_),
 		std::end(particlesGroups_),
-		[](ParticleGroup* paG) { 
-			return paG != NULL && paG->isMarkedToDeletion();
+		[](std::shared_ptr<ParticleGroup> paG) {
+			return paG->isMarkedToDeletion();
 		}
 	);
-
-	//call destructors
-	for (ite = groups_to_erase; ite != cend(particlesGroups_); ite++) {
-		delete(*ite);
-	}
 
 	//erase from list
 	particlesGroups_.erase(groups_to_erase, cend(particlesGroups_));
@@ -150,15 +147,10 @@ void PhysicSimulator::verifyDeletion()
 	auto particles_to_erase = std::remove_if(
 		std::begin(particles_),
 		std::end(particles_),
-		[](Particle* pa) {
-			return pa != NULL && pa->getPos()->z < -100 || pa->isMarkedToDeletion();
+		[](std::shared_ptr<Particle> pa) {
+			return pa->getPos()->z < -100 || pa->isMarkedToDeletion();
 		}
 	);
-
-	//call destructors
-	for (it = particles_to_erase; it != cend(particles_); it++) {
-		delete(*it);
-	}
 
 	//erase from list
 	particles_.erase(particles_to_erase, cend(particles_));
@@ -204,7 +196,7 @@ bool PhysicSimulator::isInPool(Particle* p)
 
 void PhysicSimulator::drawParticles()
 {
-	std::list<Particle*>::iterator it;
+	std::list<std::shared_ptr<Particle>>::iterator it;
 	for (it = particles_.begin(); it != particles_.end(); it++)
 	{
 		if (*it != NULL && (*it)->getShape() != NULL) {
@@ -215,7 +207,7 @@ void PhysicSimulator::drawParticles()
 
 void PhysicSimulator::drawGroupParticles()
 {//redraw all link between grouped particles
-	std::list<ParticleGroup*>::iterator it;
+	std::list<std::shared_ptr<ParticleGroup>>::iterator it;
 	for (it = particlesGroups_.begin(); it != particlesGroups_.end(); it++)
 	{
 		if (*it != NULL) {
@@ -227,16 +219,18 @@ void PhysicSimulator::drawGroupParticles()
 
 #pragma region Public Methods 
 
-void PhysicSimulator::addParticle(IParticle* pa)
+void PhysicSimulator::addParticle(std::shared_ptr<IParticle> pa)
 {
 	//Use a dynamic cast to determine if it's a Particle or ParticleGroup
 
+	//std::shared_ptr<Particle> a = std::dynamic_pointer_cast<Particle>(getBasicBall());
+
 	//If it's a Particle
-	if (Particle * ptrPq = dynamic_cast<Particle*>(pa)) {
+	if (std::shared_ptr<Particle> ptrPq = std::dynamic_pointer_cast<Particle>(pa)) {
 		particles_.push_back(ptrPq);
 	}
 	//If it's a ParticleGroup
-	else if (ParticleGroup * ptrPg = dynamic_cast<ParticleGroup*>(pa)) {
+	else if (std::shared_ptr<ParticleGroup> ptrPg = std::dynamic_pointer_cast<ParticleGroup>(pa)) {
 
 		for (auto const& pa : ptrPg->getParticles()) {
 			particles_.push_back(pa);
@@ -246,21 +240,22 @@ void PhysicSimulator::addParticle(IParticle* pa)
 	}
 }
 
-void PhysicSimulator::deleteParticle(Particle* pa)
+void PhysicSimulator::deleteParticle(shared_ptr<Particle> pa)
 {
 	particles_.remove(pa);
+	/*
 	if (pa->getGroup() != nullptr) {
 		deleteParticleGroup(pa->getGroup());
 		pa->setGroup(nullptr);
-	}
-	delete(pa);
+	} */
+	//delete(pa);
 }
 
-void PhysicSimulator::deleteParticleGroup(ParticleGroup* paG)
+void PhysicSimulator::deleteParticleGroup(shared_ptr<ParticleGroup> paG)
 {
 	particlesGroups_.remove(paG);
-	paG->markToDeletion();
-	delete(paG);
+	//paG->markToDeletion();
+	//delete(paG);
 }
 
 void PhysicSimulator::deleteAllParticles()

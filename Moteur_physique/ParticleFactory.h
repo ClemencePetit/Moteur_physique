@@ -14,6 +14,7 @@
 #include "AnchoredSpringFG.h"
 #include "BungeeSpringFG.h"
 #include "WeakSpringFG.h"
+#include "ParticleGroup.h"
 
 
 class ParticleFactory
@@ -28,28 +29,27 @@ public:
 
 	int getCurrentProjectileIndex() { return currentProjectileIndex_; };
 
-	IParticle* getCurrentProjectile();
+	std::shared_ptr<IParticle> getCurrentProjectile();
 
-	IParticle* nextProjectile() {
+	std::shared_ptr<IParticle> nextProjectile() {
 		currentProjectileIndex_++;
 		currentProjectileIndex_ %= 8; //nb projectiles
 		return getCurrentProjectile();
 	}
 
-	IParticle* getBasicBall();
-	IParticle* getCannonBall();
-	IParticle* getLaser();
-	IParticle* getSnowflake();
+	std::shared_ptr<IParticle> getBasicBall();
+	std::shared_ptr<IParticle> getCannonBall();
+	std::shared_ptr<IParticle> getLaser();
+	std::shared_ptr<IParticle> getSnowflake();
 
-	IParticle* getYoyo();
+	std::shared_ptr<IParticle> getYoyo();
 
-	IParticle* getBlob1();
-	IParticle* getBlob2();
-	IParticle* getTestWater();
+	std::shared_ptr<IParticle> getBlob1();
+	std::shared_ptr<IParticle> getBlob2();
+	std::shared_ptr<IParticle> getTestWater();
 
-	IParticle* getTestBlop();
-	IParticle* getBlob3();
-
+	std::shared_ptr<IParticle> getTestBlop();
+	std::shared_ptr<IParticle> getBlob3();
 
 };
 
