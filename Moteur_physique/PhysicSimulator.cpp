@@ -132,6 +132,7 @@ void PhysicSimulator::verifyDeletion()
 	std::list<std::shared_ptr<ParticleGroup>>::iterator ite;
 
 	//Delete particle groups
+	
 	auto groups_to_erase = std::remove_if(
 		std::begin(particlesGroups_),
 		std::end(particlesGroups_),
@@ -227,6 +228,7 @@ void PhysicSimulator::addParticle(std::shared_ptr<IParticle> pa)
 
 	//If it's a Particle
 	if (std::shared_ptr<Particle> ptrPq = std::dynamic_pointer_cast<Particle>(pa)) {
+		cout << "Particle added" << endl;
 		particles_.push_back(ptrPq);
 	}
 	//If it's a ParticleGroup
@@ -237,6 +239,7 @@ void PhysicSimulator::addParticle(std::shared_ptr<IParticle> pa)
 		}
 
 		particlesGroups_.push_back(ptrPg);
+		cout << "Group added" << endl;
 	}
 }
 
@@ -254,6 +257,9 @@ void PhysicSimulator::deleteParticle(shared_ptr<Particle> pa)
 void PhysicSimulator::deleteParticleGroup(shared_ptr<ParticleGroup> paG)
 {
 	particlesGroups_.remove(paG);
+	for (auto const& pa : paG->getParticles()) {
+		deleteParticle(pa);
+	}
 	//paG->markToDeletion();
 	//delete(paG);
 }

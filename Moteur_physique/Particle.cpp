@@ -28,7 +28,6 @@ Particle::~Particle()
 {
 	cout << "Particle deleted" << endl;
 	delete(shape_);
-	delete(pos_);
 }
 
 

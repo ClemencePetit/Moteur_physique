@@ -5,8 +5,8 @@
 ParticleGroup::~ParticleGroup() {
 
 	cout << "Particle Group deleted" << endl;
-	markToDeletion();
-	delete(forcesRegister_);
+	//markToDeletion();
+	//delete(forcesRegister_);
 }
 
 void ParticleGroup::draw() {

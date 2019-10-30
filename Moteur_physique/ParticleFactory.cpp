@@ -85,7 +85,7 @@ std::shared_ptr<IParticle> ParticleFactory::getYoyo() {
 std::shared_ptr<IParticle> ParticleFactory::getBlob1() {
 	//Square linked blob
 
-//Particles
+	//Particles
 	std::vector<std::shared_ptr<Particle>> pas;
 
 	std::shared_ptr<Particle> a = std::dynamic_pointer_cast<Particle>(getBasicBall());
@@ -111,9 +111,9 @@ std::shared_ptr<IParticle> ParticleFactory::getBlob1() {
 
 	
 	fg->add(a.get(), new BungeeSpringFG(b.get(), 50, 1));
-	fg->add(b.get(), new BungeeSpringFG(c.get(), 50, 1));
-	fg->add(c.get(), new BungeeSpringFG(d.get(), 50, 1));
-	fg->add(d.get(), new BungeeSpringFG(a.get(), 50, 1));
+	fg->add(b.get(), new BungeeSpringFG(b.get(), 50, 1));
+	fg->add(c.get(), new BungeeSpringFG(b.get(), 50, 1));
+	fg->add(d.get(), new BungeeSpringFG(b.get(), 50, 1));
 	
 
 	std::shared_ptr<ParticleGroup> pg = std::make_shared<ParticleGroup>(ParticleGroup(pas, fg));
@@ -188,7 +188,6 @@ std::shared_ptr<IParticle> ParticleFactory::getBlob3() {
 	for (int i = 0; i < 50; i++) {
 
 		std::shared_ptr<Particle> b = std::dynamic_pointer_cast<Particle>(getTestBlop());
-
 
 		pas.push_back(b);
 

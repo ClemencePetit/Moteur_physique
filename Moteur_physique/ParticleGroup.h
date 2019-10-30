@@ -59,7 +59,7 @@ public:
 		return markedToDeletion_;
 	}
 
-	Vector3D* getPos() {
+	std::shared_ptr<Vector3D> getPos() {
 		//Return the pos of the first particle
 		return (*particles_.begin())->getPos();
 	};

@@ -20,13 +20,13 @@ class Shape
 protected:
 
 
-	Vector3D* position_;
+	std::shared_ptr<Vector3D> position_;
 	Vector3D color_;
 
 public:
 
 	//Constructors
-	Shape(Vector3D* pos, Vector3D rgb) : position_(pos), color_(rgb) { }
+	Shape(std::shared_ptr<Vector3D> pos, Vector3D rgb) : position_(pos), color_(rgb) { }
 
 	Vector3D getColor() {
 		return color_;
@@ -65,7 +65,7 @@ private:
 public:
 
 	//Constructors
-	Rect3D(Vector3D* pos, Vector3D color, float w = 2, float h = 2, float p = 2) : width_(w), height_(h), depth_(p), Shape(pos, color) { }
+	Rect3D(std::shared_ptr<Vector3D> pos, Vector3D color, float w = 2, float h = 2, float p = 2) : width_(w), height_(h), depth_(p), Shape(pos, color) { }
 
 	Vector3D getMinPos() {
 		return Vector3D(position_->x - width_ / 2, position_->y - height_ / 2, position_->z - depth_ / 2);
@@ -93,7 +93,7 @@ private:
 public:
 
 	//Constructors
-	Sphere(Vector3D* pos, Vector3D color,  float radius_ = 2) : radius_(radius_), Shape(pos, color) { }
+	Sphere(std::shared_ptr<Vector3D> pos, Vector3D color,  float radius_ = 2) : radius_(radius_), Shape(pos, color) { }
 
 	float getRadius();
 

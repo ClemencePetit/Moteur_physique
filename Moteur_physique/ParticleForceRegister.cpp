@@ -33,10 +33,6 @@ void ParticleForceRegister::remove() {
 
 void ParticleForceRegister::clear() {
 	std::vector<ForceRecord>::iterator it;
-	for (it = register_.begin(); it != register_.end(); it++)
-	{
-		delete(it->fg);
-	}
 	register_.clear();
 }
 

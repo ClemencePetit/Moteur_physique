@@ -13,7 +13,7 @@ class Particle : public IParticle
 
 private:
 
-	Vector3D* pos_; //position
+	std::shared_ptr<Vector3D> pos_; //position
 	Vector3D vel_; //velocit�
 
 	Vector3D forceAccum_;
@@ -44,7 +44,7 @@ public:
 		group_ = group;
 	}
 
-	Vector3D* getPos() { return pos_; };
+	std::shared_ptr<Vector3D> getPos() { return pos_; };
 	Vector3D getVit() { return vel_; };
 	float getMassInv() { return massInv_; };
 	Shape* getShape() { return shape_; };
